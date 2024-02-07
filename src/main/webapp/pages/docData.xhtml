@@ -1,0 +1,252 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ibg="http://java.sun.com/jsf/composite/components"
+                xmlns:jsf="http://xmlns.jcp.org/jsf"  >
+
+
+	<f:metadata>
+		<f:viewAction action="#{userData.checkPageAccess(null)}" onPostback="false" />
+			
+	</f:metadata>
+
+<p:tooltip escape="false" hideEvent="mouseout click"/>
+	
+	
+<h:form id="docForm" >
+		
+		<p:remoteCommand name="reloadDocDataFile"    update="docForm:tabsDoc:filesDoc:files-tbl"   action="#{docData.reloadDocDataFile}"   autoRun="false" />	
+	
+		<h:panelGroup rendered="#{docData.document eq null}" layout="block" >
+			#{labels['docu.titleDocNotFound']} 
+		</h:panelGroup>
+	
+	<ui:remove>	<!-- Бутон с данни за регистрация - модален за журнала
+		<h:panelGroup id="pRegInfo">
+		
+	 		<ibg:compObjAudit id="a2" idObj="#{docData.document.id}" 
+				 	codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_DOC}"
+				 	identInfo="#{docData.rnFullDocAudit}" 	/>
+		</h:panelGroup>
+		
+	--></ui:remove>	
+		
+	<h:panelGroup  style=" font-weight: bold;"  rendered="#{docData.prInpPar}" >
+	          <p:spacer width="900px"></p:spacer>	
+	          <i class="fas fa-print table-icon"></i>
+			  <p:commandLink   value="#{labels['docDatDvij.envPrint']}/#{labels['docData.deliverNotFT']}"
+									title="#{labels['docDatDvij.envPrint']}/#{labels['docData.deliverNotFT']}"
+									actionListener="#{docData.actionSetFormatP()}"
+								     oncomplete="PF('dialog-print-envelop').show()" 
+								        rendered="#{(docData.codeObject == 97 and (docData.document.docVid == 44 or (docData.document.docVid ge 55 and docData.document.docVid le 62)))}"
+									partialSubmit="true" process="@this" update="docForm:tabsDoc" > 
+									
+				</p:commandLink>   <ui:remove > <!--  	actionListener="#{docData.preparePostCoverNotice(index)}"    oncomplete="PF('dialog-print-envelop').show()"  -->  </ui:remove>
+				 <p:commandLink   value="#{labels['docDatDvij.envPrint']}"
+									title="#{labels['docDatDvij.envPrint']}/#{labels['docData.deliverNotFT']}"
+									actionListener="#{docData.actionSetFormatP()}"
+								     oncomplete="PF('dialog-print-envelop').show()" 
+								     rendered="#{!(docData.codeObject == 97 and (docData.document.docVid == 44 or (docData.document.docVid ge 55 and docData.document.docVid le 62)))}"
+									partialSubmit="true" process="@this" update="docForm:tabsDoc" /> 
+					
+	</h:panelGroup>		
+		<p:tabView id="tabsDoc" dynamic="true" cache="true" rendered="#{docData.document ne null}" >
+		  	<p:ajax event="tabChange" listener="#{docData.onTabChange}" update="tabsDoc" partialSubmit="true" />
+		
+			<p:tab title="#{labels['docu.documentTab']}" id="tabMain">
+				<ui:include src="docDataReg.xhtml" />
+			</p:tab>
+
+			<p:tab title="#{labels['docu.tasks']}" id="tabTasks" disabled="#{docData.document.id eq null}">
+				<ui:include src="docDataTasks.xhtml" />  
+	    	</p:tab>		
+<ui:remove><!-- 
+			<p:tab title="#{labels['docu.dvijenie']}" id="tabDvig" disabled="#{docData.document.id eq null}">
+ 				<ui:include src="docDataDvijenia.xhtml" />
+			</p:tab>		
+			
+			<p:tab title="#{labels['docu.vraz']}" id="tabVraz" disabled="#{docData.document.id eq null}">
+				<ui:include src="docDataVrazki.xhtml" />  
+ 			</p:tab>
+
+			<p:tab title="#{labels['docu.prepTab']}" id="tabPrep" disabled="#{docData.document.id eq null}">
+				 <ui:include src="docDataPrep.xhtml" />   
+			</p:tab>
+			
+			<p:tab title="#{labels['docu.prilojTab']}" id="tabPriloj" disabled="#{docData.document.id eq null}">
+				 <ui:include src="docDataPrilojenia.xhtml" />   
+			</p:tab>
+	 	
+			<p:tab title="#{docData.membersTab}" rendered="#{docData.membersTab ne null and docData.membersTab ne ''}" id="tabMembers" disabled="#{docData.document.id eq null}">
+				 <ui:include src="docDataMembers.xhtml" />   
+			</p:tab>
+	--></ui:remove>			
+		</p:tabView>
+
+     
+		<!-- модален прозорец за печат на етикети за пликове / известия за доставяне (обратни разписки) -->
+	<p:dialog appendTo="@form" widgetVar="dialog-print-envelop" closeOnEscape="false" 
+		    fitViewport="true" responsive="true" resizable="true" positionType="fixed" position="top"
+		    modal="false" dynamic="true" style="max-width:1000px;" >
+	   
+		<div jsf:id="dialog-env-print" >
+			<div class="p-grid ui-fluid">
+			
+				<p:panel styleClass="margin-bottom"  header= "#{docData.headerDialog}" >
+		
+					<div class="p-col-12 p-md-12 p-lg-12">
+						<p:panelGrid style="margin-top:20px" id="pgN">
+							<f:facet name="header">
+					          <p:row>
+					          	<p:column colspan="2" style="font-weight: bold; width: 900px;" >#{labels['docDatDvij.settingPostEnv']}</p:column>
+					          </p:row>
+					        </f:facet>
+							<p:row>
+					            <p:column style="width: 450px;">
+					    			<h:outputText value="#{labels['docDatDvij.postEnvSize']}" styleClass="form-label"/>
+									<p:selectOneMenu id="sizeEnv" value="#{docData.formatPlik}">
+									     <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_POST_ENVELOPS, now, docData.currentLang)}" 
+									         var="envSize" itemLabel="#{envSize.tekst}" itemValue="#{envSize.code}" />
+								    </p:selectOneMenu>	
+								</p:column>
+					            <p:column>
+									<h:outputText value="#{labels['docDatDvij.envRecom']}" styleClass="form-label" />
+									<p:selectBooleanCheckbox value="#{docData.recommended}" id="recom" style="width: 150px;"/>
+								</p:column>
+				            </p:row>
+				            
+				        </p:panelGrid>
+					</div>
+	      
+				    <div class="p-col-12 p-md-12 p-lg-12">
+						<p:panelGrid id="pgB">
+							<f:facet name="header">
+					             <p:row>
+						            <p:column style="font-weight: bold; width: 450px;" >#{labels['docDatDvij.recipientData']}</p:column>
+						            <p:column style="font-weight: bold; width: 450px;">#{labels['docDatDvij.senderData']}</p:column>
+				            	</p:row>
+					        </f:facet> 
+						
+							<p:row>
+				             	<p:column>
+									<h:outputText value="#{labels['opis.poluch']}" styleClass="form-label req" />
+									<p:inputText id="corName" value="#{docData.corespName}" /> 
+								</p:column>
+				
+								<p:column>
+									<h:outputText value="#{labels['general.sender']}" styleClass="form-label req" />
+									<p:inputText id="sendName" value="#{docData.senderName}"   /> 
+								</p:column>
+			            	</p:row>
+			 
+			            	<p:row>
+				             	<p:column>
+									<h:outputText value="#{labels['docDat.adressCoresp']}" styleClass="form-label req" />
+									<p:inputText id="corAdr" value="#{docData.corespAddress}" />  
+								</p:column>
+				
+								<p:column>
+									<h:outputText value="#{labels['dvijenie.adres']}" styleClass="form-label req" />
+									<p:inputText id="sendAdr" value="#{docData.senderAddress}"   /> 
+								</p:column>
+			            	</p:row>
+			 	
+			 		        <p:row>
+				             	<p:column>
+									<h:outputText value="#{labels['global.nasMesto']}" styleClass="form-label req" />
+									<p:inputText id="corNM" value="#{docData.corespNM}" /> 
+								</p:column>
+				
+								<p:column>
+									<h:outputText value="#{labels['global.nasMesto']}" styleClass="form-label req" />
+								<p:inputText id="sendNM" value="#{docData.senderNM}"   />  
+								</p:column>
+			            	</p:row>
+			 	
+			            	<p:row>
+				             	<p:column>
+									<h:outputText value="#{labels['global.oblast']}" styleClass="form-label req" />
+									<p:inputText id="corObl" value="#{docData.corespObl}"  /> 
+								</p:column>
+				
+								<p:column>
+									<h:outputText value="#{labels['global.oblast']}"  styleClass="form-label req" />
+									<p:inputText id="sendObl" value="#{docData.senderObl}"  />  
+								</p:column>
+			            	</p:row>
+			            	
+			            	<p:row>
+				             	<p:column>
+									<h:outputText value="#{labels['global.postCode']}" styleClass="form-label req" />
+									<p:inputText id="corPC" value="#{docData.corespPostCode}" />
+								</p:column>
+				
+								<p:column>
+									<h:outputText value="#{labels['global.postCode']}" styleClass="form-label req " />
+									<p:inputText id="sendPC" value="#{docData.senderPostCode}"  />   
+								</p:column>
+			            	</p:row>
+			            	        
+			            	
+			            	<ui:remove > <!-- 
+			            	<p:row>
+				             	<p:column>
+									<h:outputText value="#{labels['global.country']}" styleClass="form-label" rendered="#{null ne DataDvijenia.adr.addrCountry and docData.adr.addrCountry ne docData.countryBg}"/>
+									<p:inputText id="corCountr" value="#{docData.corespCountry}" rendered="#{null ne DataDvijenia.adr.addrCountry and docData.adr.addrCountry ne docData.countryBg}"/>
+								</p:column>
+				
+								<p:column>
+									<h:outputText value="#{labels['global.country']}" styleClass="form-label" rendered="#{null ne DataDvijenia.adr.addrCountry and docData.adr.addrCountry ne docData.countryBg}"/>
+									<p:inputText id="sendCountr" value="#{docData.senderCountry}" rendered="#{null ne DataDvijenia.adr.addrCountry and docData.adr.addrCountry ne docData.countryBg}"/> 
+								</p:column>
+			            	</p:row>
+			            	 --> </ui:remove>
+			            	 
+			            	<p:row>
+				             	<p:column>
+									<h:outputText value="#{labels['admStruct.telefon']}" styleClass="form-label" />
+									<p:inputText id="corTel" value="#{docData.corespTel}" />
+								</p:column>
+				
+								<p:column >
+									<h:outputText value="#{labels['admStruct.telefon']}" styleClass="form-label" />
+									<p:inputText id="sendTel" value="#{docData.senderTel}"    />   
+								</p:column>
+			            	</p:row>
+						  
+						</p:panelGrid>
+					
+					</div>
+		
+						<div align="center">
+							<p:commandButton id="btnForEnvPrint" value="#{labels['docDatDvij.envPrintShort']}" 
+								title="#{labels['docDatDvij.envPrint']}"  tabindex="-1" 
+								action="#{docData.actionPrint(1)}" styleClass="ui-button-info" 
+								icon="fas fa-print table-icon" ajax="false"	style="width:150px"	
+							    partialSubmit="true" process="@this"/>
+							    
+							<span style="padding-right: 15px;"/>
+							
+							<p:commandButton id="btnForObrRazp" value="Известие доставяне" 
+								title="#{labels['docData.deliverNotFT']}"  tabindex="-1" 
+								action="#{docData.actionPrint(2)}" styleClass="ui-button-info" 
+								icon="fas fa-envelope-open" ajax="false" style="width:200px"	
+							    partialSubmit="true" process="@this"
+							    rendered="#{docData.codeObject == 97 and (docData.document.docVid == 44 or (docData.document.docVid ge 55 and docData.document.docVid le 62))}" />
+						</div>	    
+
+				</p:panel>
+			</div>
+		</div>			
+	
+	</p:dialog>
+	
+
+</h:form>
+
+
+
+
+</ui:composition>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job-scheduling-data xmlns="http://www.quartz-scheduler.org/xml/JobSchedulingData"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.quartz-scheduler.org/xml/JobSchedulingData http://www.quartz-scheduler.org/xml/job_scheduling_data_2_0.xsd"
+    version="1.8">
+
+
+	<pre-processing-commands>
+        <delete-jobs-in-group>*</delete-jobs-in-group>  <!-- clear all jobs in scheduler -->
+        <delete-triggers-in-group>*</delete-triggers-in-group> <!-- clear all triggers in scheduler -->
+    </pre-processing-commands>
+    
+    <processing-directives>
+        <!-- if there are any jobs/trigger in scheduler of same name (as in this file), overwrite them -->
+        <overwrite-existing-data>true</overwrite-existing-data>
+        <!-- if there are any jobs/trigger in scheduler of same name (as in this file), and over-write is false, ignore them rather then generating an error -->
+        <ignore-duplicates>false</ignore-duplicates> 
+    </processing-directives>
+    
+    <schedule>
+      	<job>
+			<name>SendNotificationByMail</name>
+			<group>SystemTriggersIB</group>
+			<description>Изпращане на нотификации по email</description>
+			<job-class>com.ib.docu.quartz.SendMailJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>TriggerSendNotificationByMail</name>
+				<group>SystemTriggersIB</group>
+				<description>Тригер за изпращане на нотификации по email</description>
+				<job-name>SendNotificationByMail</job-name>
+				<job-group>SystemTriggersIB</job-group>
+				<!-- every minute -->
+				<cron-expression>0 * * ? * * *</cron-expression>
+			</cron>
+		</trigger>
+		<job>
+			<name>RefreshDashboard</name>
+			<group>SystemTriggersIB</group>
+			<description>Обновяване на работния плот</description>
+			<job-class>com.ib.docu.experimental.CheckNewData</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>TriggerRefreshDashboard</name>
+				<group>SystemTriggersIB</group>
+				<description>Тригер Обновяване на работния плот</description>
+				<job-name>RefreshDashboard</job-name>
+				<job-group>SystemTriggersIB</job-group>
+				<!-- every minute -->
+				<cron-expression>0 * * ? * * *</cron-expression>
+			</cron>
+		</trigger>
+		
+		<job>
+			<name>TaskOverdueNotifJob</name>
+			<group>SystemTriggersIB</group>
+			<description>Изпращане на нотификации за просрочени задачи</description>
+			<job-class>com.ib.docu.quartz.TaskOverdueNotifJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>TriggerTaskOverdueNotif</name>
+				<group>SystemTriggersIB</group>
+				<description>Тригер Изпращане на нотификации за просрочени задачи</description>
+				<job-name>TaskOverdueNotifJob</job-name>
+				<job-group>SystemTriggersIB</job-group>
+				<!-- every day at 7:00 o'clock -->
+				<cron-expression>0 0 7 ? * * *</cron-expression>
+			</cron>
+		</trigger>
+
+		<job>
+			<name>RegixSyncJob</name>
+			<group>SystemTriggersIB</group>
+			<description>Актуализация на данни на юридически и физически лица чрез RegIX</description>
+			<job-class>com.ib.docu.quartz.RegixSyncJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>TriggerRegixSync</name>
+				<group>SystemTriggersIB</group>
+				<description>Тригер Актуализация на данни на юридически и физически лица чрез RegIX</description>
+				<job-name>RegixSyncJob</job-name>
+				<job-group>SystemTriggersIB</job-group>
+				<!-- every day at 00:00 o'clock -->
+				<cron-expression>0 0 0 ? * * *</cron-expression>
+			</cron>
+		</trigger>
+
+		<job>
+			<name>ArchimedExtractJob</name>
+			<group>SystemTriggersIB</group>
+			<description>Изтегляне на заявление от система Архимед</description>
+			<job-class>com.ib.docu.quartz.ArchimedExtractJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>TriggerArchimedExtract</name>
+				<group>SystemTriggersIB</group>
+				<description>Тригер Изтегляне на заявление от система Архимед</description>
+				<job-name>ArchimedExtractJob</job-name>
+				<job-group>SystemTriggersIB</job-group>
+				<cron-expression>0 0/10 6-20 * * ?</cron-expression>
+			</cron>
+		</trigger>
+		
+		<job>
+			<name>JournalExtractJob</name>
+			<group>SystemTriggersIB</group>
+			<description>Изпращане на модифицирани обекти към ИСЦИПР</description>
+			<job-class>com.ib.docu.quartz.JournalExtractJob</job-class>
+			<durability>true</durability>
+			<recover>true</recover>
+		</job>
+		<trigger>
+			<cron>
+				<name>TriggerJournalExtract</name>
+				<group>SystemTriggersIB</group>
+				<description>Тригер Изпращане на модифицирани обекти към ИСЦИПР</description>
+				<job-name>JournalExtractJob</job-name>
+				<job-group>SystemTriggersIB</job-group>
+				<cron-expression>0 0 2 * * ?</cron-expression>
+			</cron>
+		</trigger>
+
+	</schedule>
+    
+</job-scheduling-data>

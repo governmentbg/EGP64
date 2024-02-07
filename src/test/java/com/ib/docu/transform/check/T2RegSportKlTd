@@ -1,0 +1,13 @@
+13:38:03.004 [main] INFO  com.ib.docu.transform.T2RegSportKlTd - 
+13:38:03.004 [main] INFO  com.ib.docu.transform.T2RegSportKlTd - Start validate register data
+
+13:38:03.104 [main] INFO  com.ib.docu.transform.T2RegSportKlTd - 0 errors from 135
+13:38:03.104 [main] INFO  com.ib.docu.transform.T2RegSportKlTd - Validate register data - COMPLETE
+
+13:38:52.787 [main] WARN  com.ib.docu.transform.T2RegSportKlTd -   ! eik=124502674 uknown EKATTE: гр. Генерал Тошево Герерал Тошево
+13:38:53.083 [main] WARN  com.ib.docu.transform.T2RegSportKlTd -   ! eik=000850714 uknown EKATTE: с. Ново Ботево Добрич
+13:39:09.731 [main] WARN  com.ib.docu.transform.T2RegSportKlTd -   ! eik=121218081 uknown EKATTE: гр. Банкя София
+13:39:11.079 [main] WARN  com.ib.docu.transform.T2RegSportKlTd -   ! eik=176065181 uknown EKATTE: с. Владая  София
+13:39:13.075 [main] WARN  com.ib.docu.transform.T2RegSportKlTd -   ! eik=175013968 uknown EKATTE: с. Челореч Челопеч
+13:39:15.132 [main] WARN  com.ib.docu.transform.T2RegSportKlTd -   ! eik=120546577 uknown EKATTE:  гр. Смолян  Смолян
+13:39:15.323 [main] WARN  com.ib.docu.transform.T2RegSportKlTd -   ! eik=207148854 uknown EKATTE:  гр. Козлодуй Козлодуй

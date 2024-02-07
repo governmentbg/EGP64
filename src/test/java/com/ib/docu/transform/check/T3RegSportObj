@@ -1,0 +1,32 @@
+13:43:33.852 [main] INFO  com.ib.docu.transform.T3RegSportObj - 
+13:43:33.852 [main] INFO  com.ib.docu.transform.T3RegSportObj - Start validate register data
+
+reg_sport_obj.id=198
+	NULL name
+
+reg_sport_obj.id=1193
+	NULL name
+
+reg_sport_obj.id=3685
+	DUPLICATE nom_so=С-68134-358
+
+reg_sport_obj.id=3710
+	DUPLICATE nom_so=С-68134-361
+
+reg_sport_obj.id=4270
+	NULL name
+
+reg_sport_obj.id=4271
+	NULL name
+
+reg_sport_obj.id=4529
+	NULL name
+
+reg_sport_obj.id=5217
+	NULL name
+
+reg_sport_obj.id=5315
+	NULL name
+
+13:43:36.351 [main] INFO  com.ib.docu.transform.T3RegSportObj - 9 errors from 4897
+13:43:36.351 [main] INFO  com.ib.docu.transform.T3RegSportObj - Validate register data - COMPLETE

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:tns="http://iscipr.egov.bg/SmartRegistry/SportUnionsRegisterRecordEntry" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://iscipr.egov.bg/SmartRegistry/SportUnionsRegisterRecordEntry" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="SportUnionsRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" name="SportUnionsRecord">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="1" name="ExternalId" type="xs:string" />
+              <xs:element name="SportUnionType" type="xs:string" />
+              <xs:element name="SportUnionRegNumber" type="xs:string" />
+              <xs:element name="LicenceNumber" type="xs:string" />
+              <xs:element name="RegNumberEntryOrder" type="xs:string" />
+              <xs:element name="EntryOrderDate" type="xs:date" />
+              <xs:element name="UnionName" type="xs:string" />
+              <xs:element name="UnionLocation" type="xs:string" />
+              <xs:element name="UnionAddress" type="xs:string" />
+              <xs:element name="UnionStatus" type="xs:string" />
+              <xs:element name="UnionStatusDate" type="xs:date" />
+              <xs:element name="Sport" type="xs:string" />
+              <xs:element name="Presenter" type="xs:string" />
+              <xs:element name="AddressCorespondant" type="xs:string" />
+              <xs:element name="Telephone" type="xs:string" />
+              <xs:element name="Emails" type="xs:string" />
+              <xs:element name="EIK" type="xs:integer" />
+              <xs:element name="WebPage" type="xs:string" />
+              <xs:element name="ForeignData" type="xs:string" />
+              <xs:element name="CancelationOrder" type="xs:string" />
+              <xs:element name="CancelDate" type="xs:date" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,172 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="form1">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="metadataFields">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="title"/>
+              <xs:element type="xs:string" name="uri"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element type="xs:string" name="CurrentPage"/>
+        <xs:element type="xs:string" name="PageCount"/>
+        <xs:element name="Zvln">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ZvlnDklr">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="DL">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="vhNomer">
+                            <xs:complexType>
+                              <xs:choice maxOccurs="unbounded" minOccurs="0">
+                                <xs:element type="xs:string" name="txt_vhodyashtNomer"/>
+                                <xs:element type="xs:string" name="date_dataNaPodavane"/>
+                              </xs:choice>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Main">
+                      <xs:complexType>
+                        <xs:choice maxOccurs="unbounded" minOccurs="0">
+                          <xs:element type="xs:string" name="vid"/>
+                          <xs:element type="xs:long" name="nflEik"/>
+                          <xs:element type="xs:string" name="addressKoresp"/>
+                          <xs:element type="xs:byte" name="cboObl"/>
+                          <xs:element type="xs:string" name="cboObsht"/>
+                          <xs:element type="xs:string" name="cboSettl"/>
+                          <xs:element type="xs:short" name="postCode"/>
+                          <xs:element type="xs:string" name="addrText"/>
+                          <xs:element type="xs:int" name="contactPhone"/>
+                          <xs:element type="xs:string" name="contactEmail"/>
+                          <xs:element type="xs:string" name="webPage"/>
+                          <xs:element name="vidSportList">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="vidSportList"/>
+                                <xs:element type="xs:string" name="Button1" maxOccurs="unbounded" minOccurs="0"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element type="xs:string" name="predstavitelstvo"/>
+                          <xs:element type="xs:string" name="predsedatel"/>
+                          <xs:element type="xs:string" name="genSekDirektor" maxOccurs="unbounded" minOccurs="0"/>
+                          <xs:element name="sportObedMf">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:string" name="DropDownList4"/>
+                                <xs:element type="xs:date" name="date_membership"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element type="xs:string" name="Button1" maxOccurs="unbounded" minOccurs="0"/>
+                          <xs:element name="nachinPoluchavane">
+                            <xs:complexType>
+                              <xs:choice maxOccurs="unbounded" minOccurs="0">
+                                <xs:element type="xs:byte" name="CheckBox1" maxOccurs="unbounded" minOccurs="0"/>
+                                <xs:element type="xs:string" name="text" maxOccurs="unbounded" minOccurs="0"/>
+                              </xs:choice>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="sport_federation">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:byte" name="CheckBox1" maxOccurs="unbounded" minOccurs="0"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="united_sport_club">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:byte" name="CheckBox1" maxOccurs="unbounded" minOccurs="0"/>
+                                <xs:element type="xs:string" name="text"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="sport_turist">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:byte" name="CheckBox1" maxOccurs="unbounded" minOccurs="0"/>
+                                <xs:element type="xs:string" name="text"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="university_sport">
+                            <xs:complexType mixed="true">
+                              <xs:sequence>
+                                <xs:element type="xs:byte" name="CheckBox1" maxOccurs="unbounded" minOccurs="0"/>
+                                <xs:element type="xs:string" name="text" minOccurs="0"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element type="xs:date" name="datePodpisvane"/>
+                          <xs:element type="xs:string" name="signature"/>
+                          <xs:element type="xs:string" name="formId"/>
+                          <xs:element name="StampIT">
+                            <xs:complexType>
+                              <xs:sequence>
+                                <xs:element type="xs:byte" name="TextField1"/>
+                                <xs:element type="xs:date" name="DateField2"/>
+                                <xs:element type="xs:string" name="SignatureField1"/>
+                              </xs:sequence>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element type="xs:byte" name="txtSignatureYN"/>
+                          <xs:element type="xs:int" name="txtEDeliveryDestination"/>
+                          <xs:element type="xs:string" name="txtEDeliverySource"/>
+                        </xs:choice>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="designer__stylesheet">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element type="xs:string" name="TextFieldStyle1"/>
+              <xs:element type="xs:string" name="NumericStyle1"/>
+              <xs:element type="xs:string" name="NumericStyle2"/>
+              <xs:element type="xs:string" name="NumericStyle3"/>
+              <xs:element type="xs:string" name="TextFieldStyle2"/>
+              <xs:element type="xs:string" name="TextFieldStyle3"/>
+              <xs:element type="xs:string" name="TextFieldStyle4"/>
+              <xs:element type="xs:string" name="TextFieldStyle5"/>
+              <xs:element type="xs:string" name="TextFieldStyle6"/>
+              <xs:element type="xs:string" name="TextFieldStyle7"/>
+              <xs:element type="xs:string" name="TextFieldStyle8"/>
+              <xs:element type="xs:string" name="TextFieldStyle9"/>
+              <xs:element type="xs:string" name="TextFieldStyle10"/>
+              <xs:element type="xs:string" name="TextFieldStyle11"/>
+              <xs:element type="xs:string" name="TextFieldStyle12"/>
+              <xs:element type="xs:string" name="TextFieldStyle13"/>
+              <xs:element type="xs:string" name="TextFieldStyle14"/>
+              <xs:element type="xs:string" name="TextFieldStyle15"/>
+              <xs:element type="xs:string" name="TextFieldStyle16"/>
+              <xs:element type="xs:string" name="TextFieldStyle17"/>
+              <xs:element type="xs:string" name="TextFieldStyle18"/>
+              <xs:element type="xs:string" name="TextFieldStyle19"/>
+              <xs:element type="xs:string" name="TextFieldStyle20"/>
+              <xs:element type="xs:string" name="TextFieldStyle21"/>
+              <xs:element type="xs:string" name="TextFieldStyle22"/>
+              <xs:element type="xs:string" name="TextFieldStyle23"/>
+              <xs:element type="xs:string" name="TextFieldStyle2444"/>
+              <xs:element type="xs:string" name="TextFieldStyle24"/>
+              <xs:element type="xs:string" name="TextFieldStyle25"/>
+              <xs:element type="xs:string" name="TextFieldStyle26"/>
+              <xs:element type="xs:string" name="TextFieldStyle27"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

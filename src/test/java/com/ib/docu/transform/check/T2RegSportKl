@@ -1,0 +1,11 @@
+13:21:26.470 [main] INFO  com.ib.docu.transform.T2RegSportKl - 
+13:21:26.470 [main] INFO  com.ib.docu.transform.T2RegSportKl - Start validate register data
+
+reg_sport_kl_zalicheni.reg_nom_sk=106-014; EIK=148033360
+	NOT_VALID eik=148033360
+
+13:21:29.079 [main] INFO  com.ib.docu.transform.T2RegSportKl - 1 errors from 4484
+13:21:29.079 [main] INFO  com.ib.docu.transform.T2RegSportKl - Validate register data - COMPLETE
+
+13:25:29.590 [main] WARN  com.ib.docu.transform.T2RegSportKl -   ! eik=206431148 uknown EKATTE: гр. Вълчи дол Вълчи дол,
+13:31:02.641 [main] WARN  com.ib.docu.transform.T2RegSportKl -   ! eik=175835937 uknown EKATTE: Хърлец Козлодуй

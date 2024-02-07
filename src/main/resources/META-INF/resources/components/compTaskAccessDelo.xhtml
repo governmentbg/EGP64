@@ -1,0 +1,141 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:jsf="http://xmlns.jcp.org/jsf"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:cc="http://java.sun.com/jsf/composite"
+	  xmlns:ibg="http://java.sun.com/jsf/composite/components"	> 
+	  
+	  
+
+<cc:interface componentType="compTaskAccessDelo">
+  		 
+   <cc:attribute name="idDoc"	         	 type="java.lang.Integer" shortDescription="id на документ" deafult="#{null}" />
+   <cc:attribute name="idTask"	         	 type="java.lang.Integer" shortDescription="id на задача" deafult="#{null}" />
+   <cc:attribute name="codeAssign"			 type="java.lang.Integer" shortDescription="Код на възложител. Ако е подаден - idTask се игнорира" deafult="#{null}"  />
+   <cc:attribute name="codeCtrl"			 type="java.lang.Integer" shortDescription="Код на на контролиращ. Ако е подаден - idTask се игнорира" deafult="#{null}"  />
+   <cc:attribute name="listExec"			 type="java.util.List"	  shortDescription="Списък с id-та на изпълнители. Ако е подаден - idTask се игнорира" deafult="#{null}"  />
+ 
+</cc:interface>
+<cc:implementation>
+
+ <f:event type="preRenderComponent" listener="#{cc.initAccessDelo()}" /> <ui:remove> <!--  За да се инициализира компонентата--> </ui:remove>
+	      
+	<p:commandButton icon="fas fa-key" id="btnAccessDelo" value="#{labels['task.accessPrep']}" 
+	    styleClass="ui-button-warning p-ml-2"
+		actionListener="#{cc.actionAccessDelo}" 
+		update="#{cc.clientId}:pAccessDelo" partialSubmit="true" process="#{cc.clientId}:pAccessDelo @this" />
+	
+
+	<h:panelGroup id="pAccessDelo">
+				
+		<p:dialog appendTo="@form" position="top"
+			header="#{labels['task.accessPrep']}" fitViewport="true" responsive="true"
+			resizable="true" closeOnEscape="true" widgetVar="accessDeloVar"
+			dynamic="true" id="accessDeloModal"
+			modal="true" >
+				
+			<div class="container #{guestPreferences.containerPosition}">
+				<div class="p-grid  ui-fluid  p-align-end" >
+					<div class="p-col-12">
+						<h:outputText value="#{labels['task.accessListPrep']}"   styleClass="form-label req" />	
+						<p:message id="errMsgDA1"  	
+						    for="#{cc.clientId}:tblDeloList" showDetail="true" showSummary="true" escape="false">
+			      			<p:autoUpdate/>
+		      			</p:message>						
+						<p:dataTable id="tblDeloList" var="row" value="#{cc.prepList}" lazy="true" 	
+							rowIndexVar="idx" sortMode="single" reflow="true" scrollable="true"
+							emptyMessage="" 
+							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							rows="5" rowsPerPageTemplate="5,10,15" paginatorPosition="bottom"
+							paginatorAlwaysVisible="false" paginator="true"
+							rowSelectMode="checkbox" 
+							selection="#{cc.deloSelectedTmp}">				
+											
+				
+							<p:ajax event="toggleSelect"	 	 listener="#{cc.onRowSelectAllDelo}" process="@this" />
+							<p:ajax event="rowSelectCheckbox"	 listener="#{cc.onRowSelectDelo}"   process="@this"  />
+							<p:ajax event="rowUnselectCheckbox"  listener="#{cc.onRowUnselectDelo}" process="@this"  />
+							<p:ajax event="page" listener="#{cc.onPageUpdateSelectedDelo}" />
+		
+										
+							<p:column selectionMode="multiple" style="width:30px;text-align:center;" />	
+							<p:column width="145" sortBy="#{row.a6}" >
+								<f:facet name="header">
+									 <h:outputText value="#{labels['docu.regNom']}"  />
+								</f:facet> 
+								#{row[6]}  						    
+							</p:column>
+							
+							<p:column width="145" sortBy="#{row.a7}">
+								<f:facet name="header">
+									 <h:outputText value="#{labels['docu.datPrep']}" />									  
+								</f:facet>  
+								<h:outputText value="#{row[7]}"  >	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{cc.timeZone}"/>
+								</h:outputText>	
+							</p:column>
+							
+							<p:column width="110" sortBy="#{row.a8}">
+								<f:facet name="header">
+									 <h:outputText value="#{labels['docu.status']}" />									  
+								</f:facet>  
+								<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DELO_STATUS, row[8], cc.lang, now)}"/>
+							</p:column>
+							
+							<p:column width="*" sortBy="#{row.a8}">
+								<f:facet name="header">
+									 <h:outputText value="#{labels['docu.nameDelo']}" />									  
+								</f:facet>  
+								#{row[11]}
+							</p:column>
+							
+							<p:column width="50" sortBy="#{row.a10}">
+								<f:facet name="header">
+									 <h:outputText value="Тип" />									  
+								</f:facet>  
+								<h:panelGroup rendered="#{row[10] eq DocuConstants.CODE_ZNACHENIE_DELO_TYPE_NOM}">
+									<i class="fas fa-book" 
+									title="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DELO_TYPE,  row[10], cc.lang, now)}"></i>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{row[10] ne DocuConstants.CODE_ZNACHENIE_DELO_TYPE_NOM}">
+									<i class="fas fa-folder" 
+									title="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DELO_TYPE, row[10], cc.lang, now)}"></i>
+								</h:panelGroup>			
+							</p:column>
+					
+							
+						</p:dataTable>
+					</div>
+					
+					<div class="p-col-11 p-mt-2">
+						
+						<h:outputText value="#{labels['task.accessListLica']}"   styleClass="form-label req" />
+						<p:message id="errMsgDA2"  	
+						    for="#{cc.clientId}:lica" showDetail="true" showSummary="true" escape="false">
+			      			<p:autoUpdate/>
+		      			</p:message>
+						<p:selectManyCheckbox id="lica" value="#{cc.licaSelected}" immediate="true"  layout="responsive"  columns="2">
+					        <f:selectItems value="#{cc.licaList}"  />		
+					    </p:selectManyCheckbox>	
+					</div>
+					
+					<div class="p-col-1">
+						<p:commandButton   value="#{ui_labels['general.save']}" 
+								title="#{labels['taskAccessTitle']}" id="btnSaveA"
+								partialSubmit="true" process="#{cc.clientId}:tblDeloList #{cc.clientId}:lica @this"
+								actionListener="#{cc.actionSaveAccess()}"
+								rendered="#{!cc.attrs.readonly}" />
+					</div>	
+				</div>
+			
+			</div>		
+		</p:dialog>
+	
+	</h:panelGroup>
+		
+</cc:implementation>
+
+</ui:composition>

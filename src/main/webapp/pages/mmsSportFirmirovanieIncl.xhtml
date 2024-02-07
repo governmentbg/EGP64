@@ -1,0 +1,935 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ibg="http://java.sun.com/jsf/composite/components">
+
+	<ui:composition template="/template/template.xhtml">
+	
+	<ui:define name="title">#{pageTitle}</ui:define>
+	
+	<ui:define name="viewname">		
+		<li>
+	       	<p:commandLink title="#{ui_labels['general.back']}" action="#{navigation.goBack()}"  rendered="#{navigation.navPath.size()>1 and isNew != 1 and viewOnly != 1 and  mmsSF.idObedinenie == null}">
+				<i class="fas fa-caret-left" />
+			</p:commandLink>
+	       	<p:commandLink title="#{ui_labels['general.back']}" action="#{mmsSF.goBackObedinenie()}" ajax="false" rendered="#{mmsSF.idObedinenie != null}">
+				<i class="fas fa-caret-left" />
+			</p:commandLink>			
+
+		</li>
+		<li>
+			<h:outputText value=" Въвеждане на Ново спортно формирование " rendered="#{mmsSF.mmsSportFormirovanie.id == null and viewOnly == DocuConstants.CODE_ZNACHENIE_NE}"/>
+			<h:outputText value=" Актуализация на спортно формирование " rendered="#{mmsSF.mmsSportFormirovanie.id != null and viewOnly == DocuConstants.CODE_ZNACHENIE_NE}"/>
+			<h:outputText value=" Разглеждане на спортно формирование " rendered="#{viewOnly == DocuConstants.CODE_ZNACHENIE_DA}"/>
+		</li>
+	
+    </ui:define>
+	
+	<ui:define name="content">
+		<h:form id="mmsSFform">
+			<div class="card" jsf:id="ekrana">
+				<div class="p-grid">
+					<div class="p-col-10">
+						<h:outputText value="#{mmsSF.messageFromObedinenie}" />
+						<h:outputText value="Входящ номер на заявлението: #{mmsSF.regNom} / "  rendered="#{mmsSF.idSSev != null}"/>
+						<h:outputText value="#{mmsSF.dataDoc}"  rendered="#{mmsSF.idSSev != null}">
+							<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSF.timeZone}"/>
+						</h:outputText>
+						<ui:remove><p:spacer width="30px"></p:spacer>
+						<p:button icon="fas fa-eye" href="docView.xhtml?faces-redirect=true" target="_blank" title="#{ui_labels['general.view']}">
+							<f:param name="idObj" value="12" />
+						</p:button>
+						</ui:remove>
+					</div>
+					<div class="p-col-2">	
+						<ui:remove><p:commandLink title="Обратно към спортно обединение" action="#{mmsSF.goBackObedinenie()}" value="Обратно към спортно обединение"  
+									rendered="#{mmsSF.idObedinenie != null}" styleClass="route-bar-breadcrumb">
+							<i class="fas fa-caret-left" />
+						</p:commandLink>
+						</ui:remove> 
+						
+						<p:link ajax="false" href="#{mmsSF.goBackObedinenie()}" title="Обратно към спортно обединение" value="Обратно към спортно обединение" rendered="#{mmsSF.idObedinenie != null}"> 
+							<i class="fas fa-caret-rigth" /> 
+						</p:link>
+					</div>
+				</div>		  		
+				<p:toolbar id="panelButtonsTop" rendered="#{viewOnly != 1 and mmsSF.willShowSaveBtns}">
+					<f:facet name="left">									
+						<p:commandButton icon="fas fa-save" value="#{ui_labels['general.save']}" rendered="#{viewOnly != 1}"
+							action="#{mmsSF.actionSave}" id="btnSaveTop" update="mmsSFform olympic"  process="@this mmsSFform" partialSubmit="true"/>
+						<p:spacer width="30px"></p:spacer>							     
+						 <h:panelGroup rendered="#{mmsSF.mmsSportFormirovanie.id ne null}">   
+						       <ibg:compMMSAddFields idObj="#{mmsSF.mmsSportFormirovanie.id}" codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORTS_FORMATIONS}" readonly="#{viewOnly == DocuConstants.CODE_ZNACHENIE_DA}"/>
+						 </h:panelGroup>  
+					
+						<ui:remove>
+							<span class="fas fa-ellipsis-v SoftGray p-mx-2"/>
+		                       <p:commandButton icon="fas fa-plus" id="btnNew" value="#{ui_labels['general.new']}o" update="mmsSFform" process="@this" partialSubmit="true"
+								actionListener="#{mmsSF.actionNew}" styleClass="ui-button-success"  rendered="#{viewOnly != 1}">
+							</p:commandButton>
+						</ui:remove> 
+					</f:facet>
+					<f:facet name="right">	
+						<ui:remove><p:commandButton value="Разглежд.заявл." rendered="#{mmsSF.egovMessFilesList.size()>0}"
+						      partialSubmit="true" process="@this" id="btnViewZajavl" 
+						      oncomplete="PF('dialog-messFiles').show();" update="mmsSFform:dialogMessFiles"
+						      title="Разглеждане файлове към заявление" />
+						      </ui:remove> 
+						      
+						<p:commandButton value="Разглежд.заявл." rendered="#{mmsSF.idSSev ne null}"
+					      partialSubmit="true" process="@this" id="btnViewZajavlenie" 
+					      oncomplete="PF('dialogZaqvlenie11').show();" update="mmsSFform:dialogZaqvlenieFiles"
+					      title="Разглеждане на заявление" />
+					    
+					    <p:spacer width="20px"></p:spacer>
+					    
+					    <p:commandButton id="btnOtkazZaqvl"  value="Отказ обработка"
+										onmousemove="document.getElementById('mmsSFform:btnOtkazZaqvl').focus();"
+										partialSubmit="true" update="mmsSFform:panelOtkaz"
+										process="mmsSFform:btnOtkazZaqvl @this"
+										oncomplete="PF('otkazReg').show(); " rendered="#{mmsSF.idSSev ne null}"
+										title="Отказ от регистрация"/>	
+						
+						<p:spacer width="20px"></p:spacer>
+						
+						<p:commandButton id="btnMail" styleClass="ui-button-success"  value="#{labels['dvijenie.email']}"
+										onmousemove="document.getElementById('mmsSFform:btnMail').focus();"
+										partialSubmit="true" update="mmsSFform:panelMail"
+										process="mmsSFform:btnMail @this"
+										oncomplete="PF('eMail').show(); "
+										title="Изпращане на е-мейл до формированието"  
+										rendered="#{ viewOnly != 1 and mmsSF.willShowMailModal}"/>
+						<p:spacer width="20px"></p:spacer>	
+									
+						 <p:commandButton value="#{labels['regixReport.title']}"
+						      partialSubmit="true" process="@this"
+						      oncomplete="PF('dialog-compRegix').show();" update="mmsSFform:dialogCompRegix"
+						      title="#{labels['regixReport.title']}" />
+						<p:spacer width="20px"></p:spacer>
+								 					
+						<p:commandButton icon="fas fa-times"
+							            value="#{ui_labels['general.delete']}" title="Изтриване"
+							           	update="@form , mmsSFform:refCorrInp, mmsSFform:vidSpTxt, mmsSFform:divTypeSport, mmsSFform:divReffButtons, mmsSFform:findCoresp:searchCorId, mmsSFform:findCoresp" partialSubmit="true" 
+										process="@this"
+										rendered="#{viewOnly ne 1 
+											and mmsSF.mmsSportFormirovanie.id ne null 
+											 and mmsSF.regsList.size() == 0
+											and userData.hasAccess(DocuConstants.CODE_CLASSIF_DEF_PRAVA, DocuConstants.CODE_ZNACHENIE_DEF_PRAVA_DEL_MMS_REG)}"											
+										action="#{mmsSF.actionDelete}" styleClass="ui-button-danger" >
+							<p:confirm header="#{ui_labels['general.comfirmation']}" message="#{beanMessages['general.confirmDeleteMsg']}" icon="fas fa-exclamation-triangle" />
+						</p:commandButton>
+					</f:facet>
+				</p:toolbar>
+				<div class="p-grid">
+					<div class="p-col-12">
+						<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '#mmsSFform:basicDataProc')">
+							<h:outputText value="#{labels['procDefEdit.basicData']}" />
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+					</div>
+	
+					<div jsf:id="basicDataProc" class="p-grid extended-search ui-fluid">
+						<h:panelGroup layout="block" styleClass="p-grid p-col-12" id="referentPanel">
+							
+							<div class="p-col-12 p-lg-6">
+	                    		<h:outputText value="#{labels['admStruct.eik']} " styleClass="form-label req"/>
+	                    		
+	                    	<div class="selectModalA-with-buttons" jsf:id="divReffButtons">
+	                    		<h:panelGroup id="refCorrInp" layout="block" styleClass="koresp-input">
+									<ibg:mmsSelectReferents id="findCoresp"  
+										readonly="#{viewOnly == 1 or (mmsSF.mmsSportFormirovanie.idObject != null and mmsSF.mmsSportFormirovanie.id != null )}"
+										update="mmsSFform:referentPanel mmsSFform:panelSobedinenie mmsSFform:panelVpisvane mmsSFform:panelDocs mmsSFform"
+										typeSearch="EIK"
+										dateClassif="#{mmsSF.decodeDate2}"
+										corespCompCommand="PF('mCorrD').show();"
+										onComplete="#{mmsSF.clearInfoAdres()}"	
+										validationMetod="#{mmsSF.sasEik.getValidMethod()}"
+										validationMessage="Невалидно ЕИК" 
+										selectedCode="#{mmsSF.codeRefCorresp}"
+										searchWord="#{mmsSF.txtCorresp}"/>
+								</h:panelGroup>
+	                    		<ui:remove>	<!--  Корекция на данни на кореспондент	--></ui:remove>
+									<p:commandButton id="btnCorrD"
+										rendered="#{mmsSF.mmsSportFormirovanie.idObject ne null}"
+										icon="#{(viewOnly != 1) ? 'fas fa-edit' : 'fas fa-eye'}" partialSubmit="true"
+										process="mmsSFform:dpCorrData @this"
+										update="mmsSFform:dpCorrData"
+										oncomplete="PF('mCorrD').show(); "
+										title="#{viewOnly != 1 ? 'Актуализация на юридическо лице' : labels['docu.correspView']}"/>
+	
+	                    		<ui:remove><!--  Разширено търсене на кореспондент --></ui:remove>
+									<p:commandButton id="btnCorrS"
+										onmousemove="document.getElementById('mmsSFform:btnCorrS').focus();"
+										rendered="#{viewOnly ne 1 and mmsSF.mmsSportFormirovanie.idObject eq null and mmsSF.willShowSaveBtns}"
+										icon="fas fa-list-ul" partialSubmit="true"
+										process="mmsSFform:btnCorrS @this"
+										update="mmsSFform:referentPanel mmsSFform:panelSobedinenie mmsSFform:panelVpisvane mmsSFform:panelDocs "
+										oncomplete="PF('mCorrS').show(); "
+										actionListener="#{mmsSF.clearInfoAdres()}"
+										title="#{labels['search.extendRef']}" />
+								<ui:remove>	<!--  Нов кореспондент	--></ui:remove>
+									<p:commandButton id="btnCorrN"
+										onmousemove="document.getElementById('mmsSFform:btnCorrN').focus();"
+										rendered="#{viewOnly ne 1 and mmsSF.mmsSportFormirovanie.idObject eq null and mmsSF.willShowSaveBtns}"
+										icon="fas fa-plus" partialSubmit="true" 
+										process="mmsSFform:btnCorrN @this"
+										update="mmsSFform:referentPanel mmsSFform:panelSobedinenie mmsSFform:panelVpisvane mmsSFform:panelDocs "
+										oncomplete="PF('mCorrD').show();"
+										actionListener="#{mmsSF.clearInfoAdres()}"
+										title="#{labels['docu.refCorrNew']}" />
+	                    		</div>
+	                    	</div>
+							<div class="p-col-12 p-lg-4">
+	                    		<h:outputText value="Адрес за кореспонденция" styleClass="form-label "/>
+	                    		<p:inputText  value="#{mmsSF.dopInfoAdres}" readonly="#{true}"/>
+	                    	</div>
+	                    	
+	                    	<div class="p-col-2 margin-top">
+	                    		<h:panelGroup id="vidSportPGO" >
+		                    	<h:panelGroup id="vidSportPG2O" rendered="#{mmsSF.mmsSportFormirovanie.vid eq DocuConstants.CODE_ZNACHENIE_VID_SPORTNO_FORMIROVANIE_SK}">
+		                            <h:outputText value="#{labels['olympic.olimpiiski']}" styleClass="form-label" rendered="#{mmsSF.mmsSportFormirovanie.vid eq DocuConstants.CODE_ZNACHENIE_VID_SPORTNO_FORMIROVANIE_SK}"/>
+		                            <p:selectBooleanCheckbox value="#{mmsSF.mmsSportFormirovanie.vidB}" style="margin-left: 10px;" disabled="true" id="olympic" rendered="#{mmsSF.mmsSportFormirovanie.vid eq DocuConstants.CODE_ZNACHENIE_VID_SPORTNO_FORMIROVANIE_SK}"/>
+		                        </h:panelGroup>
+		                        </h:panelGroup>
+	                        </div>
+	                    	
+	                    	<div class="p-col-12 p-lg-2" jsf:rendered="#{mmsSF.sasVid.active ?'true':'false'}" >
+								<h:outputText value="#{labels['docu.vid']}" styleClass="#{(mmsSF.sasVid.required and viewOnly != 1) ?'form-label req':'form-label'}" />
+								<div class="ui-inputgroup"> 
+									<p:selectOneMenu value="#{mmsSF.mmsSportFormirovanie.vid}" id="typeSport"  disabled="#{viewOnly == 1}">
+										<f:selectItem value="#{null}" itemValue="#{null}"/>
+			                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_VID_SPORTNO_FORMIROVANIE, now, mmsSF.currentLang)}" 
+			                               var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />
+			                            <p:ajax event="change" update="vidSportPG, vidSportPGVPS, vidSportPGUK, vidSportPGO, vidSportPGOsnUK" partialSubmit="true" process="@form"></p:ajax>
+									</p:selectOneMenu>
+								</div>
+							</div>	
+	                    	<div class="p-col-12 p-lg-6" jsf:rendered="#{mmsSF.sasVidSport.active ?'true':'false'}">
+	                    	<h:panelGroup id="vidSportPG" >
+	                    	<h:panelGroup id="vidSportPG2" rendered="#{mmsSF.mmsSportFormirovanie.vid eq DocuConstants.CODE_ZNACHENIE_VID_SPORTNO_FORMIROVANIE_SK}">
+	                    		<h:outputText value="#{labels['sf.vidSport']}" styleClass="#{(mmsSF.sasVidSport.required and viewOnly != 1 and mmsSF.mmsSportFormirovanie.vid eq DocuConstants.CODE_ZNACHENIE_VID_SPORTNO_FORMIROVANIE_SK) ?'form-label req':'form-label'} " />
+					            
+					            <div class="ui-inputgroup" jsf:id="divTypeSport" >
+                   					<p:inputText value="#{mmsSF.selectedVidSportTxt}" readonly="true" id="vidSpTxt"   style="width:100%"/>
+			            
+					            
+					            	<ibg:selectManyModalA  sortByName="true"
+										showRadioBtn="true" saveStateTree="false" readonly="#{viewOnly == 1}"
+										codeClassif="#{DocuConstants.CODE_CLASSIF_VIDOVE_SPORT}" 
+										dateClassif="#{now}" styleAutoComp=""
+										selectedCodes="#{mmsSF.selectedVidSport}" 
+										selectedText="#{mmsSF.selectedVidSportTxt}"
+										update="mmsSFform:olympic mmsSFform:voenen mmsSFform:vidSpTxt" isSelectNode="false"
+										dopInfoAutoComp="true" itemtipAtPosition="center bottom" compType="1" maxResults="50" />
+					            </div>
+				            </h:panelGroup>
+				            </h:panelGroup>
+	                    	</div>
+							<div class="p-col-12 p-lg-2" jsf:rendered="#{mmsSF.sasRegNom.active ?'true':'false'}">
+	                    		<h:outputText value="#{labels['docu.regNom']}"  styleClass="#{(mmsSF.sasRegNom.required and viewOnly != 1) ? 'form-label req' : 'form-label' }"/>
+	                    		<p:inputText  value="#{mmsSF.mmsSportFormirovanie.regNomer}" readonly="#{viewOnly == 1}" id="regNom">
+	                    			<ui:remove><p:ajax listener="#{mmsSF.checkDataRegNom()}" partialSubmit="true" event="change" process="@this" update="ekrana referentPanel"></p:ajax></ui:remove> 	
+	                    		</p:inputText>
+	                    	</div>
+	                    	
+							<div class="p-col-2 margin-top">
+								<h:panelGroup id="vidSportPGVPS" >
+		                    	<h:panelGroup id="vidSportPG2VPS" rendered="#{mmsSF.mmsSportFormirovanie.vid eq DocuConstants.CODE_ZNACHENIE_VID_SPORTNO_FORMIROVANIE_SK}">
+		                            <h:outputText value="Военно-приложен спорт" styleClass="form-label" rendered="#{mmsSF.mmsSportFormirovanie.vid eq DocuConstants.CODE_ZNACHENIE_VID_SPORTNO_FORMIROVANIE_SK}"/>
+		                            <p:selectBooleanCheckbox value="#{mmsSF.mmsSportFormirovanie.vidVoenenB}" style="margin-left: 10px;" disabled="true" id="voenen" rendered="#{mmsSF.mmsSportFormirovanie.vid eq DocuConstants.CODE_ZNACHENIE_VID_SPORTNO_FORMIROVANIE_SK}"/>
+		                        </h:panelGroup>
+		                        </h:panelGroup>
+	                        </div>
+	                    	
+	                    	<div class="p-col-12 p-lg-2" jsf:rendered="#{mmsSF.sasPredstavitelstvo.active ?'true':'false'}">
+	                    		<h:outputText value="#{labels['sf.predstavitelstvo']}" styleClass="#{(mmsSF.sasPredstavitelstvo.required and viewOnly != 1) ?'form-label req':'form-label'}"/>
+	                    		<p:inputText  value="#{mmsSF.referent.predstavitelstvo}" readonly="true" id="predsedatelstvo">
+	                    		</p:inputText>
+	                    	</div>
+							<div class="p-col-12 p-lg-2" jsf:rendered="#{mmsSF.sasPredsedatel.active ?'true':'false'}">
+	                    		<h:outputText value="#{labels['sf.predsedatel']}" styleClass="#{(mmsSF.sasPredsedatel.required and viewOnly != 1) ?'form-label req':'form-label'}"/>
+	                    		<p:inputText  value="#{mmsSF.mmsSportFormirovanie.predsedatel}"  readonly="#{viewOnly == 1}" id="predsedatel"
+	                    			onchange="commonValidation('#{mmsSF.sasPredsedatel.getValidMethod()}',this,'',null,null, 'Невалиден #{labels['sf.predsedatel']}')">
+	                    		</p:inputText>
+	                    	</div>
+	                    	
+	                    	<div class="p-col-12 p-lg-2">
+	                    		<h:outputText value="#{labels['sf.polza']}" styleClass="form-label "/>
+	                    		<p:inputText  value="#{ systemData.decodeItem(DocuConstants.CODE_CLASSIF_MMS_POLZA, mmsSF.referent.polza, mmsSF.currentLang, now) }" rendered="#{mmsSF.mmsSportFormirovanie.id ne null and mmsSF.idSSev != null}" readonly="#{ mmsSF.mmsSportFormirovanie.id ne null or viewOnly == 1}"/>
+	                    		<p:selectOneMenu value="#{mmsSF.referent.polza}" id="polza"   rendered="#{mmsSF.mmsSportFormirovanie.id eq null  or mmsSF.idSSev == null}" readonly="#{ viewOnly == 1}">
+			                            <f:selectItem value="#{null}" itemValue="#{null}"/>
+			                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_MMS_POLZA, now, mmsSF.currentLang)}" 
+			                               var="polzaRef" itemLabel="#{polzaRef.tekst}" itemValue="#{polzaRef.code}" />
+									</p:selectOneMenu>
+	                    	</div>
+							<div class="p-col-12 p-lg-4" jsf:rendered="#{mmsSF.sasHighSchool.active ?'true':'false'}">
+	                    		<h:outputText value="#{labels['sf.highSchool']}" styleClass="#{(mmsSF.sasHighSchool.required and viewOnly != 1) ?'form-label req':'form-label'}"/>
+
+	                    		<p:inputText  value="#{mmsSF.mmsSportFormirovanie.schoolName}" readonly="#{viewOnly == 1}" id="highSchool"
+	                    			onchange="commonValidation('#{mmsSF.sasHighSchool.getValidMethod()}',this,'',null,null, 'Невалидно #{labels['sf.highSchool']}')">
+	                    		</p:inputText>	
+	                    	</div>
+	                    	
+	                    	<div class="p-col-12 p-lg-2 margin-top" align="rigth">
+		                    	<h:panelGroup id="vidSportPGUK" >
+		                    	<h:panelGroup id="vidSportPG2UK" rendered="#{mmsSF.mmsSportFormirovanie.vid eq DocuConstants.CODE_ZNACHENIE_VID_SPORTNO_FORMIROVANIE_SK}">
+		                    		<h:outputText value="Университетски клуб" styleClass="form-label"  style="text-align: center;" rendered="#{mmsSF.mmsSportFormirovanie.vid eq DocuConstants.CODE_ZNACHENIE_VID_SPORTNO_FORMIROVANIE_SK}"/>
+		                    		<p:selectBooleanCheckbox value="#{mmsSF.mmsSportFormirovanie.universBol}" style="margin-left: 10px; text-align: center;" id="universitetski" disabled="#{viewOnly == 1}" rendered="#{mmsSF.mmsSportFormirovanie.vid eq DocuConstants.CODE_ZNACHENIE_VID_SPORTNO_FORMIROVANIE_SK}"/>	                    		
+		                    	</h:panelGroup>
+		                    	</h:panelGroup>
+	                    	</div>
+	                    	
+	                    	<div class="p-col-12 p-lg-2" jsf:rendered="#{mmsSF.sasStatus.active ?'true':'false'}">
+	                    		<h:outputText value="#{labels['task.statusData']}" styleClass="form-label "/>
+		                    		<p:selectOneMenu value="#{mmsSF.mmsSportFormirovanie.status}" id="status"  disabled="true">
+						 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+			                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_STATUS_OBEKT, now, mmsSF.currentLang)}" 
+			                               var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />
+									</p:selectOneMenu>
+								 
+								<ui:remove><p:inputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_OBEKT, mmsSF.lastVpisvane.statusVpisvane, mmsSF.currentLang, now)}" readonly="true" />
+	                    			</ui:remove>
+	                    	</div>
+							<div class="p-col-12 p-lg-2" jsf:rendered="#{mmsSF.sasDateStatus.active ?'true':'false'}">
+	                    		<h:outputText value="#{labels['docu.statusDate']}" styleClass="form-label "/>
+	                    		<p:inputText  value="#{mmsSF.mmsSportFormirovanie.dateStatus}"  readonly="true" id="dateStatus">
+	                    			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSF.timeZone}"/>
+	                    		</p:inputText>
+	                    	</div>
+	                    	<div class="p-col-12 p-lg-4" jsf:rendered="#{mmsSF.sasNotes.active ?'true':'false'}">
+	                    		<h:outputText value="#{labels['docu.note']}" styleClass="#{(mmsSF.sasNotes.required and viewOnly != 1) ?'form-label req':'form-label'}"/>
+	                    		<p:inputText  value="#{mmsSF.mmsSportFormirovanie.dopInfo}" readonly="#{viewOnly == 1}" id="note"
+	                    		onchange="commonValidation('#{mmsSF.sasNotes.getValidMethod()}',this,'',null,null, 'Невалидна забележка')"
+	                    		/>
+	                    	</div>
+	                    	<div class="p-col-12 p-lg-4" >
+	                    		<h:panelGroup id="vidSportPGOsnUK" >
+		                    	<h:panelGroup id="vidSportPG2OsnUK" rendered="#{mmsSF.mmsSportFormirovanie.vid eq DocuConstants.CODE_ZNACHENIE_VID_SPORTNO_FORMIROVANIE_SK}">
+		                    		<h:outputText value="Основание за учредяване на университетски клуб" styleClass="form-label"/>
+		                    		<p:inputText value="#{mmsSF.mmsSportFormirovanie.osnovanieUnivers}" id="osnovanieUnivers"/>	                    		
+	                    		</h:panelGroup>
+	                    		</h:panelGroup>
+	                    	</div>
+	                    	
+	                    	<ui:remove><div class="p-col-12 p-lg-2">
+	                    		<h:outputText value="#{labels['compReg.statusZaiavlenie']}" styleClass="#{(viewOnly==1 or isNew==1 or isNew == 2) ?'form-label':'form-label  req'}"/>
+								<p:inputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_ZAIAVLENIE, mmsSF.lastVpisvane.statusResultZaiavlenie, mmsSF.currentLang, now)}" readonly="true" />
+	                    	</div>
+							<div class="p-col-12 p-lg-1">
+	                    		<h:outputText value="#{labels['audit.actionDate']}" styleClass="form-label "/>
+	                    		<p:inputText  value="#{mmsSF.lastVpisvane.dateStatusZaiavlenie}"  readonly="true">
+	                    			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSF.timeZone}"/>
+	                    		</p:inputText>
+	                    	</div></ui:remove> 
+	                    	
+	                    	
+	                    	
+	                    	
+	                    </h:panelGroup>
+					</div>
+			<h:panelGroup id="panelChlenstvoFed"  rendered="#{mmsSF.willShowPanels}">			
+					<div class="p-col-12">
+						<p:commandLink class="extended-search-toggle" onclick="toggleSection(this, '#mmsSFform:panelSobedinenie')">
+							<h:outputText value="Членство в спортни обединения" />
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+					</div>
+	
+					<div jsf:id="panelSobedinenie" class="p-grid extended-search">
+						<div class="p-col-12 p-lg-12">
+                    		<div class="table-toolbar">
+								<h:outputText value="#{ui_labels['general.reportResult']} #{mmsSF.mmsSportFormirovanie.mmsChlenList.size()}" styleClass="form-label"/>	
+								<span class="fas fa-ellipsis-v SoftGray p-mx-2"/>
+								
+								<ui:remove> <p:commandButton  icon="fas fa-plus" value="#{ui_labels['general.new']}o"  oncomplete="PF('soNew').show()" update="mmsSFform:modalSO"
+									actionListener="#{mmsSF.selectNewSO()}" styleClass="ui-button-success" title="#{labels['so.selectSO']}" 
+										rendered="#{viewOnly != 1 and mmsSF.idObedinenie == null and mmsSF.codeRefCorresp != null }">
+								</p:commandButton></ui:remove>
+								
+								<p:commandButton id="btnNovoChlenstvo" styleClass="ui-button-success"  value="#{ui_labels['general.new']}o членство"
+										onmousemove="document.getElementById('mmsSFform:btnNovoChlenstvo').focus();"
+										icon="fas fa-plus" partialSubmit="true"
+										process="mmsSFform:btnNovoChlenstvo @this"
+										update=" mmsSFform:panelSobedinenie "
+										oncomplete="PF('mCorrSChelnstvo').show(); "
+										actionListener="#"
+										title="Въвеждане на ново членство" rendered="#{ viewOnly != 1}"/>
+							</div>
+                    		<p:dataTable id="tblSO" var="row" value="#{mmsSF.mmsSportFormirovanie.mmsChlenList}" lazy="true" 	 
+								rowIndexVar="idx" sortMode="single" reflow="true"  emptyMessage=" " styleClass="ui-datatable-gridlines"
+								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+								rows="5" rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom"
+								paginatorAlwaysVisible="false" paginator="true">										
+													
+							  	<p:column width="1%" exportable="false" headerText="#{ui_labels['general.No-symbol'] }" >
+									<h:outputText value="#{idx + 1}" />
+								</p:column>	
+								
+								<p:column width="2%" exportable="false">
+									<p:commandButton icon="fas fa-edit" action="sportObedEdit.jsf"  title="#{ui_labels['general.edit']}" rendered="#{viewOnly != 1}" ajax="false">
+										<f:param name="idObj" value="#{row.idVishObject}" />
+										<f:param name="idFormirovanie" value="#{mmsSF.mmsSportFormirovanie.id}" />
+									</p:commandButton>
+								</p:column>
+								
+								<p:column width="2%" exportable="false">
+									<p:button icon="fas fa-eye" href="sportObedView.xhtml?faces-redirect=true" target="_blank" title="#{ui_labels['general.view']}" rendered="#{viewOnly eq 1}">
+										<f:param name="idObj" value="#{row.idVishObject}" />
+										<f:param name="idFormirovanie" value="#{mmsSF.mmsSportFormirovanie.id}" />
+									</p:button>
+								</p:column>
+								
+								<ui:remove>
+								<p:column width="110" sortBy="#{row.vid}" headerText="#{labels['docu.vid']}">
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_VID_SPORT_OBEDINENIE, row.vid, mmsSF.currentLang, now)}"/>	
+								</p:column>
+								</ui:remove>
+								
+								<p:column width="180" sortBy="#{row.nameRef}" headerText="#{labels['prilojenia.name']}" >									  
+									<h:outputText value="#{row.nameRef}"/>	
+								</p:column>
+				
+								<p:column width="60" sortBy="#{row.eik}" headerText="#{labels['admStruct.eik']}">
+									<h:outputText value="#{row.eik}"  />								    
+								</p:column>
+								
+								<p:column width="70" sortBy="#{row.dateAcceptance}" headerText="#{labels['so.startDate']}" >									  
+									<!-- <h:outputText value="#{row.dateAcceptance}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSF.timeZone}"/>
+									</h:outputText>	 -->	
+									<p:datePicker id="dataNovoChlenstvo" pattern="dd.MM.yyyy" mask="true" showIcon="true" locale="bg"  
+						         		value="#{row.dateAcceptance}" styleClass="form-control" size="6">
+									</p:datePicker>										    
+								</p:column>
+																
+								<p:column width="70" sortBy="#{row.dateTermination}" headerText="#{labels['so.endDate']}" >									  
+									<!-- <h:outputText value="#{row.dateTermination}">
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSF.timeZone}"/>
+									</h:outputText>	 -->
+									<p:datePicker id="endDataNovoChlenstvo" pattern="dd.MM.yyyy" mask="true" showIcon="true" locale="bg"  
+						         		value="#{row.dateTermination}" styleClass="form-control" size="6">
+									</p:datePicker>	
+								</p:column>
+								
+								<p:column width="110" sortBy="#{row.regNom}" headerText="#{labels['docu.regNom']} на протокола" >									  
+									<h:outputText value="#{row.regNom}" />	
+								</p:column>
+								
+								<p:column width="110" sortBy="#{row.dateRegNom}" headerText="#{labels['docu.docDate']} на протокола" >									  
+									<h:outputText value="#{row.dateRegNom}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSF.timeZone}"/>
+									</h:outputText>							    
+								</p:column>
+								
+								<p:column style="width: 25px">
+					                <p:commandButton action="#{mmsSF.removeChlenstvFromList(row)}" update="mmsSFform:tblSO mmsSFform:panelSobedinenie" 
+					                	icon="fas fa-trash" styleClass="ui-button-danger" title="#{ui_labels['general.delete']}" rendered="#{viewOnly ne 1}">
+					                    <p:confirm header="#{ui_labels['general.delete']}" message="#{beanMessages['general.confirmDeleteMsg']}" icon="fas fa-exclamation-triangle"/>
+					                </p:commandButton>
+					            </p:column>
+								
+							</p:dataTable>
+                    	</div>
+					</div>
+					
+					<div class="p-col-12">
+						<p:commandLink class="extended-search-toggle collapse" onclick="toggleSection(this, '#mmsSFform:panelVpisvane')">
+							<h:outputText value="Вписвания" />
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+					</div>
+	
+					<div jsf:id="panelVpisvane" class="p-grid extended-search" >
+						<div class="p-col-12 p-lg-12">
+                    		<div class="table-toolbar">
+								<h:outputText value="#{ui_labels['general.reportResult']} #{mmsSF.regsList.size()}" styleClass="form-label" rendered="#{mmsSF.willShowPanels}"/>
+								<span class="fas fa-ellipsis-v SoftGray p-mx-2" jsf:rendered="#{mmsSF.willShowPanels}"/>
+							</div>
+							<p:spacer width="100%"></p:spacer>
+							<div class="p-grid">
+								<div class="p-col-6 p-lg-6"  style="border: 1px solid #d0d0d0;font-weight:bold;">
+									заявление за ново вписване
+								</div>
+								<div class="p-col-6 p-lg-6"  style="border: 1px solid #d0d0d0;font-weight:bold;">
+									данни за вписването
+								</div>
+							</div>
+                    		<p:dataTable id="tblVpisvane" var="row" value="#{mmsSF.regsList}" lazy="true" 	 
+								rowIndexVar="idx" sortMode="single" reflow="true"  emptyMessage=" " styleClass="ui-datatable-gridlines"
+								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+								rows="5" rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom"
+								paginatorAlwaysVisible="false" paginator="false" rendered="#{mmsSF.willShowPanels}">	
+								
+							  	<p:column width="1%" exportable="false" headerText="#{ui_labels['general.No-symbol'] }" >
+									<h:outputText value="#{idx + 1}" />
+								</p:column>	
+								
+								<p:column width="2%" exportable="false">
+									<p:commandButton action="mmsVpisvaneEdit.jsf" styleClass="btn-new" ajax="false" icon="fas fa-edit" title="#{ui_labels['general.edit']}" rendered="#{mmsSF.mmsSportFormirovanie.id != null and viewOnly != 1}">
+											  <f:param name="idReg" value="#{row.id}" />
+									          <f:param name="idObject" value="#{mmsSF.mmsSportFormirovanie.id}" />
+									          <f:param name="codeObject" value="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORTS_FORMATIONS}"/>
+									          <f:param name="nameObject" value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_REFERENTS, mmsSF.mmsSportFormirovanie.idObject, mmsSF.currentLang, now)}"/>
+									          <f:param name="vidDoc" value="36"/>
+								          	  <f:param name="regNomer" value="#{mmsSF.mmsSportFormirovanie.regNomer}"/>
+          								  	  <f:param name="regNomerObed" value="#{mmsSF.regNomObed}"/>
+          								  	  <f:param name="vidObject" value="#{mmsSF.mmsSportFormirovanie.vid}"/>
+									</p:commandButton>
+									<p:button icon="fas fa-eye" href="mmsVpisvaneView.xhtml?faces-redirect=true" target="_blank" title="#{ui_labels['general.view']}" rendered="#{mmsSF.mmsSportFormirovanie.id != null and viewOnly == 1}">
+											  <f:param name="idReg" value="#{row.id}" />
+									          <f:param name="idObject" value="#{mmsSF.mmsSportFormirovanie.id}" />
+									          <f:param name="codeObject" value="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORTS_FORMATIONS}"/>
+									          <f:param name="nameObject" value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_REFERENTS, mmsSF.mmsSportFormirovanie.idObject, mmsSF.currentLang, now)}}"/>
+									          <f:param name="readonly" value="true"/>
+									</p:button>
+								</p:column>
+								
+								<p:column width="11%" sortBy="#{row.rnDocZaiavlenie}" headerText="#{labels['mmsCoach.regNomCoach']}">
+									<h:outputText value="#{row.rnDocZaiavlenie}"  />								    
+								</p:column>
+								
+								<p:column width="11%" sortBy="#{row.dateDocZaiavlenie}" headerText="#{labels['mmsCoach.datReg']}" >									  
+									<h:outputText value="#{row.dateDocZaiavlenie}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSF.timeZone}"/>
+									</h:outputText>							    
+								</p:column>
+								
+								<p:column width="11%" sortBy="#{row.statusResultZaiavlenie}" headerText="#{labels['task.statusData']}"> 
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_ZAIAVLENIE, row.statusResultZaiavlenie, mmsSF.currentLang , now)}"  />								    
+								</p:column>
+								
+								<p:column width="12%" sortBy="#{row.dateStatusZaiavlenie}" headerText="#{labels['docu.statusDate']}">
+									<h:outputText value="#{row.dateStatusZaiavlenie}"  >
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSF.timeZone}"/>
+									</h:outputText>									    
+								</p:column>
+								<ui:remove>		
+								<p:column width="60"  headerText="#{labels['compReg.reasonZaiavlenieText']}">
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_REASON_STATUS_ZAIAVLENIE, row.reasonResult, mmsSF.currentLang , now)} : #{ row.reasonResultText}"  />								    
+								</p:column>
+								</ui:remove>
+								<p:column width="13%" sortBy="#{row.rnDocVpisvane}" headerText="#{labels['mmsCoach.regNomCoach']}"> 
+									<h:outputText value="#{row.rnDocVpisvane}" rendered="#{row.rnDocVpisvane != null or !empty row.rnDocVpisvane}" />								    
+									<h:outputText value="#{row.rnDocResult}"  rendered="#{row.rnDocVpisvane == null or empty row.rnDocVpisvane}" />								    
+								</p:column>
+								
+								<p:column width="13%" sortBy="#{row.dateDocVpisvane}" headerText="#{labels['mmsCoach.datReg']}">
+									<h:outputText value="#{row.dateDocVpisvane}" rendered="#{row.dateDocVpisvane != null}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSF.timeZone}"/>
+									</h:outputText>								    
+									<h:outputText value="#{row.dateDocResult}" rendered="#{row.dateDocVpisvane == null}">
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSF.timeZone}"/>
+									</h:outputText>								    
+								</p:column>
+					
+								<p:column width="13%" sortBy="#{row.statusVpisvane}" headerText="#{labels['task.statusData']}"> 
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_OBEKT, row.statusVpisvane, mmsSF.currentLang , now)}"  />								    
+								</p:column>
+								
+								<p:column width="12%" sortBy="#{row.dateStatusVpisvane}" headerText="#{labels['docu.statusDate']}">
+									<h:outputText value="#{row.dateStatusVpisvane}"  >
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSF.timeZone}"/>
+									</h:outputText>									    
+								</p:column>
+								<ui:remove>								
+								<p:column width="60" sortBy="#{row.reasonVpisvaneText}"  headerText="#{labels['compReg.reasonVpisvaneText']}">
+									<h:outputText value="#{row.reasonVpisvaneText}"  />	
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_REASON_STATUS_ZAIAVLENIE, row.reasonVpisvane, mmsSF.currentLang , now)} : #{ row.reasonVpisvaneText}"  />								    
+								</p:column>
+								</ui:remove>
+							</p:dataTable>
+                    	</div>
+					</div>
+					
+					<div class="p-col-12">
+						<p:commandLink class="extended-search-toggle" onclick="toggleSection(this, '#mmsSFform:panelDocs')">
+							<h:outputText value="Документи" />
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+					</div>
+	
+					<div jsf:id="panelDocs" class="p-grid extended-search">
+						<div class="p-col-12 p-lg-12">
+                    		<div class="table-toolbar">
+								<h:outputText value="#{ui_labels['general.reportResult']} #{mmsSF.docsList.rowCount}" styleClass="form-label" rendered="#{mmsSF.willShowPanels}"/>	
+								<ui:remove>
+									<span class="fas fa-ellipsis-v SoftGray p-mx-2"/>
+									<p:commandButton  icon="fas fa-edit" value="#{labels['docu.titleNewDoc']}"  oncomplete="PF('docNew').show()"
+										actionListener="#" styleClass="ui-button-success" title="#{labels['docu.newDoc']}" >
+									</p:commandButton>
+								</ui:remove>
+							</div>
+                    		<p:dataTable id="tblDocs2" var="row" value="#{mmsSF.docsList}" lazy="true" 	 
+								rowIndexVar="idx" sortMode="single" reflow="true"  emptyMessage=" "
+								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+								rows="5" rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom"
+								paginatorAlwaysVisible="false" paginator="true" rendered="#{mmsSF.willShowPanels}">										
+													
+							  	<p:column width="10" exportable="false" headerText="#{ui_labels['general.No-symbol'] }" >
+									<h:outputText value="#{idx + 1}" />
+								</p:column>	
+								
+								<p:column width="30" exportable="false">																				
+									<ui:remove>
+										<p:commandButton  icon="fas fa-eye" value=""  oncomplete="PF('docNew').show()" styleClass="btn-new" 
+											actionListener="#"  title="#{labels['doc.titleView']}" >
+										</p:commandButton>
+									</ui:remove>
+									<p:column width="30" exportable="false">
+										<p:button icon="fas fa-eye" href="docView.xhtml?faces-redirect=true" target="_blank" title="#{ui_labels['general.view']}">
+											<f:param name="idObj" value="#{row[4]}" />
+										</p:button>
+									</p:column>
+								</p:column>
+								
+								<p:column width="120" sortBy="#{row.doc_vid}" headerText="#{labels['docu.vid']}">
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, row[0], mmsSF.currentLang, now)}"/>					    
+								</p:column>
+								
+								<p:column width="100" sortBy="#{row.rn_doc}" headerText="Номер">
+									<h:outputText value="#{row[1]}"  />								    
+								</p:column>
+								
+								<p:column width="100"  headerText="#{labels['docu.docDate']}" >									  
+									<h:outputText value="#{row[2]}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSF.timeZone}"/>
+									</h:outputText>							    
+								</p:column>
+								
+								<p:column width="*"  headerText="#{labels['docu.otnosno']}">
+									<h:outputText value="#{row[3]}"  />								    
+								</p:column>
+								
+							</p:dataTable>
+                    	</div>
+					</div>
+				</h:panelGroup>
+				</div>
+				<p:toolbar id="panelButtonsBottom" rendered="#{viewOnly != 1 and mmsSF.willShowSaveBtns}">
+				<f:facet name="left">									
+					<p:commandButton icon="fas fa-save" value="#{ui_labels['general.save']}" rendered="#{viewOnly != 1}"
+						action="#{mmsSF.actionSave}" id="btnSaveBottom" update="mmsSFform"  process="@this mmsSFform" partialSubmit="true"/>
+					<ui:remove>
+						<span class="fas fa-ellipsis-v SoftGray p-mx-2"/>
+                       <p:commandButton icon="fas fa-plus" id="btnNewBottom" value="#{ui_labels['general.new']}o" update="mmsSFform" process="@this" partialSubmit="true"
+							actionListener="#{mmsSF.actionNew}" styleClass="ui-button-success"  rendered="#{viewOnly != 1}">
+						</p:commandButton>
+					</ui:remove>
+				</f:facet>
+				<f:facet name="right">	
+						 <p:commandButton value="#{labels['regixReport.title']}"
+						      partialSubmit="true" process="@this"
+						      oncomplete="PF('dialog-compRegix').show();" update="mmsSFform:dialogCompRegix"
+						      title="#{labels['regixReport.title']}" />
+						<p:spacer width="50px"></p:spacer>
+								 					
+						<p:commandButton icon="fas fa-times"
+							            value="#{ui_labels['general.delete']}" title="Изтриване"
+							           	update="@form, mmsSFform:findCoresp, mmsSFform:typeSport" partialSubmit="true" 
+										process="@this"
+										rendered="#{viewOnly ne 1 
+											and mmsSF.regsList.size() == 0
+											and mmsSF.mmsSportFormirovanie.id ne null and userData.hasAccess(DocuConstants.CODE_CLASSIF_DEF_PRAVA, DocuConstants.CODE_ZNACHENIE_DEF_PRAVA_DEL_MMS_REG)}"													
+										actionListener="#{mmsSF.actionDelete}" styleClass="ui-button-danger" >
+							<p:confirm header="#{ui_labels['general.comfirmation']}" message="#{beanMessages['general.confirmDeleteMsg']}" icon="fas fa-exclamation-triangle" />
+						</p:commandButton>
+					</f:facet>
+			</p:toolbar>
+			</div>
+			
+			<h:panelGroup id="sportObedinenie">
+		                
+				<p:remoteCommand name="hideModal1" process="@this sportObedinenie" update="tblSO" partialSubmit="true"
+								 actionListener="#" />
+		
+				<p:dialog appendTo="@form" position="top" widgetVar="soNew" header="#{labels['so.selectSO']}"
+					fitViewport="true" responsive="true" resizable="true" 
+					closeOnEscape="true"  onHide="hideModal1()" id="modalSO" modal="true">
+						<div class="container #{guestPreferences.containerPosition}">	
+							<h:outputText value="#{ui_labels['general.reportResult']} #{mmsSF.obedineniaList.rowCount}" styleClass="form-label"/>	
+							<p:dataTable id="tblObedinenie" var="row" value="#{mmsSF.obedineniaList}" lazy="true" 	 
+								rowIndexVar="idx" sortMode="single" reflow="true"  emptyMessage=" " styleClass="ui-datatable-gridlines"
+								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+								rows="5" rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom"
+								paginatorAlwaysVisible="false" paginator="false">										
+													
+							  	<p:column width="10" exportable="false" headerText="#{ui_labels['general.No-symbol'] }" >
+									<h:outputText value="#{idx + 1}" />
+								</p:column>	
+								
+								<p:column width="30" exportable="false">																				
+									<p:commandButton id="btnChObed" rendered="#{viewOnly != 1}" 
+									    title="#{ui_labels['general.choise']}"									
+									    action="#{mmsSF.registerNewSO(row[4], row[0], row[2], row[3])}"					
+									    partialSubmit="true"
+									    process=" @this"
+										update="mmsSFform:tblSO mmsSFform:panelSobedinenie"
+										icon="fas fa-hand-point-down" styleClass="btn-normal"/>											
+								</p:column>
+								
+								<p:column width="110" sortBy="#{row.vid}" headerText="#{labels['docu.vid']}">
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_VID_SPORT_OBEDINENIE, row[0], mmsSF.currentLang, now)}"/>	
+								</p:column>
+								
+								<p:column width="120" sortBy="#{row.ref_name}" headerText="#{labels['prilojenia.name']}" >									  
+									<h:outputText value="#{row[1]}"/>	
+								</p:column>
+								
+								<p:column width="120" sortBy="#{row.reg_nomer}" headerText="#{labels['docDestruction.regNum']}" >									  
+									<h:outputText value="#{row[2]}"/>	
+								</p:column>
+								
+								<p:column width="110" sortBy="#{row.date_reg}" headerText="#{labels['docu.docDate']}" >									  
+									<h:outputText value="#{row[3]}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSF.timeZone}"/>
+									</h:outputText>							    
+								</p:column>
+								
+							</p:dataTable>
+						</div>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="vpisvane">
+		                
+				<p:remoteCommand name="hideModal1" process="vpisvane @this" update="mmsSFform:tblVpisvane" partialSubmit="true"
+								 actionListener="#{mmsSF.findVpisvane()}"/>
+		
+				<p:dialog appendTo="@form" position="top" widgetVar="vpisvaneNew" header="#{labels['compReg.basicData']}"
+					fitViewport="true" responsive="true" resizable="true" 
+					closeOnEscape="true"  onHide="hideModal1()" id="modalVpisvane" modal="true">
+					<p:ajax event="close" listener="#{mmsSF.findVpisvane()}" process="@this" update="tblVpisvane"  />
+						<div class="container #{guestPreferences.containerPosition}">		
+							<ui:remove>
+							<ibg:compMMSVpisvane id="docSearchT2" idObject="#{mmsSF.mmsSportFormirovanie.id}" codeObject="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORTS_FORMATIONS}" 
+								buttonConfirmLabel="#{ui_labels['general.save']}" update="mmsSFform:tblVpisvane" readonly="#{viewOnly == 1}" nameObject="#{labels['compReg.basicData']}" vidDoc="36" />
+								</ui:remove>
+						</div>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="coresp1PG">
+		                
+				<p:remoteCommand name="hideModal1" process="@this coresp1PG" update="tblDocs2" partialSubmit="true"
+								 actionListener="#{mmsSF.registerNewDoc()}" />
+		
+				<p:dialog appendTo="@form" position="top" widgetVar="docNew" header="#{labels['docu.newDoc']}"
+					fitViewport="true" responsive="true" resizable="true"
+					closeOnEscape="true"  onHide="hideModal1()" id="modalCoresp" modal="true">
+						<div class="container #{guestPreferences.containerPosition}">
+									
+						</div>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="coresp">
+		                
+				<p:remoteCommand name="hideModal1" process="@this coresp" update="mmsSFform:referentPanel" partialSubmit="true"
+								 actionListener="#" />
+		
+				<p:dialog appendTo="@form" position="top" widgetVar="mCorrS" header="#{labels['docu.titleExtSrchCoresp']}"
+					fitViewport="true" responsive="true" resizable="true"
+					closeOnEscape="true"  onHide="hideModal1()" id="modalCoresp3" modal="true">
+						<div class="container #{guestPreferences.containerPosition}">		
+							<ibg:refCorrespSearch id="corrList" myId="corr1"  
+								codeRef="#{mmsSF.codeRefCorresp}" onComplete="PF('mCorrS').hide();" searchTxt="#{mmsSF.txtCorresp}" 
+								dateClassif="#{mmsSF.decodeDate2}" modal="true" update="mmsSFform:referentPanel"/>
+						</div>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="corespChlenstvo">
+		                
+				<p:remoteCommand name="hideModal12" process="@this corespChlenstvo" update="mmsSFform:panelSobedinenie" partialSubmit="true" actionListener="#" />
+		
+				<p:dialog appendTo="@form" position="top" widgetVar="mCorrSChelnstvo" header="#{labels['docu.titleExtSrchCoresp']}"
+					fitViewport="true" responsive="true" resizable="true"
+					closeOnEscape="true"  onHide="hideModal12()" id="modalCoresp32" modal="true">
+					<p:messages id="messagesGl2" showDetail="true" closable="false" style="width:100%">
+						<p:autoUpdate />
+					</p:messages>
+						<div class="container #{guestPreferences.containerPosition}">		
+							<ibg:mmsRefCorrespSearch id="corrList2" myId="corr12"  onComplete="#{mmsSF.checkMultipleSportFederations()}"
+								codeRef="#{mmsSF.codeRefCorrespChlenstvo}"  searchTxt="#{mmsSF.txtCorrespChlenstvo}" refType="#{DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL}"
+								dateClassif="#{mmsSF.decodeDate2Chlenstvo}" modal="true" update="mmsSFform:panelSobedinenie mmsSFform:btnMail mmsSFform:panelButtonsTop " />
+						</div>
+				</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="dpCorrData">	
+		
+				<p:dialog appendTo="@form"  closeOnEscape="true" 
+				    header="Въвеждане/актуализация на лице"  
+				    fitViewport="true"	
+				    resizable="true"
+				    responsive="true" 
+				    position="top" 		
+					widgetVar="mCorrD" dynamic="true" id="modalCorrD" 
+					modal="true">
+					<div class="container #{guestPreferences.containerPosition}">	
+						
+					 		<ibg:mmsRefCorrespData id="btnCorrD1"  readonly="#{viewOnly == 1}"
+					 			 refType="#{DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL}"
+								 codeRef="#{mmsSF.codeRefCorresp}"
+								 searchTxt="#{mmsSF.txtCorresp}" 
+								 dateClassif="#{mmsSF.decodeDate2}"
+								 modal="true" update="mmsSFform:referentPanel"
+								 onComplete = "#{mmsSF.callONCompleteInReferentEdit()}" />
+					</div>		
+			 		
+				</p:dialog>	
+			</h:panelGroup>
+			<p:dialog appendTo="@form" widgetVar="dialog-compRegix" closeOnEscape="true" header="#{labels['regixReport.title']}" 
+		          fitViewport="true" responsive="true" resizable="true" positionType="fixed" position="top"
+		          modal="true" dynamic="true">
+		            <div jsf:id="dialogCompRegix" class="container #{guestPreferences.containerPosition}">
+		                  <ibg:compRegixReports modal="true" />
+		            </div>
+			</p:dialog>
+			
+			<h:panelGroup id="panelMail">
+				<p:dialog appendTo="@form" widgetVar="eMail" closeOnEscape="true" header="Изпращане на съобщение до формированието" fitViewport="true" responsive="true" 
+							positionType="fixed" position="top" modal="true" dynamic="true">
+						
+					<p:messages id="messagesMail" showDetail="true" closable="false" style="width:100%">
+						<p:autoUpdate />
+					</p:messages>
+					<ibg:sendMail email="#{mmsSF.referent.contactEmail}" codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORTS_FORMATIONS}" 
+							readonly="#{viewOnly eq 1}" onComplete="#{mmsSF.closeModalMail()}" codeSluj="#{mmsSF.userData.userId}"></ibg:sendMail>
+					
+				</p:dialog>
+			</h:panelGroup>
+			
+			
+			
+			<h:panelGroup>	
+	 
+			<p:dialog appendTo="@form" widgetVar="dialogZaqvlenie11" closeOnEscape="true" header="Заявление" fitViewport="true" responsive="true" 
+									positionType="fixed" position="top" modal="true" dynamic="true">
+				
+				<div jsf:id="dialogZaqvlenieFiles" class="container #{guestPreferences.containerPosition}">
+		            <h:panelGroup id="panelZaqvl" layout="block" >
+		       			<div class="card">
+		       				<div class="p-grid ui-fluid ">	
+										
+								<!--Входящ номер-->
+								<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+									<h:outputText value="#{labels['monitoringSSEV.vhNom']} " styleClass="form-label"/>
+									<p:inputText value="#{mmsSF.egovMess.docRn}" readonly="true"/>
+								</div>
+								
+								<!--Статус на съобщението-->								
+								<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">										
+									<h:outputText value="#{labels['docWSStatus.statusMsg']}" styleClass="form-label"/>
+										<p:selectOneMenu id="statusMsgView11" value="#{mmsSF.egovMess.msgStatus}" disabled="true">										   
+										    <f:selectItems value="#{mmsSF.msgStatusList}"/>
+									</p:selectOneMenu>
+								  
+							  	</div>	
+							  	
+							  	<!--Дата статус-->
+								<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+									<h:outputText value="#{labels['delo.dateStatus']} " styleClass="form-label"/>
+										<p:inputText value="#{mmsSF.egovMess.msgStatusDate}"  readonly="true">
+				                   			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSF.timeZone}"/>
+				                   		</p:inputText>
+								</div>
+								
+								<!--Вид на съобщението-->
+								<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+									<h:outputText value="#{labels['docWSStatus.vidMsg']} " styleClass="form-label"/>
+									<p:inputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, mmsSF.egovMess.docVid, mmsSF.currentLang, now)}" readonly="true"/>	
+								</div>
+								
+								<!--Изпратен от-->
+								<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+									<h:outputText value="#{labels['docList.sendFromReg']} " styleClass="form-label"/>
+									<p:inputText value="#{ mmsSF.egovMess.senderName}" readonly="true"/>	
+								</div>
+								
+								<!--Получател-->
+								<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+									<h:outputText value="#{labels['opis.poluch']} " styleClass="form-label"/>
+									<p:inputText value="#{ mmsSF.egovMess.recepientName}" readonly="true"/>	
+								</div>
+								
+								<!--Относно-->
+								<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+									<h:outputText value="#{labels['docDoc.otnosno']} " styleClass="form-label"/>
+									<p:inputText value="#{ mmsSF.egovMess.docSubject}" readonly="true"/>	
+								</div>
+								
+								<!--Срок-->
+								<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+									<h:outputText value="#{labels['tasks.srok']} " styleClass="form-label"/>
+									<p:inputText value="#{mmsSF.egovMess.docSrok}"  readonly="true">
+			                   			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSF.timeZone}"/>
+			                   		</p:inputText>
+								</div>
+								
+					   		</div>
+		       			
+		              		<div class="table-toolbar">
+									<h:outputText value="Прикачени файлове: " styleClass="form-label"/>
+		                	</div>
+							<p:dataTable id="fileList" var="row" value="#{mmsSF.egovFilesList}" 
+								rowIndexVar="riv" emptyMessage="#{labels['general.norows']}"  styleClass="ui-datatable-gridlines"
+								rows="5" style="margin-bottom:20px" paginator="true" reflow="true"	paginatorPosition="bottom" 
+								paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+						       	<p:column headerText="№" width="4%" >
+									<h:outputText value="#{riv + 1}" />
+								</p:column>
+								<p:column headerText="" width="40" style="text-align: center;">									           	
+						           <p:commandButton  id="download" ajax="false" actionListener="#{mmsSF.download(row)}" icon="fa fa-fw fa-download" title="Изтегляне" />
+						       	</p:column>
+						       	<p:column headerText="Наименование на файл"  style="text-align: center;">
+						             <h:outputText value="#{row.filename}" escape="false" style="width:96%; text-align: left;"/>									             
+						        </p:column>
+						   </p:dataTable>
+				
+			 			</div>
+					</h:panelGroup>
+				</div>
+			</p:dialog>
+			</h:panelGroup>
+			
+			<h:panelGroup id="panelOtkaz">
+				<p:dialog appendTo="@form" widgetVar="otkazReg" closeOnEscape="true" header="Отказване от регистрация" fitViewport="true" responsive="true" 
+							positionType="fixed" position="top" modal="true" dynamic="true">
+						
+						<p:messages id="messagesOtkaz" showDetail="true" closable="false" style="width:100%">
+							<p:autoUpdate />
+						</p:messages>
+						<div jsf:id="dialogSendOtkaz" class="container #{guestPreferences.containerPosition}">
+						<div class="card">
+							<div class="p-grid ui-fluid">
+							<div class="p-col-12 p-lg-12">
+	                    		<h:outputText value="Причина за отказ от регистрация:" styleClass="form-label "/>
+	                    		<p:inputTextarea  value="#{mmsSF.reasonOtkaz}" id="otkazText">
+	                    		</p:inputTextarea>
+	                    	</div>
+	                    	<div class="p-col-12 p-lg-1">
+	                    		<p:commandButton id="btnOtkazModal"   value="Запис" icon="fas fa-save"
+											onmousemove="document.getElementById('mmsSFform:btnOtkazModal').focus();"
+											partialSubmit="true" update=" mmsSFform:otkazText, mmsSFform:dateStatus  , mmsSFform:status"
+											process=" @this mmsSFform"
+											action="#{mmsSF.actionOtkazReg()}"
+											title="Отказ от регистрация" >
+									<p:confirm header="#{ui_labels['general.comfirmation']}" escape="false" message="#{beanMessages['docu.rejectDoc']}" icon="ui-icon-alert"/>
+								</p:commandButton>
+										 
+	                    	</div>
+	                    	</div>
+			        	</div>	
+			        </div>
+				</p:dialog>
+			</h:panelGroup>
+				
+		</h:form>
+	</ui:define>
+	</ui:composition>
+</html>

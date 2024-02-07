@@ -1,0 +1,440 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ibg="http://java.sun.com/jsf/composite/components">
+  	
+     <f:metadata>
+		<f:viewAction action="#{userData.checkPageAccess(null)}" onPostback="false" />
+	</f:metadata> 	
+			
+	<h:form id="formSFList" >
+			
+		<div class="container #{guestPreferences.containerPosition}">
+			
+				<!-- FILTER -->	
+				<h:panelGroup id="panelFilter" >
+
+					<div class="card">
+	
+						<div class="p-grid ui-fluid p-align-end">
+						
+							<!-- ЕИК -->
+							<p:focus for="eik" />	
+							<div class="p-col-12 p-sm-12 p-md-4 p-lg-2 p-xl-2">							
+								<h:outputText value="#{labels['admStruct.eik']}" styleClass="form-label"/>
+								<p:inputText value="#{mmsSpFormList.eik}" id="eik" >	
+									<p:ajax event="change" listener="#{mmsSpFormList.actionChangeEik}" partialSubmit="true" process="@this" update="@this" />
+								</p:inputText>					
+							</div>		
+													
+							<!-- Вид на формированието -->
+							<div class="p-col-12 p-sm-12 p-md-4 p-lg-2 p-xl-2">							
+								<h:outputText value="#{labels['docu.vid']}" styleClass="form-label" />
+								<div class="ui-inputgroup"> 
+									<p:selectOneMenu value="#{mmsSpFormList.vidForm}" id="vidForm">
+						 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+			                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_VID_SPORTNO_FORMIROVANIE, now, mmsSpFormList.currentLang)}" 
+			                               var="vidF" itemLabel="#{vidF.tekst}" itemValue="#{vidF.code}" />
+									</p:selectOneMenu>
+								</div>						
+							</div>
+
+							<!-- Област, община, населено място -->
+							<div class="p-col-12 p-sm-12 p-md-12 p-lg-4 p-xl-4">
+								<h:outputText value="#{ui_labels['general.ekatte']}" styleClass="form-label" />	
+								<ibg:selectOneModalA id="mestoC"
+									update="formSFList:oblObsh"
+									codeClassif="#{DocuConstants.CODE_CLASSIF_EKATTE}"
+									styleAutoComp=""
+									selectedCode="#{mmsSpFormList.ekatte}"
+									emptyMessage="#{labels['docu.mestoEmptyMsg']}"
+									saveStateTree="false" withBtnClear="true" compType="3"
+									minQueryLength="3" dopInfoAutoComp="true"
+									dopInfoTitleAutoComp="#{ui_labels['general.ekatteObshObl']}" />	
+							</div>
+	
+							<div class="p-col-12 p-sm-12 p-md-12 p-lg-4 p-xl-4">
+								<h:outputText value="#{ui_labels['general.ekatteObshObl']}" styleClass="form-label" />
+								<h:panelGroup id="oblObsh">
+									<p:inputText readonly="true" value="#{systemData.decodeItemDopInfo(DocuConstants.CODE_CLASSIF_EKATTE, mmsSpFormList.ekatte, mmsSpFormList.currentLang, now)}" />
+								</h:panelGroup>
+							</div>
+							
+							<!-- Наименование -->
+							<div class="p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-5">							
+								<h:outputText value="#{labels['refCorr.nameUL']}" styleClass="form-label"/>
+								<p:inputText value="#{mmsSpFormList.name}" id="name"/>						
+							</div>	
+							
+							<!-- Вид спорт -->
+							<div class="p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-5">							
+								<h:outputText value="#{labels['sf.vidSport']}" styleClass="form-label"/>
+	                    	    <div class="ui-inputgroup" >
+	                   				<p:inputText value="#{mmsSpFormList.vidSportTxt}" readonly="true" id="vidSpTxt" style="width:100%"/>
+						            <ibg:selectManyModalA  showRadioBtn="true" saveStateTree="false"
+										codeClassif="#{DocuConstants.CODE_CLASSIF_VIDOVE_SPORT}" 
+										dateClassif="#{now}" styleAutoComp="width:100%;" 
+										selectedCodes="#{mmsSpFormList.vidSportList}"
+										selectedText="#{mmsSpFormList.vidSportTxt}" sortByName="true"
+										update="formSFList:vidSpTxt" isSelectNode="false" withBtnClear="true" 
+										dopInfoAutoComp="true" itemtipAtPosition="center bottom" compType="1" maxResults="50" />
+					            </div>
+							</div>	
+							
+						<ui:remove>	<!-- Олимпийски спорт -->								
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-2 p-xl-2">								
+								<p:triStateCheckbox id="triCheckOlimp" value="#{mmsSpFormList.triCheckOlimp}" style="vertical-align: middle;">  
+									<p:ajax event="change" update="@this" immediate="true" partialSubmit="@this"/>
+								</p:triStateCheckbox>	
+								<h:outputText value=" #{labels['olympic.olimpiiski']}" styleClass="form-label"/>
+							</div>
+						</ui:remove>
+						
+							<!-- Олимпийски спорт -->								
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-2 p-xl-2">	
+								<h:outputText value="#{labels['olympic.olimpiiski']}" styleClass="form-label"/>
+								<p:selectOneRadio value="#{mmsSpFormList.triCheckOlimp}">
+									<f:selectItem itemLabel="Да" itemValue="1"/>
+									<f:selectItem itemLabel="Не" itemValue="2"/>
+									<f:selectItem itemLabel="Всички" itemValue="0"/>
+									<p:ajax event="change" update="@this" immediate="true" partialSubmit="@this"/>
+								</p:selectOneRadio>															
+																
+							</div>
+							
+							<!-- Рег. номер на заявлението -->
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">							
+								<h:outputText value="#{labels['mmsCL.regNumZ']}" styleClass="form-label"/>
+								<p:inputText value="#{mmsSpFormList.rnZaiav}" />						
+							</div>
+							
+							<!-- Период на подаване на заявлението -->
+								<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">		
+						        <h:outputText  value="#{labels['mmsCL.periodZaiav']}"  styleClass="form-label" style="white-space: nowrap;"/>
+				            	<p:selectOneMenu id="periodZaiav" value="#{mmsSpFormList.periodZaiav}">
+					                <f:selectItem value="#{null}" itemValue="#{null}"/>
+					                <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_PERIOD_NOFUTURE, now, mmsSpFormList.currentLang)}" 
+					                   var="pz" itemLabel="#{pz.tekst}" itemValue="#{pz.code}" />
+					                <p:ajax event="change" update="formSFList:periodZaiav formSFList:zaiavFrom formSFList:zaiavTo" listener="#{mmsSpFormList.changePeriodZaiav}"/>   
+				         		 </p:selectOneMenu>
+							</div>
+			
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">	
+					            <h:outputText value="#{ui_labels['general.dataOt']}" styleClass="form-label"/>
+								<p:datePicker id="zaiavFrom" pattern="dd.MM.yyyy" mask="true" showIcon="true" locale="bg"  
+						         	value="#{mmsSpFormList.zaiavFrom}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSFList:periodZaiav" listener="#{mmsSpFormList.changeDateZaiav}"/>
+						         	<p:ajax event="dateSelect" update="formSFList:periodZaiav" listener="#{mmsSpFormList.changeDateZaiav}"/>      
+						        </p:datePicker>	
+							</div>
+							
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">	
+					             <h:outputText value="#{ui_labels['general.dataDo']}" styleClass="form-label"/>
+								 <p:datePicker id="zaiavTo" pattern="dd.MM.yyyy" mask="true"  showIcon="true" locale="bg"  
+						         	value="#{mmsSpFormList.zaiavTo}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSFList:periodZaiav" listener="#{mmsSpFormList.changeDateZaiav}"/>
+						         	<p:ajax event="dateSelect" update="formSFList:periodZaiav" listener="#{mmsSpFormList.changeDateZaiav}"/>      
+						         </p:datePicker>
+							</div>
+							
+							<!-- Военен спорт -->								
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-2 p-xl-2">	
+								<h:outputText value="Военен" styleClass="form-label"/>
+								<p:selectOneRadio value="#{mmsSpFormList.triCheckVoenen}">
+									<f:selectItem itemLabel="Да" itemValue="1"/>
+									<f:selectItem itemLabel="Не" itemValue="2"/>
+									<f:selectItem itemLabel="Всички" itemValue="0"/>
+									<p:ajax event="change" update="@this" immediate="true" partialSubmit="@this"/>
+								</p:selectOneRadio>															
+																
+							</div>
+							
+							
+							
+							
+							<!-- Статус на спортно формирование -->
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">	
+						        <h:outputText value="#{labels['mmsSpFormList.status']}" styleClass="form-label" />
+						        <p:selectOneMenu value="#{mmsSpFormList.status}" id="status">
+									<f:selectItem value="#{null}" itemValue="#{null}"/>
+					                <f:selectItems value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_STATUS_OBEKT, now, mmsSpFormList.currentLang)}"                           
+						                   			var="itemSc" itemLabel="#{itemSc.tekst}" itemValue="#{itemSc.code}"/>
+								</p:selectOneMenu>																        
+							</div>
+							
+							<!-- Период на статус -->
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">		
+						        <h:outputText  value="#{labels['mmsCL.periodStatus']}"  styleClass="form-label" style="white-space: nowrap;"/>
+				            	<p:selectOneMenu id="periodStatus" value="#{mmsSpFormList.periodStatus}">
+					                <f:selectItem value="#{null}" itemValue="#{null}"/>
+					                <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_PERIOD_NOFUTURE, now, mmsSpFormList.currentLang)}" 
+					                   var="ps" itemLabel="#{ps.tekst}" itemValue="#{ps.code}" />
+					                <p:ajax event="change" update="formSFList:periodStatus formSFList:statusFrom formSFList:statusTo" listener="#{mmsSpFormList.changePeriodStatus}"/>   
+				         		 </p:selectOneMenu>
+							</div>
+			
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">
+					            <h:outputText value="#{ui_labels['general.dataOt']}" styleClass="form-label"/>
+								<p:datePicker id="statusFrom" pattern="dd.MM.yyyy" mask="true"  showIcon="true" locale="bg"  
+						         	value="#{mmsSpFormList.statusFrom}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSFList:periodStatus" listener="#{mmsSpFormList.changeDateStatus}"/>
+						         	<p:ajax event="dateSelect" update="formSFList:periodStatus" listener="#{mmsSpFormList.changeDateStatus}"/>      
+						        </p:datePicker>	
+							</div>
+							
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">
+					             <h:outputText value="#{ui_labels['general.dataDo']}" styleClass="form-label"/>
+								 <p:datePicker id="statusTo" pattern="dd.MM.yyyy" mask="true"  showIcon="true" locale="bg"  
+						         	value="#{mmsSpFormList.statusTo}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSFList:periodStatus" listener="#{mmsSpFormList.changeDateStatus}"/>
+						         	<p:ajax event="dateSelect" update="formSFList:periodStatus" listener="#{mmsSpFormList.changeDateStatus}"/>      
+						         </p:datePicker>
+							</div>
+							
+							<!-- Университетски спорт -->								
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-2 p-xl-2">	
+								<h:outputText value="Университетски клубове" styleClass="form-label"/>
+								<p:selectOneRadio value="#{mmsSpFormList.triCheckUnivers}">
+									<f:selectItem itemLabel="Да" itemValue="1"/>
+									<f:selectItem itemLabel="Не" itemValue="2"/>
+									<f:selectItem itemLabel="Всички" itemValue="0"/>
+									<p:ajax event="change" update="@this" immediate="true" partialSubmit="@this"/>
+								</p:selectOneRadio>															
+																
+							</div>
+							
+							<!-- Статус на заявление -->
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">	
+						        <h:outputText value="#{labels['mmsSportniObekti.decision']}" styleClass="form-label" />
+						        <p:selectOneMenu value="#{mmsSpFormList.statusZaiav}" id="statusZaiav">
+									<f:selectItem value="#{null}" itemValue="#{null}"/>
+					                <f:selectItems value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_STATUS_ZAIAVLENIE, now, mmsSpFormList.currentLang)}"                           
+						                   			var="itemSc" itemLabel="#{itemSc.tekst}" itemValue="#{itemSc.code}"/>
+								</p:selectOneMenu>																        
+							</div>
+							
+							<!-- Период на статус на заявление -->
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">		
+						        <h:outputText  value="#{labels['mmsCL.periodStatusZaiav']}"  styleClass="form-label" style="white-space: nowrap;"/>
+				            	<p:selectOneMenu id="periodStZaiavlenie" value="#{mmsSpFormList.periodStZaiavlenie}">
+					                <f:selectItem value="#{null}" itemValue="#{null}"/>
+					                <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_PERIOD_NOFUTURE, now, mmsSpFormList.currentLang)}" 
+					                   var="ps" itemLabel="#{ps.tekst}" itemValue="#{ps.code}" />
+					                <p:ajax event="change" update="formSFList:periodStZaiavlenie formSFList:fromStatusZaiav formSFList:toStatusZaiav" listener="#{mmsSpFormList.changePeriodStZaiavlenie}"/>   
+				         		 </p:selectOneMenu>
+							</div>
+			
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">
+					            <h:outputText value="#{ui_labels['general.dataOt']}" styleClass="form-label"/>
+								<p:datePicker id="fromStatusZaiav" pattern="dd.MM.yyyy" mask="true"  showIcon="true" locale="bg"  
+						         	value="#{mmsSpFormList.fromStatusZaiav}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSFList:periodStZaiavlenie" listener="#{mmsSpFormList.changeDateStZaiavlenie}"/>
+						         	<p:ajax event="dateSelect" update="formSFList:periodStZaiavlenie" listener="#{mmsSpFormList.changeDateStZaiavlenie}"/>      
+						        </p:datePicker>	
+							</div>
+							
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">
+					             <h:outputText value="#{ui_labels['general.dataDo']}" styleClass="form-label"/>
+								 <p:datePicker id="toStatusZaiav" pattern="dd.MM.yyyy" mask="true"  showIcon="true" locale="bg"  
+						         	value="#{mmsSpFormList.toStatusZaiav}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSFList:periodStZaiavlenie" listener="#{mmsSpFormList.changeDateStZaiavlenie}"/>
+						         	<p:ajax event="dateSelect" update="formSFList:periodStZaiavlenie" listener="#{mmsSpFormList.changeDateStZaiavlenie}"/>      
+						         </p:datePicker>
+							</div>
+							
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">	
+					             <p:triStateCheckbox  value="#{mmsSpFormList.regixDiff}"/>
+					             <h:outputText value=" Промяна от REGIX " styleClass="form-label"/>
+							</div>
+							
+							<!-- Статус на вписване -->
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">	
+						        <h:outputText value="#{labels['compReg.statusVpisvane']}" styleClass="form-label" />
+						        <p:selectOneMenu value="#{mmsSpFormList.statusVpis}" id="statusVpis">
+									<f:selectItem value="#{null}" itemValue="#{null}"/>
+					                <f:selectItems value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_STATUS_REGISTRATION, now, mmsSpFormList.currentLang)}"                           
+						                   			var="itemSc" itemLabel="#{itemSc.tekst}" itemValue="#{itemSc.code}"/>
+								</p:selectOneMenu>																        
+							</div>
+							
+							<!-- Период на статус на вписване -->
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">		
+						        <h:outputText  value="#{labels['mmsCL.periodStatusVpis']}"  styleClass="form-label" style="white-space: nowrap;"/>
+				            	<p:selectOneMenu id="periodStVpisvane" value="#{mmsSpFormList.periodStVpisvane}">
+					                <f:selectItem value="#{null}" itemValue="#{null}"/>
+					                <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_PERIOD_NOFUTURE, now, mmsSpFormList.currentLang)}" 
+					                   var="ps" itemLabel="#{ps.tekst}" itemValue="#{ps.code}" />
+					                <p:ajax event="change" update="formSFList:periodStVpisvane formSFList:fromStatusVpis formSFList:toStatusVpis" listener="#{mmsSpFormList.changePeriodStVpisvane}"/>   
+				         		 </p:selectOneMenu>
+							</div>
+			
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">
+					            <h:outputText value="#{ui_labels['general.dataOt']}" styleClass="form-label"/>
+								<p:datePicker id="fromStatusVpis" pattern="dd.MM.yyyy" mask="true"  showIcon="true" locale="bg"  
+						         	value="#{mmsSpFormList.fromStatusVpis}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSFList:periodStVpisvane" listener="#{mmsSpFormList.changeDateStVpisvane}"/>
+						         	<p:ajax event="dateSelect" update="formSFList:periodStVpisvane" listener="#{mmsSpFormList.changeDateStVpisvane}"/>      
+						        </p:datePicker>	
+							</div>
+							
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">
+					             <h:outputText value="#{ui_labels['general.dataDo']}" styleClass="form-label"/>
+								 <p:datePicker id="toStatusVpis" pattern="dd.MM.yyyy" mask="true"  showIcon="true" locale="bg"  
+						         	value="#{mmsSpFormList.toStatusVpis}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSFList:periodStVpisvane" listener="#{mmsSpFormList.changeDateStVpisvane}"/>
+						         	<p:ajax event="dateSelect" update="formSFList:periodStVpisvane" listener="#{mmsSpFormList.changeDateStVpisvane}"/>      
+						         </p:datePicker>
+							</div>
+							
+						</div>
+	
+						<div class="filter-buttons">
+							
+							<p:commandButton icon="fas fa-search" value="#{ui_labels['general.search']}" 
+											id="btnSearchSF" update="resultTable panelFilter" partialSubmit="true"
+											process="@this panelFilter resultTable" actionListener="#{mmsSpFormList.actionSearch}" styleClass="p-mr-3"/>
+							<p:defaultCommand target="btnSearchSF" scope="panelFilter" />
+	
+							<p:commandButton icon="fas fa-eraser" value="#{ui_labels['general.clear']}" 
+											 id="btnClear" update="resultTable panelFilter" partialSubmit="true"
+											 process="@this panelFilter resultTable" actionListener="#{mmsSpFormList.actionClear}"
+											 styleClass="ui-button-warning" />	
+						</div>
+	
+					</div>
+				
+				</h:panelGroup>
+			
+			</div>
+			
+			<h:panelGroup id="resultTable" layout="block" styleClass="margin-top">
+
+			<h:panelGroup layout="block" styleClass="card">
+
+				<div class="table-toolbar">
+
+					<h:outputText value="#{ui_labels['general.reportResult']}: #{mmsSpFormList.spFormList.rowCount}" styleClass="form-label" rendered="#{mmsSpFormList.spFormList.rowCount > 0}"/>
+
+				</div>
+
+				<p:dataTable id="tblSFList" var="row" value="#{mmsSpFormList.spFormList}" lazy="true" rendered="#{mmsSpFormList.spFormList != null}"
+					rowIndexVar="idx" emptyMessage="#{ui_labels['general.norows']}" rows="15" sortMode="single" reflow="true" styleClass="ui-datatable-gridlines"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom" paginatorAlwaysVisible="true" paginator="true">
+
+					<f:facet name="{Exporters}">
+
+						<div style="float: left">
+
+							<p:commandLink id="excel" update="tblSFList" process="tblSFList" partialSubmit="true">
+								<h:graphicImage library="images" name="excel2.png" />
+								<p:dataExporter type="xls" target="tblSFList" fileName="sportFormListXls" postProcessor="#{mmsSpFormList.postProcessXLS}"/>
+							</p:commandLink>
+
+							<p:commandLink id="pdf" update="tblSFList" process="tblSFList" partialSubmit="true">
+								<h:graphicImage library="images" name="pdf.png" />
+								 <p:dataExporter type="pdf"  target="tblSFList" fileName="sportFormListPdf" encoding="windows-1251"
+								 	preProcessor="#{mmsSpFormList.preProcessPDF}" options="#{mmsSpFormList.pdfOptions()}"/>						
+							</p:commandLink>
+
+							<p:commandLink id="csv" update="tblSFList" process="tblSFList" partialSubmit="true">
+								<h:graphicImage library="images" name="csv.png" />
+								<p:dataExporter type="csv" target="tblSFList" fileName="sportFormListCsv" encoding="CP1251" />
+							</p:commandLink>
+
+						</div>
+
+					</f:facet>
+
+					<p:column width="5" exportable="false" headerText="#{ui_labels['general.No-symbol']}">
+						<h:outputText value="#{idx + 1}" />
+					</p:column>
+
+					<p:column width="7" exportable="false">
+						<p:commandButton icon="fas fa-edit" action="#{mmsSpFormList.actionGoto(row[0], 1)}" ajax="false" styleClass="btn-new" rendered="#{isView eq null and row[21] eq null}" >
+							<f:param name="viewOnly" value="2" />
+						</p:commandButton>									
+						
+						<p:button  icon="fas fa-eye" href="#{mmsSpFormList.actionGoto(row[0], 2)}" target="_blank"  rendered="#{isView eq 1}" >
+							<f:param name="viewOnly" value="1" />							
+						</p:button>	
+						
+						<p:commandButton type="button" icon="fas fa-lock" id="lockButton" ajax="false" alt="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_ADMIN_STR, row[21], mmsSpFormList.currentLang, now)}"
+							   title="#{beanMessages['mmsSpFormList.locked']}#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_ADMIN_STR, row[21], mmsSpFormList.currentLang, now)}"   
+			 				   rendered="#{isView eq null and row[21] ne null}" styleClass="ui-button-secondary"/>
+					 		<p:tooltip for="lockButton">
+					 			#{beanMessages['mmsSpFormList.locked']} #{systemData.decodeItem(DocuConstants.CODE_CLASSIF_ADMIN_STR, row[21], mmsSpFormList.currentLang, now)} на 
+					 			<h:outputText value="#{row[22]}" >
+					 				<f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="#{mmsSpFormList.timeZone}"/>
+					 			</h:outputText>
+					 		</p:tooltip>					
+					</p:column>
+					
+					<p:column width="120" sortBy="#{row.a6}" headerText="#{labels['refCorr.nameUL']}">
+						<h:outputText value="#{row[6]}"/>								
+					</p:column>
+					
+					<p:column width="50" sortBy="#{row.a5}" headerText="#{labels['admStruct.eik']}">
+						<h:outputText value="#{row[5]}" />							
+					</p:column>
+					
+					<p:column width="120" sortBy="#{row.a13}" headerText="#{labels['sf.vidSport']}">
+						<h:outputText value="#{systemData.decodeItems(DocuConstants.CODE_CLASSIF_VIDOVE_SPORT, row[13], mmsSpFormList.currentLang, now)}"/>								
+					</p:column>
+					
+					<p:column width="45" sortBy="#{row.a18}" headerText="#{ui_labels['general.ekatte']}">
+						<h:outputText value="#{row[18]}"/>													
+					</p:column>
+					
+					<p:column width="45" sortBy="#{row.a19}" headerText="#{ui_labels['general.ekatteObsh']}">
+						<h:outputText value="#{row[19]}"/>													
+					</p:column>
+					
+					<p:column width="45" sortBy="#{row.a20}" headerText="#{ui_labels['general.ekatteObl']}">
+						<h:outputText value="#{row[20]}"/>													
+					</p:column>
+					
+					<p:column width="40" sortBy="#{row.a2}" headerText="#{labels['mmsCL.statusC']}">
+						<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_OBEKT, row[2], mmsSpFormList.currentLang, now)}" />											
+					</p:column>
+
+					<p:column width="30" sortBy="#{row.a3}" headerText="#{labels['docu.statusDate']}" >
+						<h:outputText value="#{row[3]}">	
+							<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSpFormList.timeZone}"/>
+						</h:outputText>	
+					</p:column>
+					
+					<p:column width="15" sortBy="#{row.a20}" headerText="О">
+						<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DANE, row[11], mmsSpObedList.currentLang, now)}"/>
+					</p:column>
+					<p:column width="15" sortBy="#{row.a24}" headerText="В">
+						<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DANE, row[24], mmsSpObedList.currentLang, now)}"/>													
+					</p:column>
+					<p:column width="15" sortBy="#{row.a23}" headerText="У">
+						<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DANE, row[23], mmsSpObedList.currentLang, now)}"/>													
+					</p:column>
+					
+					<ui:remove>
+						<p:column width="50" sortBy="#{row.a8}" headerText="#{labels['mmsCL.regNumZ']}">
+							<h:outputText value="#{row[8]}"/>								
+						</p:column>
+						
+						<p:column width="35" sortBy="#{row.a9}" headerText="#{labels['mmsCL.dateZaiav']}">
+							<h:outputText value="#{row[9]}">	
+								<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSpFormList.timeZone}"/>
+							</h:outputText>	
+						</p:column>
+					</ui:remove>
+					
+				</p:dataTable>
+
+			</h:panelGroup>
+
+		</h:panelGroup>	
+		
+	</h:form>	
+	
+</ui:composition>

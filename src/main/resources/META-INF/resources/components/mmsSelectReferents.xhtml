@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:jsf="http://xmlns.jcp.org/jsf"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:cc="http://java.sun.com/jsf/composite"> 	  
+	  
+<cc:interface componentType="mmsSelectReferents">
+   		 
+   <cc:attribute name="selectedCode"    	 type="java.lang.Integer" shortDescription="Кода на избраното значение." />
+   <cc:attribute name="searchWord"    		 type="java.lang.String"  shortDescription="Текст на избраното значение." />
+    
+   <cc:attribute name="typeSearch"   		 type="java.lang.String"  shortDescription="EGN, EIK" default="EGN"/>
+   <cc:attribute name="corespCompCommand"    type="java.lang.String"  shortDescription="Функцията с която си отваряте модалния за актуализация на лице. Пример: PF('mCorrD').show();"/>
+   
+   <cc:attribute name="update" 		  		 type="java.lang.String"  shortDescription="What id to update. Полета, които трябва да се обновят" />
+ 		  
+   <cc:attribute name="dateClassif"   		 type="java.util.Date"    shortDescription="Дата, към която да се зареди дървото. По подразбиране - днешна дата." />
+   
+   <cc:attribute name="onComplete"     		 type="java.lang.String"  shortDescription="Изпълнява функция при връщане на резултата - подава се името на функцията" />
+   
+   <cc:attribute name="readonly"       		 type="java.lang.Boolean" shortDescription="само за разглеждане" default="false" />
+   
+   <cc:attribute name="validationMetod"      type="java.lang.String"  shortDescription="метод за валидация от инф. модел"  />
+   <cc:attribute name="validationMessage"    type="java.lang.String"  shortDescription="съобщение в случай на неуспешно валидиране" default="Грешка" />
+   
+ 
+</cc:interface>
+
+<cc:implementation>
+
+	<f:event type="preRenderComponent" listener="#{cc.initRefComp()}" />
+	
+	<div class="ui-g ui-fluid index-select-component ">
+		<div class="ui-g-12 ui-g-nopad">
+			<div class="select-input-wrapper ui-inputgroup">
+			
+			
+			<p:inputText value="#{cc.searchWord}" readonly="#{cc.attrs.readonly}" id="searchCorId" >
+				<p:ajax listener="#{cc.search}" partialSubmit="true"  event="change" process="@this" update="@this #{cc.attrs.update}"></p:ajax>
+				<p:keyFilter mask="int" preventPaste="false"></p:keyFilter>
+			</p:inputText>
+			 					
+			</div>
+		</div>
+	</div>
+	
+	 
+	
+</cc:implementation>
+	
+</ui:composition>

@@ -1,0 +1,19 @@
+<ui:composition   xmlns="http://www.w3.org/1999/xhtml"
+			      xmlns:ui="http://java.sun.com/jsf/facelets"
+			      xmlns:f="http://java.sun.com/jsf/core"
+			      xmlns:h="http://java.sun.com/jsf/html">
+
+	
+		<ui:define name="title">#{navTexts['/pages/mmsSportFormirovanieEdit.xhtml']}</ui:define>
+		
+			<f:metadata>
+				<f:importConstants type="com.ib.docu.system.DocuConstants" />
+			</f:metadata>
+						
+			<ui:include src="/pages/mmsSportFirmirovanieIncl.xhtml" >
+				<ui:param name="viewOnly" value="2" />
+				<ui:param name="isNew" value="2" />
+				<ui:param name="idObj" value="1" />
+			</ui:include>	
+	
+</ui:composition>

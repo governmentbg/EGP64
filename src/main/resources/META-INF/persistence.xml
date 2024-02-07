@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2"
+	xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+
+	<persistence-unit name="hibernate" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+		${jndi.begin}
+		<non-jta-data-source>${docu.data.source}</non-jta-data-source>
+		${jndi.end}
+
+		<mapping-file>META-INF/orm.xml</mapping-file>
+
+		<class>com.ib.system.db.dto.SystemJournal</class>
+		<class>com.ib.system.db.dto.SystemOption</class>
+		<class>com.ib.system.db.dto.SystemClassifOpis</class>
+		<class>com.ib.system.db.dto.SystemClassif</class>
+		<class>com.ib.system.db.dto.SyslogicListOpisEntity</class>
+		<class>com.ib.system.db.dto.SyslogicListEntity</class>
+		<class>com.ib.system.db.dto.Files</class>
+		<class>com.ib.system.db.dto.FileObject</class>
+
+		<class>com.ib.indexui.db.dto.AdmGroupRole</class>
+		<class>com.ib.indexui.db.dto.AdmGroup</class>
+		<class>com.ib.indexui.db.dto.AdmUserRole</class>
+		<class>com.ib.indexui.db.dto.AdmUser</class>
+		<class>com.ib.docu.db.dto.AdmUserCert</class>
+
+		<class>com.ib.indexui.db.dto.ModelAis</class>
+		<class>com.ib.indexui.db.dto.ModelAttribute</class>
+		<class>com.ib.indexui.db.dto.ModelMultilang</class>
+		<class>com.ib.indexui.db.dto.ModelObject</class>
+		<class>com.ib.indexui.db.dto.ModelTable</class>
+		<class>com.ib.indexui.db.dto.ModelTableJoin</class>
+		<class>com.ib.indexui.db.dto.MultilangKey</class>
+		<class>com.ib.indexui.db.dto.ModelPersistence</class>
+
+		<class>com.ib.indexui.db.dto.StatElement</class>
+		<class>com.ib.indexui.db.dto.StatTable</class>
+
+		<class>com.ib.indexui.db.dto.UniversalReport</class>
+
+		<class>com.ib.system.db.dto.JobHistory</class>
+
+		<class>com.ib.docu.db.dto.Delo</class>
+		<class>com.ib.docu.db.dto.DeloDelo</class>
+		<class>com.ib.docu.db.dto.DeloDoc</class>
+		<class>com.ib.docu.db.dto.DeloDvij</class>
+		<class>com.ib.docu.db.dto.DeloAccess</class>
+		<class>com.ib.docu.db.dto.DeloArchive</class>
+		<class>com.ib.docu.db.dto.DeloStorage</class>
+		<class>com.ib.docu.db.dto.Doc</class>
+		<class>com.ib.docu.db.dto.DocDoc</class>
+		<class>com.ib.docu.db.dto.DocDvij</class>
+		<class>com.ib.docu.db.dto.DocWSOptions</class>
+		<class>com.ib.docu.db.dto.DocPril</class>
+		<class>com.ib.docu.db.dto.DocReferent</class>
+		<class>com.ib.docu.db.dto.DocShema</class>
+		<class>com.ib.docu.db.dto.DocAccess</class>
+		<class>com.ib.docu.db.dto.DocVidSetting</class>
+		<class>com.ib.docu.db.dto.DocDestruct</class>
+		<class>com.ib.docu.db.dto.Referent</class>
+		<class>com.ib.docu.db.dto.ReferentAddress</class>
+		<class>com.ib.docu.db.dto.ReferentDelegation</class>
+		<class>com.ib.docu.db.dto.Register</class>
+		<class>com.ib.docu.db.dto.Registratura</class>
+		<class>com.ib.docu.db.dto.RegistraturaGroup</class>
+		<class>com.ib.docu.db.dto.RegistraturaReferent</class>
+		<class>com.ib.docu.db.dto.RegistraturaSetting</class>
+		<class>com.ib.docu.db.dto.RegistraturaMailBox</class>
+		<class>com.ib.docu.db.dto.RegistraturaMailBoxVar</class>
+		<class>com.ib.docu.db.dto.Task</class>
+		<class>com.ib.docu.db.dto.TaskReferent</class>
+		<class>com.ib.docu.db.dto.TaskSchedule</class>
+		
+		<class>com.ib.docu.db.dto.NotificationPatterns</class>
+		<class>com.ib.docu.db.dto.NotificationPatternVariables</class>
+
+		<class>com.ib.docu.db.dto.UserNotifications</class>
+		
+		<class>com.ib.docu.db.dto.EgovMessages</class>
+		<class>com.ib.docu.db.dto.EgovMessagesFiles</class>
+		<class>com.ib.docu.db.dto.EgovMessagesCoresp</class>
+
+		<class>com.ib.docu.db.dto.ProcDef</class>
+		<class>com.ib.docu.db.dto.ProcDefEtap</class>
+		<class>com.ib.docu.db.dto.ProcDefTask</class>
+		<class>com.ib.docu.db.dto.ProcDefTaskIzp</class>
+		<class>com.ib.docu.db.dto.ProcExe</class>
+		<class>com.ib.docu.db.dto.ProcExeEtap</class>
+		<class>com.ib.docu.db.dto.ProcExeTask</class>
+		<class>com.ib.docu.db.dto.Praznici</class>
+		<class>com.ib.docu.db.dto.Event</class>
+
+		<class>com.ib.docu.db.dto.DocDopdata</class>
+		<class>com.ib.docu.db.dto.DocMember</class>
+		<class>com.ib.docu.db.dto.MMSSportnoObedinenie</class>
+		<class>com.ib.docu.db.dto.MMSSportObedMf</class>
+		<class>com.ib.docu.db.dto.MMSsportFormirovanie</class>
+		<class>com.ib.docu.db.dto.MMSVpisvane</class>
+		<class>com.ib.docu.db.dto.MMSVpisvaneDoc</class>
+		<class>com.ib.docu.db.dto.MMSVidSport</class>
+		<class>com.ib.docu.db.dto.MMSVidSportSF</class>
+		<class>com.ib.docu.db.dto.MMSVidSportSO</class>
+		<class>com.ib.docu.db.dto.MMSVidSportSC</class>
+		<class>com.ib.docu.db.dto.MMSVidSportSpOb</class>
+		<class>com.ib.docu.db.dto.MMSCoaches</class>
+		<class>com.ib.docu.db.dto.MMSCoachesDiploms</class>
+		<class>com.ib.docu.db.dto.MMSChlenstvo</class>
+		<class>com.ib.docu.db.dto.MMSSportObekt</class>
+		<class>com.ib.docu.db.dto.MMSSportObektLice</class>
+		<class>com.ib.docu.db.dto.AdmVidSport</class>
+		<class>com.ib.docu.db.dto.MMSAdmEtalDop</class>	
+		<class>com.ib.docu.db.dto.MMSDopPol</class>	
+
+		<properties>
+			<property name="db.vendor.name" value="${db.vendor.name}" />
+			
+			${conn.params.begin}
+			<property name="hibernate.connection.driver_class" value="${hibernate.connection.driver_class}" />
+			<property name="hibernate.connection.url" value="${hibernate.connection.url}" />
+			<property name="hibernate.connection.username" value="${hibernate.connection.username}" />
+			<property name="hibernate.connection.password" value="${hibernate.connection.password}" />
+			<property name="hibernate.connection.isolation" value="${hibernate.connection.isolation}" />
+			${conn.params.end}
+			
+			<property name="hibernate.dialect" value="${hibernate.dialect}" />
+			<property name="hibernate.current_session_context_class" value="${hibernate.current_session_context_class}" />
+			<property name="hibernate.show_sql" value="${hibernate.show_sql}" />
+			<property name="hibernate.format_sql" value="${hibernate.format_sql}" />
+
+			<!-- експериментално -->
+			<property name="hibernate.jdbc.batch_size" value="10" />
+			<property name="hibernate.order_inserts" value="true" />
+			<property name="hibernate.order_updates" value="true" />
+			<property name="hibernate.jdbc.fetch_size" value="40" />
+
+
+
+
+		</properties>
+	</persistence-unit>
+</persistence>

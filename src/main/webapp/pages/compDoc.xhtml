@@ -1,0 +1,314 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ibg="http://java.sun.com/jsf/composite/components"
+	template="/template/template.xhtml">
+
+	<ui:define name="content">
+
+		<h:form id="formTakeAwayAccess">
+
+			<div class="container #{guestPreferences.containerPosition}">
+
+				<h:panelGroup id="panelDocs" layout="block" styleClass="margin-top">
+
+					<div class="card">
+						<p:dataTable id="tblCompDoc" var="row" value="" rowIndexVar="idx"
+							emptyMessage="#{ui_labels['general.norows']}" rows="5"
+							sortMode="single" reflow="true"
+							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+							rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom"
+							paginatorAlwaysVisible="true" paginator="true">
+
+							<f:facet name="{Exporters}">
+
+								<div style="float: left">
+
+									<h:commandLink id="excel">
+										<h:graphicImage library="images" name="excel2.png" />
+										<p:dataExporter type="xls" target="tblRegistriList"
+											fileName="registriXls" />
+									</h:commandLink>
+
+									<h:commandLink id="pdf">
+										<h:graphicImage library="images" name="pdf.png" />
+										<p:dataExporter type="pdf" target="tblRegistriList"
+											fileName="registriPdf" encoding="windows-1251" />
+
+									</h:commandLink>
+
+									<h:commandLink id="csv">
+										<h:graphicImage library="images" name="csv.png" />
+										<p:dataExporter type="csv" target="tblRegistriList"
+											fileName="registriCsv" encoding="CP1251" />
+									</h:commandLink>
+
+								</div>
+
+							</f:facet>
+
+							<p:column width="5" exportable="false"
+								headerText="#{ui_labels['general.No-symbol']}">
+								<h:outputText value="#{idx + 1}" />
+							</p:column>
+
+							<p:column width="20" exportable="false">
+								<p:commandButton icon="fas fa-edit" styleClass="btn-new" />
+							</p:column>
+
+							<p:column width="110"
+								headerText="#{labels['docVidSetting.typeDoc']}">
+								<h:outputText />
+							</p:column>
+
+							<p:column width="110" headerText="#{labels['docu.regNom']}">
+								<h:outputText />
+							</p:column>
+
+							<p:column width="110" headerText="#{labels['docu.docDatReg']}">
+								<h:outputText />
+							</p:column>
+
+							<p:column width="110" headerText="#{labels['comp.preparedDoc']}">
+								<h:outputText />
+							</p:column>
+
+							<p:column width="110" headerText="#{labels['comp.signatureDoc']}">
+								<h:outputText />
+							</p:column>
+						</p:dataTable>
+					</div>
+
+				</h:panelGroup>
+
+
+
+				<!-- Бутон нов документ -->
+				<p:toolbar styleClass="margin-bottom" id="tb">
+					<f:facet name="left">
+						<p:commandButton icon="fas fa-edit"
+							value="#{labels['comp.newDoc']}" styleClass="ui-button-success" />
+						<span class="fas fa-ellipsis-v SoftGray p-mx-2" />
+					</f:facet>
+				</p:toolbar>
+
+
+				<h:panelGroup id="basicData" layout="block">
+					<div class="card">
+
+
+						<!-- Основни данни -->
+						<div class="title-group">
+					
+							<p:commandLink class="extended-search-toggle expanded"
+								onclick="toggleSection(this, '#basicDataRegistri')">
+								<h:outputText value="#{labels['registratura.basicData']}" />
+								<i class="fas fa-caret-right"></i>
+							</p:commandLink>
+						
+							
+						</div>
+
+						<div id="basicDataRegistri" class="card">
+
+							<p:toolbar styleClass="margin-bottom">
+								<f:facet name="left">
+									<p:commandButton icon="fas fa-save"
+										value="#{ui_labels['general.save']}" />
+								</f:facet>
+								<f:facet name="right">
+									<p:commandButton icon="fas fa-times"
+										value="#{ui_labels['general.delete']}"
+										styleClass="ui-button-danger"
+										onclick="if(!confirm('#{beanMessages['general.confirmDeleteMsg']}'))return false;" />
+								</f:facet>
+							</p:toolbar>
+
+							<div class="p-d-xl-inline">
+
+								<div class="p-col-6 p-md-8 p-lg-3 p-xl-3">
+									<p:selectOneButton id="typeDoc" immediate="true"
+										unselectable="false">
+										<f:selectItems />
+										<p:ajax event="change" partialSubmit="true" />
+									</p:selectOneButton>
+								</div>
+								<div class="card">
+									<div class="p-grid p-col-12  ui-fluid">
+
+										<!-- Вид документ -->
+										<div class="p-col-4 p-sm-12 p-md-6 p-lg-3 p-xl-4   ui-fluid">
+											<h:outputText value="#{labels['docVidSetting.typeDoc']}"
+												styleClass="form-label req p-mr-4" />
+
+
+											<ibg:selectOneModalA id="docmVid"
+												codeClassif="#{DocuConstants.CODE_CLASSIF_DOC_VID}"
+												dateClassif="#{compDoc.decodeDate}" filtered="false"
+												selectedCode="#{compDoc.doc.docVid}" saveStateTree="false"
+												withBtnClear="true" minQueryLength="2" styleAutoComp=""
+												specifics="" sortByName="true" compType="2" />
+
+										</div>
+
+										<!-- Рег. номер    -->
+										<div class="p-col-4 p-sm-12 p-md-6 p-lg-3 p-xl-4   ui-fluid">
+											<h:outputText value="#{labels['docu.regNom']}"
+												styleClass="form-label req p-mr-4" />
+											<p:inputText id="reg" value="#{compDoc.doc.rnDoc}" />
+
+										</div>
+
+
+
+										<!-- Дата на рег    -->
+										<div class="p-col-4 p-sm-12 p-md-6 p-lg-3 p-xl-4 ">
+
+											<h:outputText value="#{labels['docu.docDatReg']}"
+												styleClass="form-label req p-mr-4 " />
+											<p:datePicker id="regDat" showIcon="true" mask="true"
+												pattern="dd.MM.yyyy HH:mm:ss" locale="bg"
+												rendered="#{isView ne 1}" showTime="true" showSeconds="true" />
+											<p:inputText id="regDatV" rendered="#{isView eq 1}"
+												readonly="true" value="#{compDoc.doc.docDate}">
+												<f:convertDateTime pattern="dd.MM.yyyy HH:mm:ss" />
+											</p:inputText>
+
+										</div>
+									</div>
+
+									<div class="p-grid p-col-12  ui-fluid">
+
+										<!-- Тип документ -->
+										<div class="p-col-4 p-sm-12 p-md-6 p-lg-3 p-xl-4   ui-fluid">
+											<h:outputText value="#{labels['register.tipDoc']}"
+												styleClass="form-label req p-mr-4" />
+
+
+											<ibg:selectOneModalA id="docType"
+												codeClassif="#{DocuConstants.CODE_CLASSIF_DOC_TYPE}"
+												dateClassif="#{compDoc.doc.dateocDate}" filtered="false"
+												selectedCode="#{compDoc.doc.docType}" saveStateTree="false"
+												withBtnClear="true" minQueryLength="2" styleAutoComp=""
+												specifics="" sortByName="true" compType="2" />
+
+										</div>
+
+
+
+										<!-- Регистър -->
+										<div class="p-col-4 p-sm-12 p-md-6 p-lg-3 p-xl-4   ui-fluid">
+											<h:outputText value="#{labels['docu.register']}"
+												styleClass="form-label req p-mr-4" />
+
+
+											<ibg:selectOneModalA id="registerId"
+												codeClassif="#{DocuConstants.CODE_CLASSIF_REGISTRI}"
+												dateClassif="#{compDoc.doc.date}" filtered="false"
+												selectedCode="#{compDoc.doc.registerId}"
+												saveStateTree="false" withBtnClear="true" minQueryLength="2"
+												styleAutoComp="" specifics="" sortByName="true" compType="2" />
+
+										</div>
+
+
+
+										<!-- Регистратура -->
+										<div class="p-col-4 p-sm-12 p-md-6 p-lg-3 p-xl-4   ui-fluid">
+											<h:outputText value="#{labels['users.registratura']}"
+												styleClass="form-label req p-mr-4" />
+
+
+											<ibg:selectOneModalA id="registraturaId"
+												codeClassif="#{DocuConstants.CODE_CLASSIF_REGISTRATURI}"
+												dateClassif="#{compDoc.doc.date}" filtered="false"
+												selectedCode="#{compDoc.doc.registraturaId}"
+												saveStateTree="false" withBtnClear="true" minQueryLength="2"
+												styleAutoComp="" specifics="" sortByName="true" compType="2" />
+
+										</div>
+										<div class="p-col-4 p-sm-12 p-md-6 p-lg-3 p-xl-4   ui-fluid">
+										<p:selectOneRadio id="freeA" value="#{compDoc.doc.freeAccess}"
+											unselectable="true">
+											<f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_DANE, compDoc.decodeDate, compDoc.currentLang)}"
+										 		var="itemSc" itemLabel="#{itemSc.tekst}" itemValue="#{itemSc.code}"/>		
+										</p:selectOneRadio>
+							</div>
+									</div>
+
+									<div class="p-grid ui-fluid">
+
+										<!-- относно    -->
+
+										<div
+											class="p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-12  ui-fluid ">
+											<h:outputText value="#{labels['docu.otnosno']}"
+												styleClass="form-label req p-mr-4" />
+
+											<a href="#dopInfL" id="aInfo"
+												style="#{(docData.document.docInfo eq null or docData.document.docInfo.trim() eq '') ? 'display:none' : ''}">
+												<i class="fas fa-hand-point-right">
+													#{labels['docu.gotoDopInfo']} </i>
+											</a>
+
+											<p:inputTextarea id="otnosno" value="#{compDoc.doc.otnosno}"
+												autoResize="false" rows="" />
+
+										</div>
+									</div>
+
+
+									<div class="p-grid ui-fluid">
+
+
+										<div
+											class="p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-12  ui-fluid">
+
+											<h:outputText value="#{labels['comp.preparedDoc']}"
+												styleClass="form-label req p-mr-4" />
+
+											<ibg:selectReferents id="autorsM" filtered="false"
+												readonly="" typeRef="" maxResults="50" styleAutoComp=""
+												codeClassif="" dateClassif="" idDoc="" saveStateTree="false"
+												showRadioBtn="fasle" isSelectNode="true"
+												selectedReferents="" withBtnClear="true"
+												header="#{labels['comp.preparedDoc']}"
+												headerSelectedValues="#{labels['docu.liceAvtor']}" />
+
+										</div>
+									</div>
+									<div class="p-grid ui-fluid">
+
+										<div
+											class="p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-12  ui-fluid">
+
+											<h:outputText value="#{labels['docu.licePodisal']}"
+												styleClass="form-label req p-mr-4" />
+
+											<ibg:selectReferents id="signedM" filtered="false"
+												readonly="" typeRef="" maxResults="50" styleAutoComp=""
+												codeClassif="" dateClassif="" idDoc="" saveStateTree="false"
+												showRadioBtn="false" isSelectNode="true"
+												selectedReferents="" withBtnClear="true"
+												header="#{labels['docu.licePodisal']}"
+												headerSelectedValues="#{labels['docu.licePodisal']}" />
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:panelGroup>
+
+			</div>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

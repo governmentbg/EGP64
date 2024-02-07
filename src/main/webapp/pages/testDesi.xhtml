@@ -1,0 +1,131 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ibg="http://java.sun.com/jsf/composite/components" 
+	template="/template/template.xhtml">
+
+	<ui:define name="title">Test Desi</ui:define>
+
+	<ui:define name="viewname">
+
+		<li>Test Desi</li>
+
+	</ui:define>
+
+	<ui:define name="head">
+
+	</ui:define>
+
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:importConstants type="com.ib.docu.system.DocuConstants" />
+			<f:importConstants type="com.ib.system.SysConstants" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<h:form id="formTest">
+
+			<div>
+
+				<h:panelGroup id="panelDataRegsList">
+
+					<br />
+
+					<div class="title-group">
+						<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '#regsList')">
+							<h:outputText value="#{labels['compReg.regsList']}" />
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+						
+						<p:commandButton id="btnNewReg" action="mmsVpisvaneEdit.jsf"  value="#{labels['compReg.newReg']}" icon="fas fa-plus" ajax="false" styleClass="ui-button-success">
+							<f:param name="idObject" value="1"/>
+							<f:param name="codeObject" value="91"/>
+							<f:param name="nameObject" value="Test 123"/>
+							<f:param name="vidDoc" value="36"/>
+							<f:param name="regNomer" value="307-000"/>
+							<f:param name="regNomerObed" value=""/>
+						</p:commandButton>
+					</div>
+
+					<div id="regsList" styleClass="card margin-top">
+
+						<p:dataTable id="tblRegsList" var="row" value="#{testDesi.regList}" rowIndexVar="idx"
+							emptyMessage="#{ui_labels['general.norows']}" rows="5" sortMode="single" reflow="true"
+							paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+							rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom"
+							paginatorAlwaysVisible="true" paginator="true">							
+
+							<p:column width="5" exportable="false" headerText="#{ui_labels['general.No-symbol']}">
+								<h:outputText value="#{idx + 1}" />
+							</p:column>
+
+							<p:column width="15" exportable="false">
+								<p:commandButton action="mmsVpisvaneEdit.jsf" styleClass="btn-new" ajax="false" icon="fas fa-edit" title="#{ui_labels['general.edit']}" >
+									<f:param name="idReg" value="#{row.id}"/>
+									<f:param name="idObject" value="1"/>
+									<f:param name="codeObject" value="91"/>
+									<f:param name="nameObject" value="Test 123"/>
+									<f:param name="vidDoc" value="36"/>
+									<f:param name="regNomer" value="307-000"/>
+									<f:param name="regNomerObed" value=""/>
+									<f:param name="nachinPoluch" value="12"/>
+									<f:param name="dopInfoNachinPoluch" value="Test 12"/>
+								</p:commandButton>
+							</p:column>
+
+							<p:column width="80" headerText="Рег. номер заявл. за вписване">
+								<h:outputText value="#{row.rnDocZaiavlenie}" />
+							</p:column>
+
+							<p:column width="60" headerText="Дата заявление">
+								<h:outputText value="#{row.dateDocZaiavlenie}">
+									<f:convertDateTime pattern="dd.MM.yyyy" type="date" />
+								</h:outputText>
+							</p:column>
+
+							<p:column width="80" headerText="Статус на заявление">
+								<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_ZAIAVLENIE, row.statusResultZaiavlenie, testDesi.currentLang, now)}" />
+							</p:column>
+							
+							<p:column width="80" headerText="Статус на вписване">
+								<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_REGISTRATION, row.statusVpisvane, testDesi.currentLang, now)}" />
+							</p:column>
+
+							<p:column width="100" headerText="Номер удостоверителен док.">
+								<h:outputText value="#{row.rnDocLicenz}" />
+							</p:column>
+
+							<p:column width="80" headerText="Дата удостоверителен док.">
+								<h:outputText value="#{row.dateDocLicenz}">
+									<f:convertDateTime pattern="dd.MM.yyyy" type="date" />
+								</h:outputText>
+							</p:column>
+
+							<p:column width="100" headerText="Рег. номер док. на заявление">
+								<h:outputText value="#{row.rnDocResult}" />
+							</p:column>
+
+							<p:column width="60" headerText="Дата док. на заявление">
+								<h:outputText value="#{row.dateDocResult}">
+									<f:convertDateTime pattern="dd.MM.yyyy" type="date" />
+								</h:outputText>
+							</p:column>
+
+						</p:dataTable>
+
+					</div>
+
+				</h:panelGroup>
+
+			</div>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

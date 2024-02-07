@@ -1,0 +1,5 @@
+13:19:52.718 [main] INFO  com.ib.docu.transform.T1RegSportFederationsNostd - 
+13:19:52.718 [main] INFO  com.ib.docu.transform.T1RegSportFederationsNostd - Start validate register data
+
+13:19:52.799 [main] INFO  com.ib.docu.transform.T1RegSportFederationsNostd - 0 errors from 1
+13:19:52.799 [main] INFO  com.ib.docu.transform.T1RegSportFederationsNostd - Validate register data - COMPLETE

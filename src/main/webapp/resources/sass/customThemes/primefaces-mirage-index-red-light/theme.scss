@@ -1,0 +1,10 @@
+@use 'sass:math';
+
+$primaryColor: #F28686 !default;
+$primaryLightColor: scale-color($primaryColor, $lightness: 60%) !default;
+$primaryDarkColor: scale-color($primaryColor, $lightness: -10%) !default;
+$primaryDarkerColor: scale-color($primaryColor, $lightness: -20%) !default;
+$primaryTextColor: #ffffff !default;
+
+@import '../../variables/theme/_theme_light';
+@import '../../theme/light/_theme';

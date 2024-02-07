@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ibg="http://java.sun.com/jsf/composite/components"
+	template="/template/template.xhtml">
+	
+	<ui:define name="title">#{navTexts['/pages/mmsVpisvaneEdit.xhtml']}</ui:define>
+
+	<ui:define name="viewname">
+		<li> 
+			<p:link ajax="false" href="#{mmsVpisvaneEdit.actionGoBack()}" title="#{ui_labels['general.back']}" >
+				<i class="fas fa-caret-left" />
+			</p:link>
+		</li>
+		
+		<li jsf:rendered="#{mmsVpisvaneEdit.idReg eq null}" > <h:outputText value="#{labels['compReg.newReg']}" /> </li> 
+
+		<li jsf:rendered="#{mmsVpisvaneEdit.idReg ne null}" > <h:outputText value="#{labels['compReg.editReg']}" /> </li>
+
+	</ui:define>
+
+	<ui:define name="content">
+
+		<f:metadata>
+			<f:importConstants type="com.ib.docu.system.DocuConstants" />
+			<f:importConstants type="com.ib.system.SysConstants" />
+		</f:metadata>
+		
+		<h:form id="formMMSVpisvaneEdit">
+						
+			<ibg:compMMSVpisvane id="idVpisvanе" idReg="#{mmsVpisvaneEdit.idReg}" idObject="#{mmsVpisvaneEdit.idObject}" codeObject="#{mmsVpisvaneEdit.codeObject}" 
+				nameObject="#{mmsVpisvaneEdit.nameObject}" vidDoc="#{mmsVpisvaneEdit.vidDoc}" regNomer="#{mmsVpisvaneEdit.regNomer}" regNomerObed="#{mmsVpisvaneEdit.regNomerObed}"
+				ekatte="#{mmsVpisvaneEdit.ekatte}" vidObject="#{mmsVpisvaneEdit.vidObject}" readonly="#{mmsVpisvaneEdit.view}" nachinPoluch="#{mmsVpisvaneEdit.nachinPoluch}" dopInfoNachinPoluch="#{mmsVpisvaneEdit.dopInfoNachinPoluch}"/>	
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

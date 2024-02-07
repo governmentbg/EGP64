@@ -1,0 +1,2319 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<SportUnionsRequest
+	xmlns="http://iscipr.egov.bg/SmartRegistry/SportUnionsRegisterRecordEntry">
+	<SportUnionsRecord>
+		<ExternalId>1</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>339-000</SportUnionRegNumber>
+		<LicenceNumber></LicenceNumber>
+		<RegNumberEntryOrder>№ РД-09-393/18.05.2022</RegNumberEntryOrder>
+		<EntryOrderDate>2019-04-19+03:00</EntryOrderDate>
+		<UnionName>Автомобилна федерация на България</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. „Тодор Каблешков“ №55А, ет. 2, офис 3
+		</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-04-19+03:00</UnionStatusDate>
+		<Sport>автомобилизъм, авиомоделизъм, авиомоделизъм, авиомоделизъм,
+			авиомоделизъм, авиомоделизъм, авиомоделизъм, авиомоделизъм,
+			авиомоделизъм, авиомоделизъм, авиомоделизъм, авиомоделизъм,
+			авиомоделизъм, авиомоделизъм, авиомоделизъм, авиомоделизъм,
+			авиомоделизъм, авиомоделизъм, авиомоделизъм, авиомоделизъм,
+			авиомоделизъм</Sport>
+		<Presenter>Камен Михайлов</Presenter>
+		<Telephone>0894956971, 0889987050</Telephone>
+		<Emails>office@afb-bg.com</Emails>
+		<EIK>205392048</EIK>
+		<WebPage>www.afb-bg.com</WebPage>
+		<ForeignData>FEDERATION INTERNATIONAL DE L'AUTOMOBILE /FIA/
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>2</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>102-000</SportUnionRegNumber>
+		<LicenceNumber>2</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Български стрелкови съюз</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. "Гео Милев" № 71</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-06-05+03:00</UnionStatusDate>
+		<Sport>спортна стрелба</Sport>
+		<Presenter>Мария Гроздева</Presenter>
+		<Telephone>0898770608, 0895350500</Telephone>
+		<Emails>shooting23@abv.bg</Emails>
+		<EIK>176464933</EIK>
+		<WebPage>www.demetrasai.com</WebPage>
+		<ForeignData>International shooting sport federation, The Europian
+			shooting confederation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>3</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>103-000</SportUnionRegNumber>
+		<LicenceNumber>3</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по авиомоделизъм</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-06-26+03:00</UnionStatusDate>
+		<Sport>авиомоделизъм</Sport>
+		<Presenter>Сотир Лазарков</Presenter>
+		<Telephone>+359878877665</Telephone>
+		<Emails>bfavio@abv.bg; slazarkov@gmail.com</Emails>
+		<EIK>121345940</EIK>
+		<WebPage>www.bfavio.com</WebPage>
+		<ForeignData>The federation aeronautique internationale, FAI - The
+			world air sports federation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>4</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>104-000</SportUnionRegNumber>
+		<LicenceNumber>4</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по ветроходство</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-06-26+03:00</UnionStatusDate>
+		<Sport>ветроходство</Sport>
+		<Presenter>Росен Марангозов</Presenter>
+		<Telephone>029300624, 0887060865</Telephone>
+		<Emails>secretary@bulsaf.bg</Emails>
+		<EIK>121191677</EIK>
+		<WebPage>www.bulsaf.bg</WebPage>
+		<ForeignData>World sailing</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>5</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>105-000</SportUnionRegNumber>
+		<LicenceNumber>5</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по шейни на улей и естествени трасета
+		</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-07-09+03:00</UnionStatusDate>
+		<Sport>спортни шейни</Sport>
+		<Presenter>Велислава Борисова</Presenter>
+		<Telephone>0878440050</Telephone>
+		<Emails>fbl@abv.bg</Emails>
+		<EIK>131350754</EIK>
+		<WebPage>www.bfsheini.com</WebPage>
+		<ForeignData>FILC /Federation internationale de luge de course
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>6</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>106-000</SportUnionRegNumber>
+		<LicenceNumber>6</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по сумо</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-06-26+03:00</UnionStatusDate>
+		<Sport>сумо</Sport>
+		<Presenter>Борис Навчев</Presenter>
+		<Telephone>029300632, 0879930034</Telephone>
+		<Emails>bfsumo@abv.bg</Emails>
+		<EIK>130191014</EIK>
+		<WebPage>www.sumo-bg.com</WebPage>
+		<ForeignData>IFS /International sumo federation/</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>7</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>107-000</SportUnionRegNumber>
+		<LicenceNumber>7</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по корабомоделен спорт</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ж.к. "Красно село", бл. 211, вх. 2, ет. 5, ап. 32
+		</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-06-26+03:00</UnionStatusDate>
+		<Sport>корабомоделен спорт</Sport>
+		<Presenter>Евгени Генов, Коля Панайотов и Петко Петков -поотделно
+		</Presenter>
+		<Telephone>0888227837</Telephone>
+		<Emails>panajotov@bfkks.com; info@bfkks.com</Emails>
+		<EIK>681901</EIK>
+		<WebPage>www.bfkks.com</WebPage>
+		<ForeignData>Световна организация по корабомоделизъм и корабомоделен
+			спорт Naviga</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>8</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>108-000</SportUnionRegNumber>
+		<LicenceNumber>8</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по лека атлетика</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-10-10+03:00</UnionStatusDate>
+		<Sport>лека атлетика</Sport>
+		<Presenter>Добромир Карамаринов</Presenter>
+		<Telephone>02 9300631</Telephone>
+		<Emails>bulathletics@bfla.org</Emails>
+		<EIK>831047739</EIK>
+		<WebPage>www.bfla.org</WebPage>
+		<ForeignData>International Association of Athletics Federations
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>9</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>109-000</SportUnionRegNumber>
+		<LicenceNumber>9</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по художествена гимнастика</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75 , ет. 4</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-10-10+03:00</UnionStatusDate>
+		<Sport>художествена гимнастика</Sport>
+		<Presenter>Илиана Сиракова</Presenter>
+		<Telephone>029300629</Telephone>
+		<Emails>bulrg@abv.bg; bulrg_fed@abv.bg</Emails>
+		<EIK>121330447</EIK>
+		<WebPage>www.fbgr.org</WebPage>
+		<ForeignData>Federation internationale de gimnastique /FIG/
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>10</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>110-000</SportUnionRegNumber>
+		<LicenceNumber>10</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по рафтинг</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>р-н Оборище ул. Оборище № 92 За кореспонденция: кв.
+			Възраждане, ул. Перник № 87, ет. 5</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-10-10+03:00</UnionStatusDate>
+		<Sport>рафтинг</Sport>
+		<Presenter>Цветан Петров</Presenter>
+		<Telephone>0877 48 34 21</Telephone>
+		<Emails>bgraftingfederation@gmail.com</Emails>
+		<EIK>175650803</EIK>
+		<WebPage>www.raftingbulgaria.com</WebPage>
+		<ForeignData>Word rafting federation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>11</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>111-000</SportUnionRegNumber>
+		<LicenceNumber>11</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по таекуон-до "Ай Ти Еф“</UnionName>
+		<UnionLocation>гр. Благоевград</UnionLocation>
+		<UnionAddress>площад Георги Измирлиев № 5</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-10-10+03:00</UnionStatusDate>
+		<Sport>таекуон-до „Ай Ти Еф“</Sport>
+		<Presenter>Марио Богданов</Presenter>
+		<Telephone>0898945555</Telephone>
+		<Emails>bft_itf@abv.bg</Emails>
+		<EIK>101149539</EIK>
+		<WebPage>www.itfbulgaria.com</WebPage>
+		<ForeignData>International taekwon-do federation, Europe ITF
+			taekwon-do federation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>12</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>112-000</SportUnionRegNumber>
+		<LicenceNumber>12</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по тенис на маса</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75, ет. 4, ап. стая 416
+		</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-14+02:00</UnionStatusDate>
+		<Sport>тенис на маса</Sport>
+		<Presenter>Стефан Китов</Presenter>
+		<Telephone>02/9300607</Telephone>
+		<Emails>bttf@abv.bg</Emails>
+		<EIK>831192122</EIK>
+		<WebPage>www.bttf-bg.com</WebPage>
+		<ForeignData>ITTF -Международна федерация по тенис на маса, ETTU -
+			Европейски съюз по тенис на маса</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>13</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>113-000</SportUnionRegNumber>
+		<LicenceNumber>13</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация естетическа групова гимнастика
+		</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-14+02:00</UnionStatusDate>
+		<Sport>естетическа групова гимнастика</Sport>
+		<Presenter>Мариета Дукова, Гюрга Недялкова - заедно и поотделно
+		</Presenter>
+		<Telephone>0887304079; 029300728</Telephone>
+		<Emails>bfagg@abv.bg</Emails>
+		<EIK>131163548</EIK>
+		<WebPage>www.bfagg.net</WebPage>
+		<ForeignData>IFAGG</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>14</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>114-000</SportUnionRegNumber>
+		<LicenceNumber>14</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по водомоторен спорт</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-14+02:00</UnionStatusDate>
+		<Sport>аквабайк, водомоторен спорт</Sport>
+		<Presenter>Тодор Христов</Presenter>
+		<Telephone>0888731578</Telephone>
+		<Emails>bulgarian.powerboat.federation@abv.bg</Emails>
+		<EIK>115198101</EIK>
+		<WebPage>www.champiomship.jetski.bg</WebPage>
+		<ForeignData>UNION INTERNATIONALE MOTONAUTIQUE</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>15</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>115-000</SportUnionRegNumber>
+		<LicenceNumber>15</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация канадска борба</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ж.к. София парк, Търговска зона, бл. 16В, вх. 1, ет. 1,
+			ап. 1.2</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-14+02:00</UnionStatusDate>
+		<Sport>канадска борба</Sport>
+		<Presenter>Асен Хаджитодоров, Вероника Бонкова</Presenter>
+		<Telephone>0888968541</Telephone>
+		<Emails>asenhdj@mail.bg</Emails>
+		<EIK>831841386</EIK>
+		<WebPage>www.armfight.bg</WebPage>
+		<ForeignData>WORLD ARMWRESTLING FEDERATION</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>16</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>116-000</SportUnionRegNumber>
+		<LicenceNumber>16</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по ски</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. Васил Левски № 75, ет. 5</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-14+02:00</UnionStatusDate>
+		<Sport>ски алпийски дисциплини, ски бягане, ски скок, сноуборд</Sport>
+		<Presenter>Цеко Минев</Presenter>
+		<Telephone>029300636</Telephone>
+		<Emails>secretary@bfski.com</Emails>
+		<EIK>708273</EIK>
+		<WebPage>www.bfski</WebPage>
+		<ForeignData>Международна федерация по ски</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>17</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>117-000</SportUnionRegNumber>
+		<LicenceNumber>17</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по ММА</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. „Васил Левски” № 75, ет. 7, офис 714</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-14+02:00</UnionStatusDate>
+		<Sport>смесени бойни изкуства</Sport>
+		<Presenter>Станислав Недков</Presenter>
+		<Telephone>0886999444</Telephone>
+		<Emails>bfmma@abv.bg</Emails>
+		<EIK>176659577</EIK>
+		<WebPage>www.bulmmaf.com</WebPage>
+		<ForeignData>International mixed martial arts federation IMMAF
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>18</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>118-000</SportUnionRegNumber>
+		<LicenceNumber>18</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по джудо</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. Васил Левски № 75, ет. 4</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-27+02:00</UnionStatusDate>
+		<Sport>джудо</Sport>
+		<Presenter>Румен Стоилов и Даме Стойков - заедно и поотделно
+		</Presenter>
+		<Telephone>029300609; 029300602</Telephone>
+		<Emails>judo8@abv.bg</Emails>
+		<EIK>831333217</EIK>
+		<WebPage>www.judo.bg</WebPage>
+		<ForeignData>International judo federation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>19</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>201-000</SportUnionRegNumber>
+		<LicenceNumber>19</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска работническа федерация "Спорт и здраве"
+		</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>пл. Македония 1, ет.4, ст.8</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-27+02:00</UnionStatusDate>
+		<Sport>спорт за хора в трудоспособна възраст</Sport>
+		<Presenter>Десислава Ягодин</Presenter>
+		<Telephone>+359 886 47 28 46</Telephone>
+		<Emails>kparzulov@abv.bg</Emails>
+		<EIK>130561054</EIK>
+		<WebPage>https://bwsf-bg.org/bg</WebPage>
+		<ForeignData>EUROPEAN FEDERATION FOR COMPANY SPORT</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>20</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>119-000</SportUnionRegNumber>
+		<LicenceNumber>20</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Федерация народна топка България</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. Врабча 14, ет. 1, ап. 1</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-27+02:00</UnionStatusDate>
+		<Sport>народна топка</Sport>
+		<Presenter>Константин Миладинов</Presenter>
+		<Telephone>0885948496</Telephone>
+		<Emails>magicmanstudio@abv.bg</Emails>
+		<EIK>176984065</EIK>
+		<WebPage>www.narodnatopka.com</WebPage>
+		<ForeignData>World dodgeball association</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>21</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>120-000</SportUnionRegNumber>
+		<LicenceNumber>21</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Съюз по аеробика България</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. Васил Левски № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-27+02:00</UnionStatusDate>
+		<Sport>аеробика</Sport>
+		<Presenter>Димитрина Къндева</Presenter>
+		<Telephone>0887607909</Telephone>
+		<Emails>aerobicub@gmail.com</Emails>
+		<EIK>831534412</EIK>
+		<WebPage>www.aerobicub.com</WebPage>
+		<ForeignData>Federation internationale de gimnastique /FIG/
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>22</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>121-000</SportUnionRegNumber>
+		<LicenceNumber>22</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по самбо</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. Васил Левски № 75, ет. 4, офис 4</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-27+02:00</UnionStatusDate>
+		<Sport>самбо</Sport>
+		<Presenter>Росен Димитров и Румен Димитров</Presenter>
+		<Telephone>+35929300593</Telephone>
+		<Emails>bulsambo@abv.bg</Emails>
+		<EIK>121097441</EIK>
+		<WebPage>www.sambo.bg</WebPage>
+		<ForeignData>Международна федерация самбо /FIAS/</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>23</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>122-000</SportUnionRegNumber>
+		<LicenceNumber>23</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по модерен петобой</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. Васил Левски № 75, ет. 5, ап. 510</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-27+02:00</UnionStatusDate>
+		<Sport>модерен петобой</Sport>
+		<Presenter>Камелия Александрова</Presenter>
+		<Telephone>02 9300641, 02 9300642</Telephone>
+		<Emails>office@pentathlon-bg.com</Emails>
+		<EIK>121695905</EIK>
+		<WebPage>www.pentathlon-bg.com</WebPage>
+		<ForeignData>UNION INTERNATIONALE DE PENTATHLON MODERNE</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>24</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>123-000</SportUnionRegNumber>
+		<LicenceNumber>24</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по баскетбол</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-27+02:00</UnionStatusDate>
+		<Sport>баскетбол</Sport>
+		<Presenter>Георги Глушков</Presenter>
+		<Telephone>029864816</Telephone>
+		<Emails>krasi@basketball.bg; office@basketball.bg</Emails>
+		<EIK>121393209</EIK>
+		<WebPage>www.basketball.bg</WebPage>
+		<ForeignData>FIBA</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>25</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>124-000</SportUnionRegNumber>
+		<LicenceNumber>25</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по катерене и алпинизъм</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-27+02:00</UnionStatusDate>
+		<Sport>алпинизъм, ледено катерене, ски алпинизъм, спортно катерене
+		</Sport>
+		<Presenter>Петко Тотев Николай Петков</Presenter>
+		<Telephone>029300532</Telephone>
+		<Emails>office@bfka.org</Emails>
+		<EIK>121213771</EIK>
+		<WebPage>www.bfka.org</WebPage>
+		<ForeignData>IFSC</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>26</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>125-000</SportUnionRegNumber>
+		<LicenceNumber>26</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация плувни спортове</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-27+02:00</UnionStatusDate>
+		<Sport>плувни спортове</Sport>
+		<Presenter>Димитър Бобев и Георги Аврамчев -заедно и поотделно
+		</Presenter>
+		<Telephone>029300618</Telephone>
+		<Emails>bgr_swimm17@hotmail.com</Emails>
+		<EIK>831331305</EIK>
+		<WebPage>www.bul-swimming.org</WebPage>
+		<ForeignData>Federation internationale de national</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>27</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>126-000</SportUnionRegNumber>
+		<LicenceNumber>27</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по ориентиране</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-27+02:00</UnionStatusDate>
+		<Sport>ориентиране, ски ориентиране, коло ориентиране</Sport>
+		<Presenter>Костадин Новаков</Presenter>
+		<Telephone>02 9300 613</Telephone>
+		<Emails>bgof@abv.bg</Emails>
+		<EIK>121213748</EIK>
+		<WebPage>https://orienteering.bg/</WebPage>
+		<ForeignData>International Orienteering Federation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>28</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>127-000</SportUnionRegNumber>
+		<LicenceNumber>28</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по гребане</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-11-27+02:00</UnionStatusDate>
+		<Sport>гребане</Sport>
+		<Presenter>Свилен Нейков</Presenter>
+		<Telephone>02 93 00 520</Telephone>
+		<Emails>rowing_bg@abv.bg</Emails>
+		<EIK>121689770</EIK>
+		<WebPage>https://rowingbulgaria.com/</WebPage>
+		<ForeignData>FEDERATION INTERNATIONALE DES SOCIETES D'AVIRON
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>29</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>128-000</SportUnionRegNumber>
+		<LicenceNumber>29</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по кану-каяк</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-16+02:00</UnionStatusDate>
+		<Sport>кану-каяк</Sport>
+		<Presenter>Николай Бухалов</Presenter>
+		<Telephone>02 9300-620</Telephone>
+		<Emails></Emails>
+		<EIK>122038759</EIK>
+		<WebPage>https://www.canoe-bg.com/bg/</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>30</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>129-000</SportUnionRegNumber>
+		<LicenceNumber>30</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска конфедерация по кик-бокс и муай-тай</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-16+02:00</UnionStatusDate>
+		<Sport>кик-бокс, муай-тай</Sport>
+		<Presenter>Галин Димов</Presenter>
+		<Telephone>029300577, 0898524349</Telephone>
+		<Emails>bulkick@abv.bg</Emails>
+		<EIK>103233092</EIK>
+		<WebPage>www.kickboxing.bg</WebPage>
+		<ForeignData>EMF /European muaytai confederation/, WAKO, Wako Europe
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>31</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>130-000</SportUnionRegNumber>
+		<LicenceNumber>31</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска Т-клас федерация</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. „Ген. Йосиф В. Гурко” № 64, ет. 1, ап. 3
+		</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-16+02:00</UnionStatusDate>
+		<Sport>стрелкови спорт „Т-Клас“</Sport>
+		<Presenter>Иван Бързилов и Светослав Костадинов</Presenter>
+		<Telephone>088 666 4685</Telephone>
+		<Emails>info@t-class.bg</Emails>
+		<EIK>176962115</EIK>
+		<WebPage>https://t-class.bg/</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>32</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>131-000</SportUnionRegNumber>
+		<LicenceNumber>32</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по конен спорт</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-16+02:00</UnionStatusDate>
+		<Sport>конен спорт</Sport>
+		<Presenter>Тодор Гергов и Крум Рашков</Presenter>
+		<Telephone>+359 2 9865399, 02/ 930 06 03</Telephone>
+		<Emails>bef@horsesportbg.org</Emails>
+		<EIK>715093</EIK>
+		<WebPage>http://www.horsesportbg.org/</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>33</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>132-000</SportUnionRegNumber>
+		<LicenceNumber>33</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по гимнастика</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-16+02:00</UnionStatusDate>
+		<Sport>спортна гимнастика</Sport>
+		<Presenter>Красимир Дунев и Йордан Йовчев</Presenter>
+		<Telephone>0879000649</Telephone>
+		<Emails>kdunev@yahoo.com; bulgym@yahoo.com</Emails>
+		<EIK>121793986</EIK>
+		<WebPage>http://bulgariangymnastics.gymchat.com</WebPage>
+		<ForeignData>FEDERATION INTERNARIONALE DE GYMNASTIQUE</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>34</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>133-000</SportUnionRegNumber>
+		<LicenceNumber>34</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация шотокан карате-до</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-16+02:00</UnionStatusDate>
+		<Sport>шотокан карате-до</Sport>
+		<Presenter>Александър Славков и Лъчезар Ненов заедно</Presenter>
+		<Telephone>029300557</Telephone>
+		<Emails>bfsk@karatebg.com</Emails>
+		<EIK>114637353</EIK>
+		<WebPage>www.karatebg.com</WebPage>
+		<ForeignData>SKDUN</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>35</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>134-000</SportUnionRegNumber>
+		<LicenceNumber>35</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация стрелба с лък</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-16+02:00</UnionStatusDate>
+		<Sport>стрелба с лък</Sport>
+		<Presenter>Атанас Темелков и Мирослав Георгиев</Presenter>
+		<Telephone>9300625</Telephone>
+		<Emails>bfsl@abv.bg</Emails>
+		<EIK>121796256</EIK>
+		<WebPage>www.archery.org</WebPage>
+		<ForeignData>INTERNATIONAL ARCHERY DEFERATION</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>36</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>202-000</SportUnionRegNumber>
+		<LicenceNumber>36</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Национална военна спортна федерация</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. Дякон Игнатий №3</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-16+02:00</UnionStatusDate>
+		<Sport>за военнослужещи и служители от въоръжените сили</Sport>
+		<Presenter>Емил Ефтимов и Явор Матеев</Presenter>
+		<Telephone>0888672372</Telephone>
+		<Emails>nmsf@mod.bg</Emails>
+		<EIK>176223843</EIK>
+		<WebPage>https://nmsf.mod.bg/</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>37</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>135-000</SportUnionRegNumber>
+		<LicenceNumber>37</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по хокей на трева</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-20+02:00</UnionStatusDate>
+		<Sport>хокей на трева</Sport>
+		<Presenter>Йорг Шенк</Presenter>
+		<Telephone>02/9300654</Telephone>
+		<Emails>bf_hockey@yahoo.com</Emails>
+		<EIK>121858722</EIK>
+		<WebPage>https://www.bghockey.org/</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>38</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>136-000</SportUnionRegNumber>
+		<LicenceNumber>38</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по трап, двоен трап и скийт</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. Васил Левски № 75, Коесп: гр. Плевен, п.к. 5800, ,
+			ул. Българска авиация №55</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-20+02:00</UnionStatusDate>
+		<Sport>скийт, двоен трап, трап</Sport>
+		<Presenter>Илия Кирилов</Presenter>
+		<Telephone>+359 64 600 687</Telephone>
+		<Emails>btsf@abv.bg</Emails>
+		<EIK>121742664</EIK>
+		<WebPage>https://www.btsf.bg/</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>39</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>137-000</SportUnionRegNumber>
+		<LicenceNumber>39</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по вдигане на тежести</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-20+02:00</UnionStatusDate>
+		<Sport>вдигане на тежести</Sport>
+		<Presenter>Неделчо Колев</Presenter>
+		<Telephone>+359 29 300 537</Telephone>
+		<Emails>wfbulgaria@abv.bg</Emails>
+		<EIK>176063374</EIK>
+		<WebPage>http://wfbulgaria.com/</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>40</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>138-000</SportUnionRegNumber>
+		<LicenceNumber>40</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по борба</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-20+02:00</UnionStatusDate>
+		<Sport>борба класически стил, борба свободен стил</Sport>
+		<Presenter>Христо Маринов и Валентин Рангелов -заедно и поотделно
+		</Presenter>
+		<Telephone>02 9800626, 02 9800627</Telephone>
+		<Emails>office@bul-wrestling.org</Emails>
+		<EIK>121505512</EIK>
+		<WebPage>www.bul-wrestling.org</WebPage>
+		<ForeignData>FEDERATION INTERNATIONAL DES LUTTES ASSOCIEES
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>41</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>139-000</SportUnionRegNumber>
+		<LicenceNumber>41</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по хандбал</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-20+02:00</UnionStatusDate>
+		<Sport>хандбал</Sport>
+		<Presenter>Росен Добрев</Presenter>
+		<Telephone>+359 (02) 986 15 16, факс: +359 (02) 986 15 16</Telephone>
+		<Emails>bfh@abv.bg</Emails>
+		<EIK>121449914</EIK>
+		<WebPage>https://bulgarianhandball.eu</WebPage>
+		<ForeignData>INTERNATIONAL HANDBALL FEDERATION</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>42</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>140-000</SportUnionRegNumber>
+		<LicenceNumber>42</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по кънки</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. "Княз Борис I" № 90</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-20+02:00</UnionStatusDate>
+		<Sport>фигурно пързаляне, шорттрек</Sport>
+		<Presenter>Татяна Димчева Йорданова</Presenter>
+		<Telephone>029887571</Telephone>
+		<Emails>office@bsf.bg</Emails>
+		<EIK>121135511</EIK>
+		<WebPage>http://www.bsf.bg/</WebPage>
+		<ForeignData>INTERNATIONAL SKATING UNION</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>43</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>141-000</SportUnionRegNumber>
+		<LicenceNumber>43</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по биатлон</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-20+02:00</UnionStatusDate>
+		<Sport>биатлон</Sport>
+		<Presenter>Екатерина Дафовска</Presenter>
+		<Telephone>9300590</Telephone>
+		<Emails>bfbiathlon@intech.bg</Emails>
+		<EIK>121448709</EIK>
+		<WebPage>www.biathlon-bg.net</WebPage>
+		<ForeignData>INTERNATIONAL BIATHLON UNION</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>44</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>142-000</SportUnionRegNumber>
+		<LicenceNumber>44</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска национална федерация карате</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-20+02:00</UnionStatusDate>
+		<Sport>карате</Sport>
+		<Presenter>Алексей Петров, Русалин Русалинов, Борис Николов - заедно и
+			поотделно</Presenter>
+		<Telephone>+359 88 441 4950</Telephone>
+		<Emails>office@bnfk.bg</Emails>
+		<EIK>121181302</EIK>
+		<WebPage>www.bnfk.bg</WebPage>
+		<ForeignData>WORLD KARATE FEDERATION</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>45</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>143-000</SportUnionRegNumber>
+		<LicenceNumber>45</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация на клубовете по спортни танци
+		</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. Васил Левски № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2019-12-20+02:00</UnionStatusDate>
+		<Sport>спортни танци</Sport>
+		<Presenter>Георги Найденов</Presenter>
+		<Telephone>0879189155</Telephone>
+		<Emails>contact@bdscf.org</Emails>
+		<EIK>177203377</EIK>
+		<WebPage>http://www.bdscf.org/</WebPage>
+		<ForeignData>World dance sport federation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>46</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>144-000</SportUnionRegNumber>
+		<LicenceNumber>46</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по бокс</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-07+02:00</UnionStatusDate>
+		<Sport>бокс</Sport>
+		<Presenter>Красимир Инински</Presenter>
+		<Telephone>+359 2 9300 595, 596</Telephone>
+		<Emails>infobgboxing@gmail.com; fedbgboxing@gmail.com</Emails>
+		<EIK>121341855</EIK>
+		<WebPage>https://www.bgboxing.org/</WebPage>
+		<ForeignData>ASSOCIATION INTERNATIONALE DE BOXE AMATEUR</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>47</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>145-000</SportUnionRegNumber>
+		<LicenceNumber>47</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска снукър федерация</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>Сливница No 186, офис 1</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-07+02:00</UnionStatusDate>
+		<Sport>снукър</Sport>
+		<Presenter>Олег Велинов</Presenter>
+		<Telephone></Telephone>
+		<Emails>bgsnooker@abv.bg</Emails>
+		<EIK>175510203</EIK>
+		<WebPage>www.bgsnooker.com</WebPage>
+		<ForeignData>Световната Снукър Асоциация, Международна билярд и снукър
+			федерация</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>48</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>146-000</SportUnionRegNumber>
+		<LicenceNumber>48</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска карате киокушин федерация</UnionName>
+		<UnionLocation>гр. Варна</UnionLocation>
+		<UnionAddress>район р-н Одесос, ул. Цар Симеон I No 31, ет. 3 Адрес за
+			кореспонденция: п. код 9701 гр. Шумен п.к. 1004</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-07+02:00</UnionStatusDate>
+		<Sport>карате киокушин</Sport>
+		<Presenter>Марин Митев и Стоян Димов - самостоятелно или заедно
+		</Presenter>
+		<Telephone></Telephone>
+		<Emails>ofice@kyokushin-kan.bg; kwu_bulgaria@abv.bg</Emails>
+		<EIK>103570622</EIK>
+		<WebPage>http://www.kyokushin-kan.bg/</WebPage>
+		<ForeignData>EUROPEAN KYOKUSHIN KARATE ORGANIZATION, Международна
+			организация по киукушун карате “Хонбу”</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>49</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>203-000</SportUnionRegNumber>
+		<LicenceNumber>49</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация за пожароприложен спорт</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. Пиротска №171А</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-07+02:00</UnionStatusDate>
+		<Sport>за служители от системата на Министерството на вътрешните
+			работи</Sport>
+		<Presenter>Трифон Гидиков</Presenter>
+		<Telephone>0888510751, 0887606753</Telephone>
+		<Emails>bfpps1991@abv.bg; mr_ainakieva@abv.bg</Emails>
+		<EIK>131391473</EIK>
+		<WebPage>http://pojarna.com/bg/sections/sportna_dejnost/</WebPage>
+		<ForeignData>Международната асоциация на пожарникарите</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>50</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>147-000</SportUnionRegNumber>
+		<LicenceNumber>50</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация скокове батут</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-07+02:00</UnionStatusDate>
+		<Sport>скокове батут</Sport>
+		<Presenter>Стоян Стоянов</Presenter>
+		<Telephone>029300688</Telephone>
+		<Emails>bul_tramp@abv.bg</Emails>
+		<EIK>831243549</EIK>
+		<WebPage>http://www.trampoline-bulgaria.com</WebPage>
+		<ForeignData>FEDERATION INTERNACIONALE DE GYMNASTIQUE</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>51</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>148-000</SportUnionRegNumber>
+		<LicenceNumber>51</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация бадминтон</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-07+02:00</UnionStatusDate>
+		<Sport>бадминтон</Sport>
+		<Presenter>Володя Златев и Антраник Касабян</Presenter>
+		<Telephone>02/9300550</Telephone>
+		<Emails>badmintonbg@gmail.com</Emails>
+		<EIK>121268515</EIK>
+		<WebPage>www.bfbadminton.bg</WebPage>
+		<ForeignData>INTERNATIONAL BADMINTON FEDERATION</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>52</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>149-000</SportUnionRegNumber>
+		<LicenceNumber>52</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по мотоциклетизъм</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. България 61 Адрес за кореспонденция: гр. София, ул.
+			"Позитано" № 22</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-07+02:00</UnionStatusDate>
+		<Sport>мотоциклетизъм</Sport>
+		<Presenter>Ангел Траков, Богдан Николов, Иво Цветанов</Presenter>
+		<Telephone>02 9818989</Telephone>
+		<Emails>gensek@bfm.bg</Emails>
+		<EIK>121333347</EIK>
+		<WebPage>http://bfm.bg</WebPage>
+		<ForeignData>FEDERATION INTERNATIONALE DE MOTOCYCLISME</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>53</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>150-000</SportUnionRegNumber>
+		<LicenceNumber>53</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска кърлинг федерация</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-07+02:00</UnionStatusDate>
+		<Sport>кърлинг</Sport>
+		<Presenter>Николай Рунтов</Presenter>
+		<Telephone>0888231317</Telephone>
+		<Emails>bulcurfed@gmail.com</Emails>
+		<EIK>176407213</EIK>
+		<WebPage>curling.bg</WebPage>
+		<ForeignData>WORLD CURLING FEDERATION</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>54</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>153-000</SportUnionRegNumber>
+		<LicenceNumber>58</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация колоездене</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. "Гюешево" № 3, Бизнес център Сердика, сгр. 2.3.,
+			офис 120</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-15+02:00</UnionStatusDate>
+		<Sport>колоездене</Sport>
+		<Presenter>Драгомир Кузов</Presenter>
+		<Telephone>0888310548</Telephone>
+		<Emails>admin@bgcf.bg</Emails>
+		<EIK>205777624</EIK>
+		<WebPage>http://bgcf.bg</WebPage>
+		<ForeignData>USI</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>55</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>205-000</SportUnionRegNumber>
+		<LicenceNumber>55</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска паралимпийска федерация</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-15+02:00</UnionStatusDate>
+		<Sport>спорт за хора с увреждания</Sport>
+		<Presenter>Илия Коцев</Presenter>
+		<Telephone>029300623</Telephone>
+		<Emails>ilalov@abv.bg</Emails>
+		<EIK>708323</EIK>
+		<WebPage>http://www.paralympic-bg.org/</WebPage>
+		<ForeignData>INTERNATIONAL PARALYMPIC COMMITTEE</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>56</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>151-000</SportUnionRegNumber>
+		<LicenceNumber>56</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по спортна акробатика</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-15+02:00</UnionStatusDate>
+		<Sport>спортна акробатика</Sport>
+		<Presenter>Владимир Колев, а в негово отсъствие от Недко Костадинов
+		</Presenter>
+		<Telephone>029300526</Telephone>
+		<Emails>bulacro@gmail.com</Emails>
+		<EIK>121311137</EIK>
+		<WebPage>www.bfsa-bg.com</WebPage>
+		<ForeignData>FIG</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>57</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>152-000</SportUnionRegNumber>
+		<LicenceNumber>57</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по автомоделни спортове</UnionName>
+		<UnionLocation>гр. Враца</UnionLocation>
+		<UnionAddress>ул. Стоян Заимов, бл. 37, вх. А, ет. 1, ап. 2
+		</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-15+02:00</UnionStatusDate>
+		<Sport>автомоделни спортове</Sport>
+		<Presenter>Янко Здравков и Дамян Петров</Presenter>
+		<Telephone>0889323015</Telephone>
+		<Emails>da_petrov@abv.bg; bfamsfed@abv.bg</Emails>
+		<EIK>106503881</EIK>
+		<WebPage>http://www.automodelsport.com/</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>58</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>204-000</SportUnionRegNumber>
+		<LicenceNumber>54</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация спорт за всички</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" No 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-15+02:00</UnionStatusDate>
+		<Sport>спорт за всички</Sport>
+		<Presenter>Десислава Илиева</Presenter>
+		<Telephone>0888322698, 0887198064</Telephone>
+		<Emails>bfsv_basv@abv.bg</Emails>
+		<EIK>831518066</EIK>
+		<WebPage>http://sportforall-bg.org/</WebPage>
+		<ForeignData>TRIM AND FITNESS INTERNATIONAL SPORT FOR ALL ASSOCIATION
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>59</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>154-000</SportUnionRegNumber>
+		<LicenceNumber>59</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по фехтовка</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-31+02:00</UnionStatusDate>
+		<Sport>фехтовка</Sport>
+		<Presenter>Величка Христева</Presenter>
+		<Telephone>9300646, 647</Telephone>
+		<Emails>bulfencing@abv.bg</Emails>
+		<EIK>121797803</EIK>
+		<WebPage>www.bulfencing.com</WebPage>
+		<ForeignData>FEDERATION INTERNATIONALE D'ESCRIME</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>60</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>155-000</SportUnionRegNumber>
+		<LicenceNumber>60</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Български футболен съюз</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. „Витошко лале“ № 18</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-23+02:00</UnionStatusDate>
+		<Sport>футбол</Sport>
+		<Presenter>Борислав Михайлов</Presenter>
+		<Telephone>02/875723</Telephone>
+		<Emails>bfu@bfunion.bg</Emails>
+		<EIK>692965</EIK>
+		<WebPage>www.bfunion.bg</WebPage>
+		<ForeignData>Union des association Europeennes de football -UEFA
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>61</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>206-000</SportUnionRegNumber>
+		<LicenceNumber>61</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска мастърс федерация</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-27+02:00</UnionStatusDate>
+		<Sport>спорт за хора във и над трудоспособна възраст</Sport>
+		<Presenter>Здравка Йорданова</Presenter>
+		<Telephone>029300622</Telephone>
+		<Emails>bgmasters2012@gmail.com</Emails>
+		<EIK>130210646</EIK>
+		<WebPage>bg-masters.com</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>62</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>207-000</SportUnionRegNumber>
+		<LicenceNumber>63</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Спортна Асоциация - МВР</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. Балша № 18, Спортен комплекс "Раковски"
+		</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-27+02:00</UnionStatusDate>
+		<Sport>за служители от системата на Министерството на вътрешните
+			работи</Sport>
+		<Presenter>Неделчо Стойчев Чавдар Петров Ивайло Иванов</Presenter>
+		<Telephone>02/982807</Telephone>
+		<Emails>office@sa-mvr.com</Emails>
+		<EIK>831393125</EIK>
+		<WebPage>https://www.sa-mvr.com/</WebPage>
+		<ForeignData>Европейски полицейски спортен съюз</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>63</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>156-000</SportUnionRegNumber>
+		<LicenceNumber>62</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по кендо</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ж.к. Хаджи Димитър, ул. "Златица", бл. 138, вх. В, ет.
+			3, ап. 48</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-01-31+02:00</UnionStatusDate>
+		<Sport>иайдо, кендо, джодо</Sport>
+		<Presenter>Александър Арабаджийски</Presenter>
+		<Telephone>945 7180, 0885 834 154</Telephone>
+		<Emails>kendo_alex@abv.bg</Emails>
+		<EIK>121000927</EIK>
+		<WebPage>www.kendo.bg</WebPage>
+		<ForeignData>INTERNATIONAL KENDO FEDERATION / EUROPEAN KENDO
+			FEDERATION</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>64</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>208-000</SportUnionRegNumber>
+		<LicenceNumber>64</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Спортна федерация на глухите в България</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-02-14+02:00</UnionStatusDate>
+		<Sport>спорт за хора с увреждания</Sport>
+		<Presenter>Николай Бозев</Presenter>
+		<Telephone>0884330884, 9300723</Telephone>
+		<Emails>bulgariandeafsports@abv.bg</Emails>
+		<EIK>131199551</EIK>
+		<WebPage>http://www.bdsf-bg.org</WebPage>
+		<ForeignData>International committee of sports for the deaf, European
+			Deaf sport organization</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>65</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>209-000</SportUnionRegNumber>
+		<LicenceNumber>65</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска спортна федерация за деца и младежи в риск
+		</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ж.к. Яворов, ул. „Иван Асен II“ № 71</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-02-14+02:00</UnionStatusDate>
+		<Sport>в областта на спорта за всички - за деца и младежи в риск
+		</Sport>
+		<Presenter>Анатоли Илиев</Presenter>
+		<Telephone>0888611191</Telephone>
+		<Emails>bsfdlrg_bg@abv.bg</Emails>
+		<EIK>131450612</EIK>
+		<WebPage>www.bulgariansportfederation.eu</WebPage>
+		<ForeignData>ENGSO</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>66</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>210-000</SportUnionRegNumber>
+		<LicenceNumber>66</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Федерация спорт за хора със зрителни увреждания</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. "Найчо Цанов" № 172</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-02-14+02:00</UnionStatusDate>
+		<Sport>спорт за хора с увреждания</Sport>
+		<Presenter>Иван Янев</Presenter>
+		<Telephone>0888100462</Telephone>
+		<Emails>fshzubg@gmail.com</Emails>
+		<EIK>175294727</EIK>
+		<WebPage>vipsport.bg</WebPage>
+		<ForeignData>Международна спортна федерация на незрящите, Международна
+			асоциация по брайлов шах</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>67</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>157-000</SportUnionRegNumber>
+		<LicenceNumber>67</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Национална федерация българско кемпо - булкемпо</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>жк. Дианабад бл. 5- В ап.29</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-02-14+02:00</UnionStatusDate>
+		<Sport>кемпо</Sport>
+		<Presenter>Велин Хаджолов и Анна Априлова</Presenter>
+		<Telephone>0888507851, 0885815335</Telephone>
+		<Emails>info@bulgariankempo.com</Emails>
+		<EIK>175861526</EIK>
+		<WebPage>www.bulgariankempo.com</WebPage>
+		<ForeignData>INTERNATIONAL KEMPO FEDERATION</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>68</ExternalId>
+		<SportUnionType>НОСТД</SportUnionType>
+		<SportUnionRegNumber>158-000</SportUnionRegNumber>
+		<LicenceNumber>68</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по туризъм</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. Васил Левски № 75, ет. 5, ап. 504</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-02-18+02:00</UnionStatusDate>
+		<Sport></Sport>
+		<Presenter>Весел Пендичев</Presenter>
+		<Telephone>0882966451, 088966452</Telephone>
+		<Emails>bftourism@abv.bg</Emails>
+		<EIK>121568719</EIK>
+		<WebPage>http://www.bftourism.net/</WebPage>
+		<ForeignData>INTERNATIONAL DANUBIEN TID, Audax club Parisien
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>69</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>211-000</SportUnionRegNumber>
+		<LicenceNumber>69</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска асоциация спорт за учащи</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-02-14+02:00</UnionStatusDate>
+		<Sport>спорт за учащи</Sport>
+		<Presenter>Юлия Йорданова и Красимир Кръстев</Presenter>
+		<Telephone>9300815</Telephone>
+		<Emails>basu_07@abv.bg</Emails>
+		<EIK>175419426</EIK>
+		<WebPage>http://basu.bg/</WebPage>
+		<ForeignData>International School Sport Federation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>70</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>159-000</SportUnionRegNumber>
+		<LicenceNumber>70</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по волейбол</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-02-19+02:00</UnionStatusDate>
+		<Sport>волейбол</Sport>
+		<Presenter>Любомир Ганев</Presenter>
+		<Telephone>029026440</Telephone>
+		<Emails>office@volleyball.bg</Emails>
+		<EIK>121268102</EIK>
+		<WebPage>https://www.volleyball.bg/</WebPage>
+		<ForeignData>FEDERATION INTERNATIONALE DE VOLLEYBALL</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>71</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>160-000</SportUnionRegNumber>
+		<LicenceNumber>71</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по тенис</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. Незабравка 3-5 Български Национален тенис център
+		</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-02-19+02:00</UnionStatusDate>
+		<Sport>тенис</Sport>
+		<Presenter>Георги Крумов</Presenter>
+		<Telephone>0887500600</Telephone>
+		<Emails>bft@bgtennis.bg</Emails>
+		<EIK>708469</EIK>
+		<WebPage>www.bgtennis.bg</WebPage>
+		<ForeignData>International tennis federation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>72</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>161-000</SportUnionRegNumber>
+		<LicenceNumber>72</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по водна топка</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-02-21+02:00</UnionStatusDate>
+		<Sport>водна топка</Sport>
+		<Presenter>Христо Данов</Presenter>
+		<Telephone>02/9300639</Telephone>
+		<Emails>info@waterpolobg.com</Emails>
+		<EIK>121449031</EIK>
+		<WebPage>https://waterpolobg.com/</WebPage>
+		<ForeignData>FEDERATION INTERNACIONALE DE NATION AMATEUR</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>73</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>162-000</SportUnionRegNumber>
+		<LicenceNumber>73</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българската федерация по таекуон-до стил ВТ</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-02-21+02:00</UnionStatusDate>
+		<Sport>таекуон до стил Вт</Sport>
+		<Presenter>Славчо Бинев</Presenter>
+		<Telephone>02/4219865</Telephone>
+		<Emails>office@taekwondo-bulgaria.org</Emails>
+		<EIK>121565235</EIK>
+		<WebPage>https://www.taekwondo-bulgaria.org/</WebPage>
+		<ForeignData>WORLD TAEKWONDO UNION</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>74</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>212-000</SportUnionRegNumber>
+		<LicenceNumber>74</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Асоциация за университетски спорт "Академик"</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>НСА "Васил Левски"</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-03-04+02:00</UnionStatusDate>
+		<Sport>спорт за учащи</Sport>
+		<Presenter>Златко Джуров</Presenter>
+		<Telephone>0898776587</Telephone>
+		<Emails>office@aus.bg</Emails>
+		<EIK>121181715</EIK>
+		<WebPage>https://www.facebook.com/ausakademik/</WebPage>
+		<ForeignData>International University sport federation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>75</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>163-000</SportUnionRegNumber>
+		<LicenceNumber>75</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска асоциация по триатлон</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. Черни връх N 51, ет.9</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-03-30+03:00</UnionStatusDate>
+		<Sport>триатлон</Sport>
+		<Presenter>Марио Илиев</Presenter>
+		<Telephone>0887440944</Telephone>
+		<Emails>info@triathlon.bg</Emails>
+		<EIK>205929733</EIK>
+		<WebPage>www.triathlon.bg</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>76</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>164-000</SportUnionRegNumber>
+		<LicenceNumber>76</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по хокей на лед</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" No 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-03-30+03:00</UnionStatusDate>
+		<Sport>хокей на лед</Sport>
+		<Presenter>Мартин Миланов</Presenter>
+		<Telephone>02/9300610</Telephone>
+		<Emails>bihf@mail.com</Emails>
+		<EIK>831565411</EIK>
+		<WebPage>http://hockey.bg/</WebPage>
+		<ForeignData>INTERNATIONAL ICE HOCKEY FEDERATION</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>77</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>165-000</SportUnionRegNumber>
+		<LicenceNumber>77</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Български национален аероклуб</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. Евлоги Георгиев № 97</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-04-14+03:00</UnionStatusDate>
+		<Sport>въздушни спортове</Sport>
+		<Presenter>Ангел Стаменов, Цветан Цолов, Димитър Ралев</Presenter>
+		<Telephone>0898450264</Telephone>
+		<Emails>national_aeroclub@mail.bg; info@dropzone.bg</Emails>
+		<EIK>130663828</EIK>
+		<WebPage>www.bnac.bg</WebPage>
+		<ForeignData>FEDERATION AERONAUTIQUE INTERNATIONALE</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>78</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>166-000</SportUnionRegNumber>
+		<LicenceNumber>78</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по йога</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. Васил Левски № 75 ет. 4, ап. 18</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-04-14+03:00</UnionStatusDate>
+		<Sport>йога</Sport>
+		<Presenter>Вера Захариева, Анна Бакалова</Presenter>
+		<Telephone>0877599344</Telephone>
+		<Emails>bf_yoga@abv.bg</Emails>
+		<EIK>121498612</EIK>
+		<WebPage>http://yoga-bf.com/</WebPage>
+		<ForeignData>INTERNATIONAL YOGA FEDERATION</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>79</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>167-000</SportUnionRegNumber>
+		<LicenceNumber>79</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по динамична стрелба</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. Шести септември № 13, вх. Б, ет. 3, ап. 34
+		</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-04-14+03:00</UnionStatusDate>
+		<Sport>динамична стрелба</Sport>
+		<Presenter>Мариян Петков</Presenter>
+		<Telephone>0887631267, 0888500501</Telephone>
+		<Emails>bul@ipscbg.org</Emails>
+		<EIK>131461167</EIK>
+		<WebPage>www.ipscbg.org</WebPage>
+		<ForeignData>INTERNATIONAL PRACTICAL SHOOTING CONFEDERATION
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>80</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>340-000</SportUnionRegNumber>
+		<LicenceNumber>80</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска джу джицу федерация</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ж.к. Стрелбище, ул. Мила Родина No 17</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-04-14+03:00</UnionStatusDate>
+		<Sport>джу-джицу</Sport>
+		<Presenter>Томо Борисов</Presenter>
+		<Telephone>029582829</Telephone>
+		<Emails>ju-Іjitsu@abv.bg</Emails>
+		<EIK>131223372</EIK>
+		<WebPage>www.bjjf.org</WebPage>
+		<ForeignData>JU-JITSU EUROPEAN UNION, JU-JITSU INTERNATIONAL
+			FEDERATION</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>81</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>169-000</SportUnionRegNumber>
+		<LicenceNumber>81</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по крикет</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. „Васил Левски“ № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-04-14+03:00</UnionStatusDate>
+		<Sport>крикет</Sport>
+		<Presenter>Андрей Лилов</Presenter>
+		<Telephone>029300744, 0898776685</Telephone>
+		<Emails>bfcricket_bg@abv.bg</Emails>
+		<EIK>130914611</EIK>
+		<WebPage>http://www.cricket-bg.org</WebPage>
+		<ForeignData>International cricet council</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>82</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>170-000</SportUnionRegNumber>
+		<LicenceNumber>82</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска кудо федерация</UnionName>
+		<UnionLocation>гр. Хасково</UnionLocation>
+		<UnionAddress>бул. Раковски № 15</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-04-14+03:00</UnionStatusDate>
+		<Sport>кудо</Sport>
+		<Presenter>Господин Бабамов</Presenter>
+		<Telephone>0886018005, 0884691075</Telephone>
+		<Emails>kudobulgaria@yahoo.com</Emails>
+		<EIK>126741388</EIK>
+		<WebPage>www.kudo-bulgaria.org</WebPage>
+		<ForeignData>KUDO INTERNATIONAL FEDERATION</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>83</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>171-000</SportUnionRegNumber>
+		<LicenceNumber>83</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска бодибилдинг и фитнес федерация</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. „Васил Левски“ № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-04-14+03:00</UnionStatusDate>
+		<Sport>бодибилдинг, фитнес</Sport>
+		<Presenter>Янко Бойкинов</Presenter>
+		<Telephone>0889001663</Telephone>
+		<Emails>info@bbbff.bg</Emails>
+		<EIK>177153538</EIK>
+		<WebPage>www.bbbff.bg</WebPage>
+		<ForeignData>IFBB</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>84</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>172-000</SportUnionRegNumber>
+		<LicenceNumber>84</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска айкидо федерация</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>кв. Драгалевци, ул. „Акад. Петър Динеков“ № 11
+		</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-04-14+03:00</UnionStatusDate>
+		<Sport>айкидо</Sport>
+		<Presenter>Пламен Юруков</Presenter>
+		<Telephone>0888771855, 0894455888</Telephone>
+		<Emails>yourukov@venynuts.com; dolphins_org@yahoo.com</Emails>
+		<EIK>121596490</EIK>
+		<WebPage>www.baf.org</WebPage>
+		<ForeignData>International aikido federation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>85</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>173-000</SportUnionRegNumber>
+		<LicenceNumber>85</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по спелеология</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-06-19+03:00</UnionStatusDate>
+		<Sport>спелеология</Sport>
+		<Presenter>Явор Шопов</Presenter>
+		<Telephone>0898448132</Telephone>
+		<Emails>bfs@speleo-bg.org</Emails>
+		<EIK>121805883</EIK>
+		<WebPage>www.speleo-bg.org</WebPage>
+		<ForeignData>International union of speleology</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>86</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>174-000</SportUnionRegNumber>
+		<LicenceNumber>86</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска скейтборд федерация</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. Козлодуй № 134</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-06-19+03:00</UnionStatusDate>
+		<Sport>скейтборд</Sport>
+		<Presenter>Борис Атанасов</Presenter>
+		<Telephone>0885715878</Telephone>
+		<Emails>skateboard.federation@abv.bg</Emails>
+		<EIK>130296289</EIK>
+		<WebPage></WebPage>
+		<ForeignData>International skateboarding federation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>87</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>175-000</SportUnionRegNumber>
+		<LicenceNumber>87</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска ролер-скейт федерация</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ж.к. Младост 3, бл. 307, вх. 8, ап. 46,адрес за
+			кореспонденция НДК – адм. Сграда, ет.4, офис Онборд</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-06-19+03:00</UnionStatusDate>
+		<Sport>ролер-скейт</Sport>
+		<Presenter>Лозан Стефанов</Presenter>
+		<Telephone>0888219305, 0888618061</Telephone>
+		<Emails>rollerskatefed@abv.bg</Emails>
+		<EIK>130491225</EIK>
+		<WebPage>www.rollerskatebg.org</WebPage>
+		<ForeignData>World skate federation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>88</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>176-000</SportUnionRegNumber>
+		<LicenceNumber>88</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация савате</UnionName>
+		<UnionLocation>гр. Пловдив</UnionLocation>
+		<UnionAddress>ул. Славянска № 19</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-06-19+03:00</UnionStatusDate>
+		<Sport>савате</Sport>
+		<Presenter>Георги Танчев</Presenter>
+		<Telephone>0884484447</Telephone>
+		<Emails>bffb@abv.bg</Emails>
+		<EIK>176352667</EIK>
+		<WebPage>www.savate.bg</WebPage>
+		<ForeignData>International Savate Federation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>89</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>177-000</SportUnionRegNumber>
+		<LicenceNumber>89</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по подводни спортове</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-06-19+03:00</UnionStatusDate>
+		<Sport>подводни спортове</Sport>
+		<Presenter>Марио Христов</Presenter>
+		<Telephone>0887216517</Telephone>
+		<Emails>board@busf.bg</Emails>
+		<EIK>131182648</EIK>
+		<WebPage>www.busf.bg</WebPage>
+		<ForeignData>Confederation mondiale des activites subaquatiques
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>90</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>178-000</SportUnionRegNumber>
+		<LicenceNumber>90</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по ръгби</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. „Толбухин“ № 18 /настоящ бул. Васил Левски № 75/
+		</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-06-19+03:00</UnionStatusDate>
+		<Sport>ръгби</Sport>
+		<Presenter>Атанас Зафиров</Presenter>
+		<Telephone>029300643, 0892299725</Telephone>
+		<Emails>bfrugby_ofice@abv.bg; bfrugby_td@abv.bg</Emails>
+		<EIK>831147807</EIK>
+		<WebPage>https://rugbybulgaria.com/bulgarska-federaciq-rugby/
+		</WebPage>
+		<ForeignData>Ръгби Европа</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>91</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>179-000</SportUnionRegNumber>
+		<LicenceNumber>91</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по картинг - НКС</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. "Витиня" №2Ж</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-07-15+03:00</UnionStatusDate>
+		<Sport>картинг</Sport>
+		<Presenter>Росен Даскалов</Presenter>
+		<Telephone>0892211954</Telephone>
+		<Emails>office@bfk.bg</Emails>
+		<EIK>205212913</EIK>
+		<WebPage></WebPage>
+		<ForeignData>Commision Internationale de Karting-FIA (CIK-FIA)
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>92</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>180-000</SportUnionRegNumber>
+		<LicenceNumber>92</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по бейзбол и софтбол</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>кв. Манастирски ливади, ул. "Лъвски рид" № 20
+		</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-10-30+02:00</UnionStatusDate>
+		<Sport>бейзбол, софтбол</Sport>
+		<Presenter>Юрий Алкалай</Presenter>
+		<Telephone>0876400200</Telephone>
+		<Emails>office@softball.bg</Emails>
+		<EIK>121892991</EIK>
+		<WebPage>www.softball.bg www.baseball.bg</WebPage>
+		<ForeignData>World baseball softball confederation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>93</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>181-000</SportUnionRegNumber>
+		<LicenceNumber>93</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска бодигард федерация</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>район Лозенец, ул. „Богатица” № 10</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-10-30+02:00</UnionStatusDate>
+		<Sport>приложен спорт за охранители</Sport>
+		<Presenter>Румен Ралчев</Presenter>
+		<Telephone>+359 885502200</Telephone>
+		<Emails>bs_institute@abv.bg</Emails>
+		<EIK>176290233</EIK>
+		<WebPage>https://boyguard.bg/</WebPage>
+		<ForeignData>International bodyguard federation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>94</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>182-000</SportUnionRegNumber>
+		<LicenceNumber>94</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по силов трибой</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" № 75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-10-30+02:00</UnionStatusDate>
+		<Sport>силов трибой</Sport>
+		<Presenter>Иван Башлиев</Presenter>
+		<Telephone>0888805421, 0887074948</Telephone>
+		<Emails>bpf@abv.bg</Emails>
+		<EIK>121185699</EIK>
+		<WebPage>powerlifting-bg.com</WebPage>
+		<ForeignData>Interneational powerlifting federation</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>95</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>183-000</SportUnionRegNumber>
+		<LicenceNumber>95</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска брейк федерация</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ж.к. Орландовци, ул. "Подем" №8</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-11-26+02:00</UnionStatusDate>
+		<Sport>брейк</Sport>
+		<Presenter>Калин Калинов</Presenter>
+		<Telephone>+359883381463</Telephone>
+		<Emails>b.breakingfederation@gmail.com</Emails>
+		<EIK>205783214</EIK>
+		<WebPage>www.worlddancesport.org</WebPage>
+		<ForeignData>World Dance Sport Federation - WDSF</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>96</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>184-000</SportUnionRegNumber>
+		<LicenceNumber>96</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по акробатичен рокендрол</UnionName>
+		<UnionLocation>гр. Варна</UnionLocation>
+		<UnionAddress>ж.к. Виница, ул. "Антон Пруткин" №4</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-11-26+02:00</UnionStatusDate>
+		<Sport>акробатичен рокендрол, буги вуги</Sport>
+		<Presenter>Неделчо Недялков</Presenter>
+		<Telephone>0894443322</Telephone>
+		<Emails>barrf1991@gmail.com</Emails>
+		<EIK>121705616</EIK>
+		<WebPage>barrf.eu</WebPage>
+		<ForeignData>Световна рокендрол конфедерация/WRRC/</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>97</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>186-000</SportUnionRegNumber>
+		<LicenceNumber>98</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по петанк</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. "Гургулят" №30, ет. 4, ап. 13</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-12-16+02:00</UnionStatusDate>
+		<Sport>петанк</Sport>
+		<Presenter>Румен Рачев</Presenter>
+		<Telephone>0888425779</Telephone>
+		<Emails>bulpetanque@abv.bg</Emails>
+		<EIK>130390112</EIK>
+		<WebPage>www.petanque-bulgaria.com</WebPage>
+		<ForeignData>FEDERATION INTERNATIONAL DE PETANOUE ET JEU PROVENCAL
+		</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>98</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>187-000</SportUnionRegNumber>
+		<LicenceNumber>99</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска голф асоциация</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. Оборище № 19</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-12-16+02:00</UnionStatusDate>
+		<Sport>голф</Sport>
+		<Presenter>Красимир Гергов</Presenter>
+		<Telephone>02/ 9430610</Telephone>
+		<Emails>office@golfbg.com</Emails>
+		<EIK>130484006</EIK>
+		<WebPage>www.golfbg.com</WebPage>
+		<ForeignData>Европейска голф асоциация</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>99</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>188-000</SportUnionRegNumber>
+		<LicenceNumber>100</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация по риболовни спортове</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. Витоша № 31-33</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-12-21+02:00</UnionStatusDate>
+		<Sport>риболовни спортове</Sport>
+		<Presenter>Георги Стефанов иванов</Presenter>
+		<Telephone>02/9879538 0887983838</Telephone>
+		<Emails>bfrs@abv.bg; office@bfrs.bg</Emails>
+		<EIK>131043278</EIK>
+		<WebPage>http://bfrs.bg/</WebPage>
+		<ForeignData>FEDERATION INTERNATIONALE DE LA PECHE SPORTIVE EN EAU
+			DOUCE</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>100</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>189-000</SportUnionRegNumber>
+		<LicenceNumber>101</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Български чирлидинг съюз</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" №75</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-12-21+02:00</UnionStatusDate>
+		<Sport>чирлидинг</Sport>
+		<Presenter>Милко Кралски</Presenter>
+		<Telephone>0878701212</Telephone>
+		<Emails>mkralski@gmail.com</Emails>
+		<EIK>177212067</EIK>
+		<WebPage>www.bulcu.eu</WebPage>
+		<ForeignData>Международен чирлидинг съюз</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>101</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>337-000</SportUnionRegNumber>
+		<UnionName>Сдружение "Българска бридж федерация"</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. "Цар Самуил" №22, ет. 1</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2021-02-09+02:00</UnionStatusDate>
+		<Sport>бридж</Sport>
+		<Presenter>Елица Чешитева, Климентин Николчев</Presenter>
+		<Telephone>0882009445</Telephone>
+		<Emails>office@bridge.bg</Emails>
+		<EIK>130239758</EIK>
+		<WebPage>www.bridge.bg</WebPage>
+		<ForeignData>Европейска бридж лига (EBL)</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>102</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>191-000</SportUnionRegNumber>
+		<LicenceNumber>СД-93</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>Българска федерация на радиолюбителите - БФРЛ</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ж.к. Лагера, бл. 5, ап. Офис 1</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2021-06-09+03:00</UnionStatusDate>
+		<Sport>радиоспорт</Sport>
+		<Presenter>Виктор Ценков</Presenter>
+		<Telephone>+359889318297</Telephone>
+		<Emails>lz3nn@abv.bg</Emails>
+		<EIK>121597083</EIK>
+		<WebPage>www.bfra.bg</WebPage>
+		<ForeignData>International Amateur Radio Union - IARU</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>103</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>341-000</SportUnionRegNumber>
+		<UnionName>Българска федерация по ушу</UnionName>
+		<UnionLocation>гр. Бургас</UnionLocation>
+		<UnionAddress>ж.к. Възраждане, ул. "Македония" №81-партер
+		</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2021-06-09+03:00</UnionStatusDate>
+		<Sport>ушу</Sport>
+		<Presenter>Стефан Колев</Presenter>
+		<Telephone>0879939999</Telephone>
+		<Emails>bulgarian.wushu.federation.gmail.com</Emails>
+		<EIK>130591108</EIK>
+		<WebPage>www.bgwuf.org</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>105</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>311-000</SportUnionRegNumber>
+		<UnionName>Българска федерация по шахмат 1928</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул. "Васил Левски" №75</UnionAddress>
+		<UnionStatus>Заличен</UnionStatus>
+		<UnionStatusDate>2020-12-15+02:00</UnionStatusDate>
+		<Sport>шахмат</Sport>
+		<Presenter>Руслан Тошев</Presenter>
+		<Telephone>0888 636 986</Telephone>
+		<Emails>office@bgchessfederation.org</Emails>
+		<EIK>177219591</EIK>
+		<WebPage>www.bgchessfederation.org</WebPage>
+		<ForeignData>International Chess Federation</ForeignData>
+		<CancelationOrder>отменена заповед № РД 09-1312/15.12.2020</CancelationOrder>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>106</ExternalId>
+		<SportUnionType>Обединен спортен клуб</SportUnionType>
+		<SportUnionRegNumber>301-000</SportUnionRegNumber>
+		<LicenceNumber>301-000</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>ОБЕДИНЕН СПОРТЕН КЛУБ "ЛЕВСКИ - СОФИЯ"</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. "Тодорини кукли" №47</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-07-08+03:00</UnionStatusDate>
+		<Sport>художествена гимнастика, лека атлетика, джудо</Sport>
+		<Presenter>Бранимира Цветанова</Presenter>
+		<Telephone>0889115730</Telephone>
+		<Emails>sclevskisofia@abv.bg</Emails>
+		<EIK>177043677</EIK>
+		<WebPage></WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>107</ExternalId>
+		<SportUnionType>Обединен спортен клуб</SportUnionType>
+		<SportUnionRegNumber>302-000</SportUnionRegNumber>
+		<LicenceNumber>302-000</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>ОБЕДИНЕН СПОРТЕН КЛУБ АСЕНОВЕЦ</UnionName>
+		<UnionLocation>гр. Асеновград</UnionLocation>
+		<UnionAddress>ул. "Изложение" №1</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-10-23+03:00</UnionStatusDate>
+		<Sport>вдигане на тежести, кану-каяк, баскетбол, волейбол</Sport>
+		<Presenter>Лъчезар Кишкилов</Presenter>
+		<Telephone>0897821333</Telephone>
+		<Emails></Emails>
+		<EIK>463952</EIK>
+		<WebPage></WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>108</ExternalId>
+		<SportUnionType>Обединен спортен клуб</SportUnionType>
+		<SportUnionRegNumber>303-000</SportUnionRegNumber>
+		<LicenceNumber>303-000</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>ОБЕДИНЕН СПОРТЕН КЛУБ ЧЕРНО МОРЕ</UnionName>
+		<UnionLocation>гр. Варна</UnionLocation>
+		<UnionAddress>ул. "Никола Вапцаров" №9</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2020-12-18+02:00</UnionStatusDate>
+		<Sport></Sport>
+		<Presenter>Бончо Бонев, Григор Фиданов - заедно и поотделно
+		</Presenter>
+		<Telephone>052 302 985</Telephone>
+		<Emails>pavlova.chernomore@abv.bg</Emails>
+		<EIK>90542</EIK>
+		<WebPage></WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>118</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>336-000</SportUnionRegNumber>
+		<LicenceNumber>СД-33</LicenceNumber>
+		<RegNumberEntryOrder>СД-66</RegNumberEntryOrder>
+		<EntryOrderDate>2022-09-26+03:00</EntryOrderDate>
+		<UnionName>Тестово обединение</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ул. Спортна № 66</UnionAddress>
+		<UnionStatus>Заличен</UnionStatus>
+		<UnionStatusDate>2022-09-26+03:00</UnionStatusDate>
+		<Sport>авто-мото спорт</Sport>
+		<Presenter>Иван Иванов</Presenter>
+		<Telephone></Telephone>
+		<Emails></Emails>
+		<EIK>822486858</EIK>
+		<WebPage></WebPage>
+		<ForeignData>EUROPEAN FEDERATION FOR COMPANY SPORT, USI</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>127</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>317-000</SportUnionRegNumber>
+		<LicenceNumber>22-11-33</LicenceNumber>
+		<RegNumberEntryOrder>0002/3</RegNumberEntryOrder>
+		<EntryOrderDate>2022-08-31+03:00</EntryOrderDate>
+		<UnionName>Тест - Мария 1</UnionName>
+		<UnionLocation>гр. Кюстендил</UnionLocation>
+		<UnionAddress>ул. Незабравка 18</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2022-08-30+03:00</UnionStatusDate>
+		<Sport></Sport>
+		<Presenter></Presenter>
+		<Telephone></Telephone>
+		<Emails></Emails>
+		<EIK>655589098</EIK>
+		<WebPage></WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>129</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>330-000</SportUnionRegNumber>
+		<UnionName>Давид Холдинг АД</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>бул.Васил Левски 114</UnionAddress>
+		<UnionStatus>В разглеждане</UnionStatus>
+		<UnionStatusDate>2022-09-14+03:00</UnionStatusDate>
+		<Sport>авиомоделизъм, авто-мото спорт</Sport>
+		<Presenter></Presenter>
+		<Telephone></Telephone>
+		<Emails>ktomova@david.bg</Emails>
+		<EIK>833092882</EIK>
+		<WebPage></WebPage>
+		<ForeignData>INTERNATIONAL YOGA FEDERATION, FEDERATION INTERNATIONAL
+			DE L'AUTOMOBILE /FIA/</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>132</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber></SportUnionRegNumber>
+		<UnionName>TechnoLogica ЕAD</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>р-н Лозенец, ул. "Червена стена", № 46</UnionAddress>
+		<UnionStatus>В разглеждане</UnionStatus>
+		<UnionStatusDate>2022-09-14+03:00</UnionStatusDate>
+		<Sport>шотокан карате-до</Sport>
+		<Presenter></Presenter>
+		<Telephone>+ 359 2 91 912</Telephone>
+		<Emails>office@technologica.com</Emails>
+		<EIK>200205480</EIK>
+		<WebPage>www.technologica.com</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>133</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber></SportUnionRegNumber>
+		<UnionName>TechnoLogica ЕAD</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>р-н Лозенец, ул. "Червена стена", № 46</UnionAddress>
+		<UnionStatus>В разглеждане</UnionStatus>
+		<UnionStatusDate>2022-09-14+03:00</UnionStatusDate>
+		<Sport>автомобилизъм</Sport>
+		<Presenter>Антраник Касабян</Presenter>
+		<Telephone>+ 359 2 91 912</Telephone>
+		<Emails>office@technologica.com</Emails>
+		<EIK>981461637488</EIK>
+		<WebPage>www.technologica.com</WebPage>
+		<ForeignData>UNION INTERNATIONALE MOTONAUTIQUE</ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>134</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber></SportUnionRegNumber>
+		<UnionName>Тестови спортен клуб</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress></UnionAddress>
+		<UnionStatus>В разглеждане</UnionStatus>
+		<UnionStatusDate>2022-09-16+03:00</UnionStatusDate>
+		<Sport>авиомоделизъм, авто-мото спорт</Sport>
+		<Presenter></Presenter>
+		<Telephone></Telephone>
+		<Emails></Emails>
+		<EIK>639472989</EIK>
+		<WebPage></WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>136</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber></SportUnionRegNumber>
+		<UnionName>TechnoLogica ЕAD</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>р-н Лозенец, ул. "Червена стена", № 46</UnionAddress>
+		<UnionStatus>В разглеждане</UnionStatus>
+		<UnionStatusDate>2022-09-21+03:00</UnionStatusDate>
+		<Sport></Sport>
+		<Presenter></Presenter>
+		<Telephone>+ 359 2 91 912</Telephone>
+		<Emails>office@technologica.com</Emails>
+		<EIK>121415869</EIK>
+		<WebPage>www.technologica.com</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>138</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>346-000</SportUnionRegNumber>
+		<UnionName>FOND TESTOVO DELO</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>ugomznlom, жк. ugomznlom, бл. 502, вх. ugomznlom, ет.
+			502, ап. 502</UnionAddress>
+		<UnionStatus>Заличен</UnionStatus>
+		<UnionStatusDate>2022-09-30+03:00</UnionStatusDate>
+		<Sport>адаптирана физическа активност</Sport>
+		<Presenter>Петър Петров</Presenter>
+		<Telephone>02 000 02 95</Telephone>
+		<Emails>office@dpftd.com</Emails>
+		<EIK>446322596</EIK>
+		<WebPage>www.dp-ftest.com</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>139</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber></SportUnionRegNumber>
+		<UnionName>TEST BULGARIA EOOD END KO</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>р-н Тест, ул. "Тест Тест", № 566</UnionAddress>
+		<UnionStatus>В разглеждане</UnionStatus>
+		<UnionStatusDate>2022-10-03+03:00</UnionStatusDate>
+		<Sport>автомобилизъм, айкидо</Sport>
+		<Presenter>Иво Ивов</Presenter>
+		<Telephone>+ 359 8 88 112</Telephone>
+		<Emails>office@test-ko.com</Emails>
+		<EIK>61467723</EIK>
+		<WebPage>www.test-ko.com</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>140</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>344-000</SportUnionRegNumber>
+		<LicenceNumber>СД-147</LicenceNumber>
+		<RegNumberEntryOrder></RegNumberEntryOrder>
+		<UnionName>TechnoLogica ЕAD</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>р-н Лозенец, ул. "Червена стена", № 46</UnionAddress>
+		<UnionStatus>Вписан</UnionStatus>
+		<UnionStatusDate>2022-10-03+03:00</UnionStatusDate>
+		<Sport>авто-мото спорт</Sport>
+		<Presenter></Presenter>
+		<Telephone>+ 359 2 91 912</Telephone>
+		<Emails>office@technologica.com</Emails>
+		<EIK>321075870</EIK>
+		<WebPage>www.technologica.com</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>141</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber>347-000</SportUnionRegNumber>
+		<UnionName>TechnoLogica ЕAD Test</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>р-н Лозенец, ул. "Червена стена", № 46</UnionAddress>
+		<UnionStatus>Заличен</UnionStatus>
+		<UnionStatusDate>2022-10-13+03:00</UnionStatusDate>
+		<Sport>артистично плуване</Sport>
+		<Presenter></Presenter>
+		<Telephone>+ 359 2 91 912</Telephone>
+		<Emails>office@technologica.com</Emails>
+		<EIK>444675220</EIK>
+		<WebPage>www.technologica.com</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+	<SportUnionsRecord>
+		<ExternalId>142</ExternalId>
+		<SportUnionType>Спортна федерация</SportUnionType>
+		<SportUnionRegNumber></SportUnionRegNumber>
+		<UnionName>TechnoLogica ЕAD</UnionName>
+		<UnionLocation>гр. София</UnionLocation>
+		<UnionAddress>р-н Лозенец, ул. "Червена стена", № 46</UnionAddress>
+		<UnionStatus>В разглеждане</UnionStatus>
+		<UnionStatusDate>2022-10-19+03:00</UnionStatusDate>
+		<Sport>авиомоделизъм</Sport>
+		<Presenter></Presenter>
+		<Telephone>+ 359 2 91 912</Telephone>
+		<Emails>office@technologica.com</Emails>
+		<EIK>104569690</EIK>
+		<WebPage>www.technologica.com</WebPage>
+		<ForeignData></ForeignData>
+	</SportUnionsRecord>
+</SportUnionsRequest>

@@ -1,0 +1,162 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" xmlns:p="http://primefaces.org/ui"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ibg="http://java.sun.com/jsf/composite/components"
+	template="/template/template.xhtml">
+
+	<f:metadata>
+		<f:importConstants type="com.ib.docu.system.DocuConstants" />
+		<f:importConstants type="com.ib.indexui.system.Constants" />
+	</f:metadata>
+
+	<ui:define name="content">
+
+		<h:form id="testResolveTicket">
+
+			<div class="container #{guestPreferences.containerPosition}">
+
+				<h:panelGroup id="panelTiket">
+
+					<div class="card">
+
+						<!-- Таблица -->
+						<div class="p-grid p-col-12 ui-fluid">
+
+							<div class="p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-12">
+
+
+								<p:dataTable id="resTicket" var="row"
+									value="#{testResolveTicket.resTickList}" lazy="true"
+									rowIndexVar="idx" sortMode="single" reflow="true"
+									paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+									rows="5" rowsPerPageTemplate="5,15,20,25"
+									paginatorPosition="bottom" paginatorAlwaysVisible="true"
+									paginator="true">
+
+
+									<p:column width="20" sortBy="#{row.a0}">
+										<h:outputText value="#{idx+1}" />
+									</p:column>
+
+
+									<p:column width="25" exportable="false"
+										style="text-align:center">
+										<p:commandButton icon="fas fa-edit" action="#"
+											styleClass="btn-new" partialSubmit="true"
+											oncomplete="PF('dlg1').show();" />
+									</p:column>
+
+									<p:column width="150" sortBy="#{row.a2}">
+										<f:facet name="header">Вид</f:facet>
+										<h:outputText
+											value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_TASK_VID, row[2], testResolveTicket.currentLang, now)}" />
+									</p:column>
+
+									<p:column width="100" sortBy="#{row.a1}">
+										<f:facet name="header">Номер</f:facet>
+										<h:outputText value="#{row[1]}" />
+									</p:column>
+
+									<p:column width="100" sortBy="#{row.a5}">
+										<f:facet name="header">Дата на възлагане</f:facet>
+										<h:outputText value="#{row[5]}">
+											<f:convertDateTime pattern="dd.MM.yyyy HH:mm"
+												timeZone="#{testResolveTicket.timeZone}" />
+										</h:outputText>
+									</p:column>
+
+									<p:column width="100" sortBy="#{row.a4}">
+										<f:facet name="header">Срок</f:facet>
+										<h:outputText value="#{row[4]}">
+											<f:convertDateTime pattern="dd.MM.yyyy HH:mm"
+												timeZone="#{testResolveTicket.timeZone}" />
+										</h:outputText>
+									</p:column>
+
+									<p:column width="100">
+										<f:facet name="header">Статус</f:facet>
+										<h:outputText
+											value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_TASK_STATUS, row[3], testResolveTicket.currentLang, now)}" />
+									</p:column>
+
+									<p:column width="150">
+										<f:facet name="header">Определил статуса</f:facet>
+										<h:outputText
+											value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_ADMIN_STR_REPORTS, row[19], testResolveTicket.currentLang, now)}" />
+									</p:column>
+
+									<p:column width="100" sortBy="#{row.a10}">
+										<f:facet name="header">Мнение</f:facet>
+										<h:outputText
+											value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_TASK_OPINION, row[10], testResolveTicket.currentLang, now)}" />
+									</p:column>
+
+									<p:column width="100" sortBy="#{row.a9}">
+										<f:facet name="header">Коментар</f:facet>
+										<h:outputText value="#{row[9]}" />
+									</p:column>
+
+								</p:dataTable>
+
+
+							</div>
+						</div>
+
+					</div>
+
+				</h:panelGroup>
+				<p:dialog id="mDialog" widgetVar="dlg1" fitViewport="true"
+					responsive="true" resizable="true" positionType="fixed"
+					position="center" modal="true" dynamic="true" appendTo="@form">
+
+					<p:messages id="messagesRestoreEmp">
+						<p:autoUpdate />
+					</p:messages>
+
+					<h:panelGrid columns="2" cellpadding="9"
+						rendered="#{not empty testResolveTisket.task}">
+
+						<h:outputText value="ID" />
+						<h:outputText value="#{testResolveTicket.task}" readonly="true" />
+
+						<h:outputText value="Вид" />
+						<h:outputText value="#{testResolveTicket.task}" readonly="true" />
+
+						<h:outputText value="Възлагане" />
+						<h:outputText value="#{testResolveTicket.resTickList.task.row[1]}" readonly="true" />
+
+						<h:outputText value="Дата на възлагане" />
+						<h:outputText value="#{testResolveTicket.resTickList.task.row[5]}" readonly="true" />
+
+						<h:outputText value="Срок" />
+						<h:outputText value="#{testResolveTicket.resTickList.task.row[4]}" readonly="true" />
+
+						<h:outputText value="Статус" />
+						<h:outputText value="#{testResolveTicket.resTickList.task.row[3]}" readonly="true" />
+
+						<h:outputText value="Определил статуса" />
+						<h:outputText value="#{testResolveTicket.resTickList.task.row[19]}" readonly="true" />
+
+						<h:outputText value="Мнение" />
+						<h:outputText value="#{testResolveTicket.resTickList.task.row[10]}" readonly="true" />
+
+						<h:outputText value="Коментар" />
+						<h:outputText value="#{testResolveTicket.resTickList.task.row[9]}" readonly="true" />
+
+					</h:panelGrid>
+
+
+				</p:dialog>
+
+
+			</div>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

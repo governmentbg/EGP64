@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:jsf="http://xmlns.jcp.org/jsf"	  
+	  xmlns:ibg="http://java.sun.com/jsf/composite/components"
+	  template="/template/template.xhtml"> 
+         
+      <ui:define name="metadata">
+			<f:metadata>
+				<f:importConstants type="com.ib.docu.system.DocuConstants" />
+						
+			</f:metadata>		
+	  </ui:define>       
+	
+    <ui:define name="content">
+        <h:form id="uploadZaqvForm">
+         
+                <div class="card">
+	                <div jsf:id="vD" class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">		
+              				<h:outputText value="#{labels['docVidSetting.typeDoc']}" styleClass="form-label req"/>
+								<p:selectOneMenu id="vidDoc" value="#{uploadZaqvlenieBean.selectedVidDoc}">
+								    <f:selectItem value="#{null}" itemValue="#{null}"/>
+								    <f:selectItems value="#{uploadZaqvlenieBean.docVidSelectItem}"/>
+								    <p:ajax event="change"  update="files"
+				 	        			process="@this " listener="#{uploadZaqvlenieBean.changeVidDoc}"/>
+							</p:selectOneMenu>
+	  				</div>
+	                 <!-- Файлове -->
+	               
+					<div jsf:id="files" class="p-col-12 p-sm-12 p-md-4 p-lg-4 p-xl-4 ui-fluid">		
+			
+						<p:fileUpload  id="uplF"  
+							listener="#{uploadZaqvlenieBean.listenerPrime}"   
+							disabled="#{uploadZaqvlenieBean.selectedVidDoc eq null}"
+							mode="advanced" 
+							dragDropSupport="true"
+						    multiple="false"  sequential="true" 
+							auto="true" update="vDf"
+							label="Прикачване на заявление"/>
+					   
+	               </div>
+	                             
+	              <div jsf:id="vDf" class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">		
+              				<h:outputText value="#{uploadZaqvlenieBean.lastFileName}" styleClass="form-label"/>
+	  				</div>
+	             
+	              
+                </div>
+              
+				 
+				
+         
+        </h:form>
+    </ui:define>
+
+</ui:composition>

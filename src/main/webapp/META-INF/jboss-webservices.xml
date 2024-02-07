@@ -1,0 +1,12 @@
+<webservices xmlns="http://www.jboss.com/xml/ns/javaee" version="1.2">
+   <!-- <context-root /> -->
+   
+   <port-component>
+      <ejb-name>TestService</ejb-name>
+      <port-component-name >TestServicePort</port-component-name>
+     <port-component-uri>/*</port-component-uri>
+     <auth-method>BASIC</auth-method>
+       <transport-guarantee>NONE</transport-guarantee>
+      <secure-wsdl-access>true</secure-wsdl-access>
+   </port-component>
+</webservices>

@@ -1,0 +1,222 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:jsf="http://xmlns.jcp.org/jsf"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:cc="http://java.sun.com/jsf/composite"
+	  xmlns:ibg="http://java.sun.com/jsf/composite/components" > 	  
+	  
+	  
+
+<cc:interface componentType="compMMSAddFields">
+
+	<style>
+	
+		.ui-dataview .ui-dataview-header {
+	    border-bottom: 0 none;
+	    display: none;
+		}	  
+	
+	</style>
+   		 
+   <cc:attribute name="dateClassif"  type="java.util.Date"    shortDescription="Дата, към която да се заредят класификации и за разкодиране. По подразбиране - днешна дата." /> 
+   <cc:attribute name="idObj" 		 type="java.lang.Integer" shortDescription="ID на обекта, към който се добавят допълнителни полета" required="true" />
+   <cc:attribute name="codeObj" 	 type="java.lang.Integer" shortDescription="Код на обекта, към който се добавят допълнителни полета" required="true" />
+   <cc:attribute name="readonly"     type="java.lang.Boolean" shortDescription="само за разглеждане" default="false" />
+   
+</cc:interface>
+
+<cc:implementation>
+
+ <f:event type="preRenderComponent" listener="#{cc.initCmp()}" /> <!--  За да се инициализира компонентата-->
+		
+		<p:commandButton value="#{labels['compAddFields.addFlds']}"  icon="#{cc.attrs.readonly ?'': 'fas fa-plus'}" partialSubmit="true" process="@this"
+							styleClass="ui-button-success" oncomplete="PF('dialog-addFields').show();" update="#{cc.clientId}:dialogAddFields" /> 
+												
+		<p:dialog appendTo="@form" widgetVar="dialog-addFields" closeOnEscape="true" header="#{cc.attrs.readonly ? labels['compAddFields.dopPoleta']: labels['compAddFields.addFields']}" 
+					    fitViewport="true" responsive="true" resizable="true" positionType="fixed" position="center"
+					    modal="true" dynamic="true">
+					    
+			<div class="container #{guestPreferences.containerPosition}" jsf:id="dialogAddFields">		
+				<div class="card">
+				
+					<div jsf:id="msgAndSaveGroup" jsf:rendered="#{!cc.attrs.readonly}">
+						
+							<p:toolbar styleClass="margin-bottom" id="msgAndSave">
+								<f:facet name="left">
+									<p:commandButton value="#{ui_labels['general.save']}" icon="fas fa-save" id="btmSave" rendered="#{cc.dopPol ne null}"
+											partialSubmit="true" actionListener="#{cc.actionSave}" process="@this #{cc.clientId}:inputPol" 
+											update="#{cc.clientId}:tableFields #{cc.clientId}:tablePanel #{cc.clientId}:inputPol #{cc.clientId}:msgAndSaveGroup">
+									</p:commandButton>
+		                            <p:spacer width="10"/>
+									<h:outputText value=" #{cc.errMsg}" styleClass="form-label" id="errMsg" style="color:red" escape="false" />
+									<h:outputText value=" #{cc.infoMsg}" styleClass="form-label" id="infoMsg" style="color:blue" escape="false" />
+		
+								</f:facet>
+							</p:toolbar>
+
+					</div>
+					
+					<div class="p-grid ui-fluid ">			
+		
+						<div class="p-col-12 p-md-12 p-lg-4 p-xl-4  p-align-end" jsf:rendered="#{!cc.attrs.readonly}"> 
+							<div class="p-col-12" jsf:id="tablePanel">		
+				                	<p:dataTable  value="#{cc.etalDopList}" rowIndexVar="rowVar" lazy="true" var="row"  emptyMessage="#{ui_labels['general.norows']}" 
+				                	 	paginator="true" rows="10" rowsPerPageTemplate="10,20,30" paginatorPosition="bottom"  paginatorAlwaysVisible="false"
+	                					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+								                
+								       <p:column headerText="#{labels['compAddFields.selectField']}" width="100%">
+								       
+									        <p:commandLink title="#{systemData.decodeItem(DocuConstants.CODE_CLASIF_IM_ELEMENT_TYPES, row.tipPole, cc.lang, now)}" style="#{row.id==cc.etalDop.id ? 'color:blue' : ''}" update="#{cc.clientId}:inputPol #{cc.clientId}:msgAndSaveGroup #{cc.clientId}:tablePanel"   action="#{cc.actionSelectField(row)}"  ajax="true">	
+								      			<ui:remove>
+									      			<h:panelGroup rendered="#{row.tipPole == DocuConstants.CODE_ZNACHENIE_ATTRIB_TEKST}" styleClass="p-mr-2"><i class="fas fa-font"></i></h:panelGroup>
+									      			<h:panelGroup rendered="#{row.tipPole == DocuConstants.CODE_ZNACHENIE_ATTRIB_CLASSIFIKACIONEN}" styleClass="p-mr-2"><i class="fas fa-list"></i></h:panelGroup>
+									      			<h:panelGroup rendered="#{row.tipPole == DocuConstants.CODE_ZNACHENIE_ATTRIB_DATE}" styleClass="p-mr-2"><i class="fas fa-calendar-alt"></i></h:panelGroup>
+									      			<h:panelGroup rendered="#{row.tipPole == DocuConstants.CODE_ZNACHENIE_ATTRIB_DATE_TIME}" styleClass="p-mr-2"><i class="fas fa-clock"></i></h:panelGroup>
+									      			<h:panelGroup rendered="#{row.tipPole == DocuConstants.CODE_ZNACHENIE_ATTRIB_NUMBER}" styleClass="p-mr-2"><i class="fas fa-sort-numeric-up"></i></h:panelGroup>
+									      			</ui:remove>
+									      		<h:outputText  value="#{row.pored}"/>
+									      		<h:outputText  value=". "/>
+								      			<h:outputText  value="#{row.imePole}"/>
+									      		
+									       	</p:commandLink>
+										</p:column>
+								    </p:dataTable>	
+						   </div>           			                
+						</div> 
+						
+						<div class="p-col-12 p-md-12 p-lg-8 p-xl-8 " jsf:id="inputPol" jsf:rendered="#{!cc.attrs.readonly}"> 
+							<h:panelGroup  class="p-grid" rendered="#{cc.dopPol!=null and cc.dopPol.idPole ne null}">
+								<!-- Значение-полета -->
+								
+								<div class="p-col-12 p-md-12 p-lg-12 p-xl-12  p-align-end" jsf:rendered="#{cc.etalDop.tipPole == DocuConstants.CODE_ZNACHENIE_ATTRIB_TEKST}">
+									<h:outputText value="#{cc.etalDop.imePole}" styleClass="form-label req" />	
+									<!-- Текстово поле -->
+									<p:inputText id="teskt" value="#{cc.dopPol.znStr}"  />
+								</div>
+								<div class="p-col-12 p-md-12 p-lg-4 p-xl-4  p-align-end" jsf:rendered="#{cc.etalDop.tipPole == DocuConstants.CODE_ZNACHENIE_ATTRIB_DATE}">
+									<h:outputText value="#{cc.etalDop.imePole}" styleClass="form-label req" />								
+									<!-- Дата -->
+									<p:datePicker id="data" value="#{cc.dopPol.znDate}" showIcon="true" mask="true" pattern="dd.MM.yyyy" locale="bg"/>
+								</div>	
+								<div class="p-col-12 p-md-12 p-lg-4 p-xl-4  p-align-end" jsf:rendered="#{cc.etalDop.tipPole == DocuConstants.CODE_ZNACHENIE_ATTRIB_DATE_TIME}">
+									<h:outputText value="#{cc.etalDop.imePole}" styleClass="form-label req" />													
+									<!-- Дата и час -->
+									<p:datePicker id="dateTime" showIcon="true" mask="true" value="#{cc.dopPol.znDate}"  pattern="dd.MM.yyyy HH:mm" locale="bg"
+												showTime="true"  />
+								</div>
+								<!-- Класификация единичен избор-->
+								<div class="p-col-12 p-md-12 p-lg-8 p-xl-8  p-align-end" 
+								jsf:rendered="#{cc.etalDop.tipPole == DocuConstants.CODE_ZNACHENIE_ATTRIB_CLASSIFIKACIONEN and cc.etalDop.povt == DocuConstants.CODE_ZNACHENIE_NE}">
+									<h:outputText value="#{cc.etalDop.imePole}" styleClass="form-label req" />																	
+				
+										<ibg:selectOneModalA codeClassif="#{cc.etalDop.clasif}" 
+											id="classif"  dateClassif="#{cc.currentDate}" filtered="false" 													
+											selectedCode="#{cc.dopPol.znKod}" saveStateTree="true"
+											withBtnClear="true" compType="2" styleAutoComp="" />
+
+								</div>	
+								<!-- Класификация множествен избор -->
+								<div class="p-col-12 p-md-12 p-lg-12 p-xl-12  p-align-end" 
+								jsf:rendered="#{cc.etalDop.tipPole == DocuConstants.CODE_ZNACHENIE_ATTRIB_CLASSIFIKACIONEN and cc.etalDop.povt == DocuConstants.CODE_ZNACHENIE_DA}">
+																	
+										<ibg:selectManyModalA compType="2" maxResults="50" 
+										codeClassif="#{cc.etalDop.clasif}"
+										dateClassif="#{cc.currentDate}" filtered="false"
+										selectedCodes="#{cc.selectedCodes}"
+										selectedClassifs="#{cc.selectedClassifs}" sortByName="false"
+										saveStateTree="false" withBtnClear="true" showRadioBtn="true" 
+										styleAutoComp="width:100%;" />
+																	
+								</div>
+								<div class="p-col-12 p-md-12 p-lg-4 p-xl-4  p-align-end" jsf:rendered="#{cc.etalDop.tipPole == DocuConstants.CODE_ZNACHENIE_ATTRIB_NUMBER}">
+									<h:outputText value="#{cc.etalDop.imePole}" styleClass="form-label req" />	
+									<!-- Номер -->
+									<p:inputNumber id="number" value="#{cc.dopPol.znKod}" minValue="0" decimalPlaces="0" />	
+								</div>
+								
+								<ui:remove>
+								<!-- Пореден номер -->
+								<div class="p-col-6 p-sm-6 p-md-6 p-lg-3 p-xl-3" >
+									<h:outputText value="#{labels['createAddFields.redNum']}" styleClass="form-label req" />
+									<p:spinner id="nomPored" value="#{cc.dopPol.pored}" min="1" />
+								</div>
+								</ui:remove>						
+							</h:panelGroup>
+						</div>
+						
+						<!-- Таблица с въведени значения -->
+						<div class="p-col-12  p-align-end" jsf:id="tableFields"> 
+						
+							<div class="table-toolbar">
+								<h:outputText value="#{labels['createAddFields.addsFields']}" styleClass="form-label" />
+							</div>
+							<p:dataTable var="row"  emptyMessage="#{ui_labels['general.norows']}" value="#{cc.dopPolList}"  id="insertedFields" rowIndexVar="idx"
+										paginator="true" rows="5" rowsPerPageTemplate="5,10,15" paginatorPosition="bottom"  paginatorAlwaysVisible="false"
+	                					paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+									
+									<p:column width="10"  headerText="#{ui_labels['general.No-symbol']}">
+										<h:outputText value="#{idx + 1}" />
+									</p:column>	
+																	    
+									<p:column  width="30" rendered="#{!cc.attrs.readonly}">	
+										<p:commandButton update="#{cc.clientId}:inputPol #{cc.clientId}:msgAndSaveGroup #{cc.clientId}:tablePanel"
+											icon="fas fa-edit" action="#{cc.actionEdit(row)}" ajax="true" title="#{ui_labels['general.edit']}">										
+										</p:commandButton>																			
+									</p:column>
+																								
+									<p:column headerText="#{labels['compAddFields.nameField']}" width="150">
+							           <h:outputText  value="#{row[5]}" />
+							        </p:column>
+							        
+							        <p:column headerText="#{labels['compAddFields.znachenie']}" width="*">
+							           <!-- Текстово поле -->
+										<h:outputText value="#{row[3]}" rendered="#{row[7] == DocuConstants.CODE_ZNACHENIE_ATTRIB_TEKST}"/>
+										
+										<!-- Дата -->
+										<h:outputText value="#{row[2]}" rendered="#{row[7] == DocuConstants.CODE_ZNACHENIE_ATTRIB_DATE}">
+											<f:convertDateTime pattern="dd.MM.yyyy" type="date" />
+										</h:outputText>
+										
+										<!-- Дата и час -->
+										<h:outputText id="dateTime" value="#{row[2]}" rendered="#{row[7] == DocuConstants.CODE_ZNACHENIE_ATTRIB_DATE_TIME}">
+											<f:convertDateTime pattern="dd.MM.yyyy HH:mm" type="date" />
+										</h:outputText>
+										
+										<!-- Класификация -->
+										<h:outputText value="#{systemData.decodeItem(row[6], row[1], cc.lang, now)}" rendered="#{row[7] == DocuConstants.CODE_ZNACHENIE_ATTRIB_CLASSIFIKACIONEN}"/>
+										
+										<!-- Номер -->
+										<h:outputText value="#{row[1]}"  rendered="#{row[7] == DocuConstants.CODE_ZNACHENIE_ATTRIB_NUMBER}"/>
+									
+							        </p:column>
+							        
+						        	<p:column style="width:40px" rendered="#{!cc.attrs.readonly}">
+						        		<f:facet name="header">					
+											<p:commandButton 
+												rendered="#{not empty cc.dopPolList}" styleClass="ui-button-danger"
+												partialSubmit="true" process="#{cc.clientId}:tableFields  @this"
+												update="#{cc.clientId}:tableFields #{cc.clientId}:msgAndSaveGroup #{cc.clientId}:inputPol" icon="fa fa-fw fa-times"
+												actionListener="#{cc.deleteAll}"
+												title="#{ui_labels['general.deleteAll']}" id="btnR1" >	
+												<p:confirm header="#{ui_labels['general.comfirmation']}" message="#{beanMessages['general.confirmDeleteMsg']}" icon="fas fa-exclamation-triangle" />
+											</p:commandButton>
+										</f:facet>	
+										<p:commandButton partialSubmit="true" process="#{cc.clientId}:tableFields  @this"
+											update="#{cc.clientId}:tableFields #{cc.clientId}:msgAndSaveGroup #{cc.clientId}:inputPol" icon="fa fa-fw fa-times"
+											actionListener="#{cc.deleteRow(row)}" styleClass="ui-button-danger"
+											title="#{ui_labels['general.delete']}" id="btnR" >
+											<p:confirm header="#{ui_labels['general.comfirmation']}" message="#{beanMessages['general.confirmDeleteMsg']}" icon="fas fa-exclamation-triangle" /> 
+										</p:commandButton>
+						       		</p:column>
+								</p:dataTable>	
+						</div>								
+				</div>
+			</div>
+		</div>	
+	</p:dialog>
+</cc:implementation>
+
+</ui:composition>

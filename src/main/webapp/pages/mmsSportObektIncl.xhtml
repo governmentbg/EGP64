@@ -1,0 +1,1935 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ibg="http://java.sun.com/jsf/composite/components">
+
+<ui:composition template="/template/template.xhtml">
+	  
+	<ui:define name="title">#{pageTitle}</ui:define>
+	  
+	<ui:define name="viewname">		  
+		<li>
+	       	<p:commandLink title="#{ui_labels['general.back']}" action="#{navigation.goBack()}"  rendered="#{navigation.navPath.size()>1 and viewOnly ne DocuConstants.CODE_ZNACHENIE_DA and isNew ne DocuConstants.CODE_ZNACHENIE_DA}">
+					<i class="fas fa-caret-left" />
+			</p:commandLink>
+		</li>
+		<li>
+		   
+		    <h:outputText value="#{navTexts['/pages/mmsSportObektNew.xhtml']}" rendered="#{viewOnly == DocuConstants.CODE_ZNACHENIE_NE and isNew == DocuConstants.CODE_ZNACHENIE_DA}"/>
+			<h:outputText value="#{navTexts['/pages/mmsSportObektEdit.xhtml']}" rendered="#{viewOnly == DocuConstants.CODE_ZNACHENIE_NE and isNew == DocuConstants.CODE_ZNACHENIE_NE}"/>
+			<h:outputText value="#{navTexts['/pages/mmsSportObektView.xhtml']}" rendered="#{viewOnly == DocuConstants.CODE_ZNACHENIE_DA}"/>
+		</li>
+	
+    </ui:define>
+		
+	<ui:define name="content">
+		<h:form id="mmsSObform">
+		    	
+			  <p:panel   styleClass=" card" rendered= "#{mmsSportObEdit.errInit}">
+	                   <h:outputLabel value="#{mmsSportObEdit.errTxt}"  style="color:red"/>
+	           </p:panel>  
+	              	<p:panel   styleClass=" card" rendered= "#{mmsSportObEdit.idSSev ne null and !mmsSportObEdit.errInit and  ((mmsSportObEdit.tipZvl == 1 or mmsSportObEdit.tipZvl == 2)  and  mmsSportObEdit.spObekt != null and  mmsSportObEdit.errMessYes) }"  header="#{mmsSportObEdit.headerTxt}">
+						<p:toolbar id="panelButtonsTopErr" rendered="#{viewOnly != 1}"  styleClass="margin-bottom"  >
+							<f:facet name="left">									
+								<p:spacer width="10px"></p:spacer>
+							</f:facet>
+							<f:facet name="right">
+							   	<p:commandButton value="Разглеждане заявление"    rendered="#{viewOnly != 1 and mmsSportObEdit.idSSev ne null}" 
+							      partialSubmit="true" process="@this" id="btnViewZajavlenieErr"    
+							      oncomplete="PF('dialog_view_zajavl').show();" update="mmsSObform:dialogMessZajavl"
+							      title="Разглеждане на заявление" />    <ui:remove ><!--   rendered="#{viewOnly != 1 and mmsSportObEdit.idSSev ne null}"   --> </ui:remove>
+						         <p:spacer width="10px"></p:spacer>
+					 	           <ui:remove> <!--  
+								 	<p:commandButton id="btnOtkazZaqvlErr"  value="Отказ обработка"
+															onmousemove="document.getElementById('mmsSObform:btnMail').focus();"
+															partialSubmit="true" update="mmsSObform:panelOtkaz"
+															process="mmsSObform:btnOtkazZaqvl @this"
+															oncomplete="PF('otkazReg').show(); "   rendered="#{viewOnly != 1  and mmsSportObEdit.idSSev ne null and !mmsSportObEdit.cancelZajavl }"
+															title="Отказ обработка"/>
+									--></ui:remove>						
+									<p:spacer width="10px" rendered="#{ mmsSportObEdit.idSSev ne null}"></p:spacer>	
+								 	<p:commandButton id="btnMailErr" styleClass="ui-button-success"  value="#{labels['dvijenie.email']}"
+															onmousemove="document.getElementById('mmsSObform:btnMail').focus();"
+															partialSubmit="true"  update="mmsSObform:panelSendMail mmsSObform:dMail"
+															process="mmsSObform:btnMail @this mmsSObform:panelSendMail mmsSObform:dMail" 
+															oncomplete="PF('eMail').show(); " rendered="#{viewOnly != 1  and  ((mmsSportObEdit.emcoresp ne null and mmsSportObEdit.emcoresp.email ne null) or ((mmsSportObEdit.emcoresp eq null or mmsSportObEdit.emcoresp.email eq  null) and (mmsSportObEdit.spObekt ne null and mmsSportObEdit.spObekt.e_mail ne null)))}"
+															title="Изпращане на е-мейл  до спортен обект или до въведен негов кореспондент" 
+															/>
+									<p:spacer width="10px" ></p:spacer>	
+									 <ui:remove> <!-- 	
+							         <p:commandButton value="#{labels['regixReport.title']}"
+		     								 partialSubmit="true" process="@this"
+		     								 oncomplete="PF('dialog-compRegix').show();" update="mmsSObform:dialogCompRegix"
+		    								  title="#{labels['regixReport.title']}" />  
+		    				    	--></ui:remove>								         
+							</f:facet>
+						</p:toolbar>
+					</p:panel>	
+	           
+	           
+		   	<p:panel   styleClass=" card" rendered= "#{viewOnly == 2 and !mmsSportObEdit.errInit and  !mmsSportObEdit.efrm  and  (mmsSportObEdit.tipZvl == 2 and mmsSportObEdit.idSpObekt == null )  and  !mmsSportObEdit.errMessYes  }" header="#{mmsSportObEdit.headerTxt}" >
+		   	         	<div class="p-grid p-col-12 p-lg-12 " > 
+		   	         	    <div class= "p-col-12 p-lg-6" >
+								   <h:panelGroup rendered="#{!mmsSportObEdit.inpPdf}">
+		                    		<h:outputText value="#{labels['spOb.regNom']}:" styleClass="form-label req"/>
+		                    	    <div class="ui-inputgroup">	
+			                    		<p:inputText   id="inpRegN"  value="#{mmsSportObEdit.regNomSpObekt}"  
+			                    		   onkeypress="if(event.keyCode == 13) {event.preventDefault(); $(':focus').blur()} " >
+			                    		       <p:ajax event="change"  listener="#{mmsSportObEdit.changeRegNomer}" update="@form" />      
+			                    		</p:inputText>
+			                    	</div>	
+			                      </h:panelGroup>	
+		                    </div>		  
+		                </div>
+		                <h:panelGroup  rendered="false" >
+		                   <div class="p-grid p-col-12 p-lg-12" >
+		                	<div class="p-col-12 p-lg-4" jsf:rendered="#{mmsSportObEdit.dmName.active ?'true':'false'}">
+								    <span class=" p-mx-1"/>
+		                    		<h:outputText value="#{labels['prilojenia.name']}" styleClass="form-label"/>
+		                    		<div class="ui-inputgroup" >
+		                    		  <p:inputText    value="#{mmsSportObEdit.spObekt.name}"   readonly="true"  />
+		                    	    </div> 
+		                    	</div>	
+		                        <div class="p-col-12 p-lg-3" jsf:rendered="#{mmsSportObEdit.dmVid.active ?'true':'false'}">
+									<h:outputText value="#{labels['docu.vid']}" styleClass="form-label" />
+									<div class="ui-inputgroup"> 
+									
+										<p:selectOneMenu value="#{mmsSportObEdit.spObekt.vidObekt}"  disabled="true"  >
+							 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+				                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_VID_SPORTEN_OBEKT, now, mmsSportObEdit.currentLang)}" 
+				                               var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />
+										</p:selectOneMenu>
+																
+										
+									</div>
+							   </div>
+								</div>	
+								
+								<div class="p-grid p-col-12 p-lg-8" jsf:rendered="#{mmsSportObEdit.dmVidSport.active?'true':'false'}">
+	                    		<h:outputText value="#{labels['sf.vidSport']}" styleClass="#{(mmsSportObEdit.dmVidSport.required and viewOnly != 1) ?'form-label req':'form-label'} "/>
+	                    							            
+					            <div class="ui-inputgroup" >
+                   					<p:inputText value="#{mmsSportObEdit.selectedVidSportTxt}" readonly="true" id="vidSpTxt"   style="width:100%"/>
+			            
+					            
+					            	<ibg:selectManyModalA  
+										showRadioBtn="true" saveStateTree="false" readonly="#{viewOnly == 1}"
+										codeClassif="#{DocuConstants.CODE_CLASSIF_VIDOVE_SPORT}" 
+										dateClassif="#{now}" styleAutoComp=""
+										sortByName="true"
+										selectedCodes="#{mmsSportObEdit.selectedVidSport}" 
+										selectedText="#{mmsSportObEdit.selectedVidSportTxt}"
+										update="mmsSObform:vidSpTxt" isSelectNode="false"
+										dopInfoAutoComp="true" itemtipAtPosition="center bottom" compType="1" maxResults="50" />
+					            </div>
+	                    	</div>
+									
+								<ui:remove >  <!--   		                								
+							       <div class="p-grid p-col-12 p-lg-8"  jsf:rendered="#{mmsSportObEdit.dmFunkCat.active ?'true':'false'}" >
+                   	                 <span class=" p-mx-1"/>
+									<h:outputText value="#{labels['spOb.funcPr']}" styleClass="form-label" />
+									<div class="ui-inputgroup"> 
+										<p:selectOneMenu value="#{mmsSportObEdit.spObekt.funkCategory}"  disabled="true">
+							 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+				                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_FUNC_CATEGORIA_SPORTEN_OBEKT, now, mmsSportObEdit.currentLang)}" 
+				                               var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />
+										</p:selectOneMenu>
+									</div>
+								</div>				
+					             --></ui:remove>	
+					             
+						       		 <div class="p-grid p-col-12 p-lg-12" jsf:rendered="#{mmsSportObEdit.dmOpis.active ?'true':'false'}"  >
+								                <span class=" p-mx-1"/>
+								        	  <h:outputText value="#{labels['spOb.opis']}" styleClass="form-label" />
+								           	  <p:inputTextarea   value="#{mmsSportObEdit.spObekt.opisanie}" styleClass="p-col-12 p-lg-12" rows="2"   readonly="true" />
+								      							 	      								         
+									   </div>    
+									             	     
+										 <div class="p-grid p-col-12 p-lg-12"  jsf:rendered="#{mmsSportObEdit.dmIdentif.active ?'true':'false'}"  >
+									                <span class=" p-mx-1"/>
+									        	  <h:outputText value="#{labels['spOb.identif']}" styleClass="form-label"/>
+									        	   <p:inputTextarea   value="#{mmsSportObEdit.spObekt.identif}" styleClass="p-col-12 p-lg-12" rows="2"   readonly="true" />
+									        	 
+								 	     </div>         	
+	                    	  
+		                      <div class="p-grid p-col-12 p-lg-12" jsf:rendered="#{mmsSportObEdit.dmDopInfo.active ?'true':'false'}"   >
+					        	<span class=" p-mx-1"/>
+					        	  <h:outputText value="#{labels['spObekt.dopInfo']}"  styleClass="form-label" />
+					        	  <p:inputTextarea  value="#{mmsSportObEdit.spObekt.dopInfo}" styleClass="p-col-12 p-lg-12" rows="2"  readonly="true" />
+				 	        							           
+						       </div>         	
+						<p:panel header="#{labels['spOb.mestoC']}:" style="text-align:left" styleClass=" p-col-12 p-lg-12">
+                                 <h:panelGrid columns="1" style="width:100%">								 					
+										      <h:panelGroup   >
+										           
+												 <div class="p-grid p-col-12 p-lg-12" >  
+										          <div class=" p-col-12 p-lg-3"  jsf:rendered="#{mmsSportObEdit.dmCountry.active ?'true':'false'}" >
+											          <span class=" p-mx-1"/>
+													<h:outputText value="#{ui_labels['general.country']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmCountry.required?'form-label  req':'form-label' )}"  />
+													<ibg:selectOneModalA      readonly="true"
+														codeClassif="#{DocuConstants.CODE_CLASSIF_COUNTRIES}"	
+														sortByName="true"							
+														selectedCode="#{mmsSportObEdit.spObekt.country}" 
+														emptyMessage="#{labels['docu.countryEmptyMsg']}"
+														saveStateTree="false" withBtnClear="true" compType="3" minQueryLength="2"
+														styleAutoComp=""  
+														onComplete="cmdChCountry()"/>	
+														<p:remoteCommand name="cmdChCountry" 
+														  	partialSubmit="true" process="@this"  update="@this"
+														 	actionListener="#{mmsSportObEdit.actionChangeCountry}"/>
+													   
+											 </div>				
+													   
+														<div class="p-col-12 p-lg-4" jsf:rendered="#{mmsSportObEdit.dmNasMesto.active ?'true':'false'}"  >
+														<span class=" p-mx-1"/>
+														<h:outputText value="#{ui_labels['general.ekatte']}" styleClass="#{viewOnly==1?'form-label':'form-label  req' }"  />  <ui:remove> styleClass="#{mmsSportObEdit.spObekt.country ne null ? 'form-label req' :'form-label'}" </ui:remove>
+														<ibg:selectOneModalA    readonly="true"
+														  	update="@form"    
+															codeClassif="#{DocuConstants.CODE_CLASSIF_EKATTE}"	
+															specifics="#{mmsSportObEdit.specificsEKATTE}"					
+															selectedCode="#{mmsSportObEdit.spObekt.nas_mesto}"
+															emptyMessage="#{labels['docu.mestoEmptyMsg']}"
+															saveStateTree="false" withBtnClear="true" compType="3" minQueryLength="3"
+															styleAutoComp=""
+															dopInfoAutoComp="true" dopInfoTitleAutoComp="#{ui_labels['general.ekatteObshObl']}"
+																onComplete="cmdChNasMesto()" />	
+															<p:remoteCommand name="cmdChNasMesto" update="@this"
+															  	partialSubmit="true" process="@this" 
+															 	actionListener="#{mmsSportObEdit.actionChangeNasMesto}" />	
+													
+													  </div>  
+															  					
+													<div class="p-col-12 p-lg-3" jsf:rendered="#{mmsSportObEdit.dmNasMesto.active ?'true':'false'}"  >
+													   
+														<h:outputText value="#{ui_labels['general.ekatteObshObl']}" styleClass="form-label" />
+														<div class="ui-inputgroup">
+														  <p:inputText  value="#{systemData.decodeItemDopInfo(DocuConstants.CODE_CLASSIF_EKATTE, mmsSportObEdit.spObekt.nas_mesto, mmsSportObEdit.currentLang, mmsSportObEdit.currentDate)}"  readonly="true" />
+													    </div>	  
+														
+													</div>
+													<div class="p-col-12 p-lg-1" jsf:rendered="#{mmsSportObEdit.dmPostCode.active ?'true':'false'}"  >
+													  
+															<h:outputText value="#{ui_labels['general.adrPostCode']}" styleClass="form-label"  />
+															<p:inputText  value="#{mmsSportObEdit.spObekt.postCode}"   readonly="true" />
+												         
+													</div>
+													</div>	
+													  <div class="p-grid p-col-12 p-lg-12"  >
+											        	<div class="p-col-12 p-lg-5"  jsf:rendered="#{mmsSportObEdit.dmAddress.active ?'true':'false'}">
+															        <span class=" p-mx-1"/>
+																	<h:outputText value="#{ui_labels['general.adres']}"  styleClass="form-label" />
+																	<div class="ui-inputgroup">
+																	  <p:inputText  value="#{mmsSportObEdit.spObekt.adres}" readonly="true"  />
+																	 </div> 
+														         
+															</div>
+															
+													<div class="p-col-12  p-lg-4"  jsf:rendered="#{mmsSportObEdit.dmEMail.active ?'true':'false'}"> 
+														<h:outputText value="#{ui_labels['general.email']}"  styleClass="form-label" />
+														<div class="ui-inputgroup">
+														  <p:inputText    value="#{mmsSportObEdit.spObekt.e_mail}"  readonly="true" />
+														  </div>
+													</div>
+													<div class="p-col-12  p-lg-3" jsf:rendered="#{mmsSportObEdit.dmTel.active ?'true':'false'}" > 
+														<h:outputText value="#{ui_labels['general.phone']}" styleClass="form-label"  />
+														<div class="ui-inputgroup">
+														  <p:inputText   value="#{mmsSportObEdit.spObekt.tel}"   readonly="true"  />
+														 </div> 
+													</div>
+													
+									    		  </div>
+									    								    											 
+										       </h:panelGroup>
+									    		
+							</h:panelGrid>
+						   </p:panel>					  
+		           	</h:panelGroup>
+		   	</p:panel>
+		   		
+				   		    
+			<p:panel   styleClass=" card" rendered= "#{!mmsSportObEdit.errInit and  (mmsSportObEdit.tipZvl != 2 or (mmsSportObEdit.tipZvl == 2 and mmsSportObEdit.idSpObekt != null )) and  !mmsSportObEdit.errMessYes }"  header="#{mmsSportObEdit.headerTxt}">
+				<p:toolbar id="panelButtonsTop" rendered="#{viewOnly != 1}"  styleClass="margin-bottom"  >
+					<f:facet name="left">									
+						<p:commandButton icon="fas fa-save" value="#{ui_labels['general.save']}" rendered="#{viewOnly != 1}"
+							action="#{mmsSportObEdit.actionSave}" id="btnSaveTop" update="mmsSObform"  process="@this mmsSObform" partialSubmit="true"/>
+						<span class=" p-mx-2"/>
+	                       <p:commandButton icon="fas fa-plus" id="btnNew" value="#{ui_labels['general.new']}o" update="mmsSObform" process="@this" partialSubmit="true"
+							actionListener="#{mmsSportObEdit.actionNew}" styleClass="ui-button-success"  rendered="false">  <ui:remove > <!--  rendered="#{viewOnly != 1 and isNew == 1}  --></ui:remove>
+						</p:commandButton>
+					 
+						   	<p:commandButton icon="fas fa-eraser" value="Регистрация отначало" 
+								   partialSubmit="true" process="@this" update="mmsSObform"  styleClass="ui-button-warning" rendered="false" >
+							       <p:ajax event="click" listener="#{mmsSportObEdit.actionNew}" />  
+						     </p:commandButton>  
+						     
+							 <h:panelGroup rendered="#{mmsSportObEdit.spObekt.id ne null}">   
+							       <ibg:compMMSAddFields idObj="#{mmsSportObEdit.spObekt.id}" codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORTS_OBJECTS}" readonly="#{viewOnly == DocuConstants.CODE_ZNACHENIE_DA}"/>
+							 </h:panelGroup>  
+					</f:facet>
+					<f:facet name="right">
+					   	<p:commandButton value="Разглеждане заявление"    rendered="#{viewOnly != 1 and mmsSportObEdit.idSSev ne null}" 
+					      partialSubmit="true" process="@this" id="btnViewZajavlenie"    
+					      oncomplete="PF('dialog_view_zajavl').show();" update="mmsSObform:dialogMessZajavl"
+					      title="Разглеждане на заявление" />    <ui:remove ><!--   rendered="#{viewOnly != 1 and mmsSportObEdit.idSSev ne null}"   --> </ui:remove>
+				         <p:spacer width="10px"></p:spacer>
+			 	
+						 	<p:commandButton id="btnOtkazZaqvl"  value="Отказ обработка"
+													onmousemove="document.getElementById('mmsSObform:btnMail').focus();"
+													partialSubmit="true" update="mmsSObform:panelOtkaz"
+													process="mmsSObform:btnOtkazZaqvl @this"
+													oncomplete="PF('otkazReg').show(); "   rendered="#{viewOnly != 1  and mmsSportObEdit.idSSev ne null and !mmsSportObEdit.cancelZajavl }"
+													title="Отказ обработка"/>
+													
+							<p:spacer width="10px" rendered="#{ mmsSportObEdit.idSSev ne null}"></p:spacer>	
+							
+						 	<p:commandButton id="btnMail" styleClass="ui-button-success"  value="#{labels['dvijenie.email']}"
+													onmousemove="document.getElementById('mmsSObform:btnMail').focus();"
+													partialSubmit="true" update="mmsSObform:panelSendMail mmsSObform:dMail"
+													process="mmsSObform:btnMail @this mmsSObform:panelSendMail mmsSObform:dMail"
+													oncomplete="PF('eMail').show(); " rendered="#{viewOnly != 1  and  ((mmsSportObEdit.emcoresp ne null and mmsSportObEdit.emcoresp.email ne null) or ((mmsSportObEdit.emcoresp eq null or mmsSportObEdit.emcoresp.email eq  null) and (mmsSportObEdit.spObekt ne null and mmsSportObEdit.spObekt.e_mail ne null)))}"
+													title="Изпращане на е-мейл  до спортен обект или до въведен негов кореспондент" 
+													/>
+								 
+								 <ui:remove> <!-- 				
+								<p:commandButton id="btnMail" styleClass="ui-button-success"  value="#{labels['dvijenie.email']}"
+													onmousemove="document.getElementById('mmsSObform:btnMail').focus();"
+													partialSubmit="true" update="mmsSObform:panelSendMail mmsSObform:dMail"
+													process="mmsSObform:btnMail @this mmsSObform:panelSendMail mmsSObform:dMail"
+													oncomplete="PF('eMail').show(); " rendered="#{viewOnly != 1  and  (mmsSportObEdit.idSSev ne null and mmsSportObEdit.emcoresp ne null and mmsSportObEdit.emcoresp.email ne null)}"
+													title="Изпращане на е-мейл до спортен обект" 
+													/>		
+								--></ui:remove>										
+							<p:spacer width="10px" ></p:spacer>	
+								
+					         <p:commandButton value="#{labels['regixReport.title']}"
+     								 partialSubmit="true" process="@this"
+     								 oncomplete="PF('dialog-compRegix').show();" update="mmsSObform:dialogCompRegix"
+    								  title="#{labels['regixReport.title']}" />  
+    					
+    					<p:spacer width="10px" />
+						<p:commandButton icon="fas fa-times"
+							            value="#{ui_labels['general.delete']}" title="Изтриване"
+							           	update="@form" partialSubmit="true" 
+										process="@this"
+										rendered="#{viewOnly ne 1 and mmsSportObEdit.spObekt.id ne null and mmsSportObEdit.pravaDelYes }"											
+										actionListener="#{mmsSportObEdit.actionDeleteSpObekt}" styleClass="ui-button-danger" >
+							   <p:confirm header="#{ui_labels['general.comfirmation']}" message="#{beanMessages['docu.deloDelete']}" icon="fas fa-exclamation-triangle" />
+				        </p:commandButton>			  
+					         
+					</f:facet>
+				</p:toolbar>
+					<p:toolbar id="panelButtonsTopView" rendered="#{viewOnly == 1}"  styleClass="margin-bottom" >
+					      <f:facet name="left">	
+					      	 <h:panelGroup rendered="#{mmsSportObEdit.spObekt.id ne null}">   
+							       <ibg:compMMSAddFields idObj="#{mmsSportObEdit.spObekt.id}" codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORTS_OBJECTS}" readonly="#{viewOnly == DocuConstants.CODE_ZNACHENIE_DA}"/>
+							 </h:panelGroup>  
+					         <h:outputLabel value="   " />
+					      </f:facet>
+					      <f:facet name="right">
+					         <p:commandButton value="#{labels['regixReport.title']}"
+     								 partialSubmit="true" process="@this"
+     								 oncomplete="PF('dialog-compRegix').show();" update="mmsSObform:dialogCompRegix"
+    								  title="#{labels['regixReport.title']}" />  
+					         
+				        	</f:facet>
+					</p:toolbar>
+			
+				
+				<div class="p-grid">
+					<div class="p-col-12">
+						<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '#mmsSObform:basicDataProc')">
+							<h:outputText value="#{labels['procDefEdit.basicData']}" />
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+					</div>
+	
+					<div jsf:id="basicDataProc" class="p-grid  ui-fluid">
+						<h:panelGroup layout="block" styleClass="p-grid p-col-12" id="referentPanel">
+						
+						   <h:panelGroup rendered="false">	   <ui:remove > <!--   rendered="#{(isNew==1 or isNew ==2 ) and viewOnly == 2 }"  --> </ui:remove>
+						  
+						        <div class="p-col-12 p-lg-8">
+		                    	      <h:outputText value="" />
+		                    	</div>					
+								<div class="p-col-12 p-lg-2">
+		                    		<h:outputText value="#{labels['docu.regNom']} заявл. " styleClass="#{mmsSportObEdit.beginInp? 'form-label req' :'form-label '}"  />
+		                    		<p:inputText  id="rZ" value="#{mmsSportObEdit.reg_nom_zaiavl}"  readonly="#{mmsSportObEdit.beginInp?'false':'true'}" />
+		                    	</div>
+	                    	     <div class="p-col-12 p-lg-2">
+		                    		<h:outputText value="Дата регистрация заявл. " styleClass="#{mmsSportObEdit.beginInp? 'form-label req' :'form-label '}" />
+		                    		<p:datePicker  id="dZ"  showIcon="true" mask="true"  value="#{mmsSportObEdit.date_reg_zaiavl}" disabled="#{mmsSportObEdit.beginInp?'false':'true'}"
+													pattern="dd.MM.yyyy" locale="bg"  
+													showTime="false"  />
+		                    		
+		                    	</div>
+	                    	</h:panelGroup>       
+							
+							<h:panelGroup	rendered="#{viewOnly ne 1}"	>					
+								<div class="p-grid p-col-12 p-lg-5"  jsf:rendered="#{mmsSportObEdit.dmName.active ?'true':'false'}">
+								    <span class=" p-mx-1"/>
+		                    		<h:outputText value="#{labels['prilojenia.name']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmName.required?'form-label  req':'form-label')}"/>
+		                    		<p:inputText  id="nameOb"  value="#{mmsSportObEdit.spObekt.name}" tabindex="100"
+		                    		      onkeypress="if(event.keyCode == 13) {event.preventDefault(); $(':focus').blur()} " >
+		                    		    <p:ajax event="change"  listener="#{mmsSportObEdit.changeName}" update="@form" />  
+		                    		</p:inputText>
+		                    	</div>
+		                
+	                         </h:panelGroup>     
+	                         <h:panelGroup	rendered="#{viewOnly == 1}"	>					
+								<div class="p-grid p-col-12 p-lg-5" jsf:rendered="#{mmsSportObEdit.dmName.active ?'true':'false'}">
+								    <span class=" p-mx-1"/>
+		                    		<h:outputText value="#{labels['prilojenia.name']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmName.required?'form-label  req':'form-label')}"/>
+		                    		<p:inputText  id="nameOb1"  value="#{mmsSportObEdit.spObekt.name}" readonly="#{viewOnly == 1}"  tabindex="100"
+		                    		 	/>
+		                    	</div>	
+	                         </h:panelGroup>   
+	                    	                    		   		                    	
+		                      <div class="p-col-12 p-lg-1"	jsf:rendered="#{viewOnly != 1 and mmsSportObEdit.dmName.active  }">
+				                    	
+				                       <h:outputText value="&nbsp;" />
+									    <div class="ui-inputgroup"  jsf:rendered="#{mmsSportObEdit.spObekt.name ne null and (mmsSportObEdit.obList ne null and mmsSportObEdit.obList.rowCount ne 0)}">
+				                    	<p:commandButton    action="#{mmsSportObEdit.viewObList}" 
+															icon="fas fa-eye" partialSubmit="true"
+															process="@this @form"
+															update=" "
+															title="#{labels['spOb.zaglSprPoNaim']	} "/>
+										</div>					
+							</div>	
+														
+	                     
+		                    <div class="p-col-12 p-lg-3" jsf:rendered="#{mmsSportObEdit.dmVid.active ?'true':'false'}">
+								<h:outputText value="#{labels['docu.vid']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmVid.required?'form-label  req':'form-label' )}" />
+							
+								<ui:remove> <!-- 
+									<p:selectOneMenu value="#{mmsSportObEdit.spObekt.vidObekt}" id="vidOb"  disabled="#{viewOnly == 1}"  tabindex="300">
+						 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+			                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_VID_SPORTEN_OBEKT, now, mmsSportObEdit.currentLang)}" 
+			                               var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />
+									 </p:selectOneMenu>
+								 --> </ui:remove>
+								 <ibg:selectOneModalA codeClassif="#{DocuConstants.CODE_CLASSIF_VID_SPORTEN_OBEKT}" 
+								id="vidOb"  filtered="false"  sortByName="true"			readonly="#{viewOnly==1}"											
+								selectedCode="#{mmsSportObEdit.spObekt.vidObekt}" saveStateTree="false"
+								withBtnClear="true" compType="2" styleAutoComp="" />	
+														
+							</div>
+							<h:panelGroup	rendered="#{!(isNew==1 and mmsSportObEdit.beginInp)}"	>		
+							<div class="p-col-12 p-lg-2">
+		                    		<h:outputText value="#{labels['docu.regNom']}" styleClass="form-label "/>
+		                    		<p:inputText  value="#{mmsSportObEdit.spObekt.regNomer}" readonly="true"/>
+		                    	</div>
+		                    	<div class="p-col-12 p-lg-1">
+		                    	     <h:outputText value="#{labels['spObekt.dataReg']}" styleClass="form-label "/>
+			                    	<p:inputText value="#{mmsSportObEdit.spObekt.dateReg}" readonly="true">	
+												<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+							         </p:inputText>			
+		                    	</div>	
+		                    </h:panelGroup> 
+		                    
+		                    
+		                     <div class=" p-grid p-col-12 p-lg-12 ">
+		                       <h:panelGroup rendered="#{(isNew==1 and !mmsSportObEdit.beginInp) or (isNew == 2 or viewOnly == 1 or mmsSportObEdit.inpPdf )}">
+		                       	<div class="p-col-12 p-lg-8" jsf:rendered="#{mmsSportObEdit.dmVidSport.active?'true':'false'}">
+		                    		<h:outputText value="#{labels['sf.vidSport']}" styleClass="#{(mmsSportObEdit.dmVidSport.required and viewOnly != 1) ?'form-label req':'form-label'} "/>
+		                    							            
+						            <div class="ui-inputgroup" >
+	                   					<p:inputText value="#{mmsSportObEdit.selectedVidSportTxt}" readonly="true" id="vidSpTxt1"   style="width:100%"/>
+				            
+						            
+						            	<ibg:selectManyModalA  
+											showRadioBtn="true" saveStateTree="false" readonly="#{viewOnly == 1}"
+											codeClassif="#{DocuConstants.CODE_CLASSIF_VIDOVE_SPORT}" 
+											dateClassif="#{now}" styleAutoComp="" 
+											sortByName="true"
+											selectedCodes="#{mmsSportObEdit.selectedVidSport}" 
+											selectedText="#{mmsSportObEdit.selectedVidSportTxt}"
+											update="mmsSObform:vidSpTxt1" isSelectNode="false"
+											dopInfoAutoComp="true" itemtipAtPosition="center bottom" compType="1" maxResults="50" />
+						            </div>
+		                    	</div>
+		                       
+		                       <ui:remove > <!--  
+		                        <div class="p-col-12 p-lg-8" jsf:rendered="#{mmsSportObEdit.dmFunkCat.active ?'true':'false'}" >
+										<h:outputText value="#{labels['spOb.funcPr']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmFunkCat.required?'form-label  req':'form-label' )}" />
+										<div class="ui-inputgroup"> 
+											<p:selectOneMenu value="#{mmsSportObEdit.spObekt.funkCategory}" id="spCatOb"  disabled="#{viewOnly == 1}"  tabindex="700" >
+								 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+					                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_FUNC_CATEGORIA_SPORTEN_OBEKT, now, mmsSportObEdit.currentLang)}" 
+					                               var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />
+											</p:selectOneMenu>
+										</div>
+								</div>	
+								  --></ui:remove>
+								  		  
+		                         <div class="p-col-12 p-lg-3">
+		                             	<span class=" p-mx-1"/>
+		                             	<h:outputText value="#{labels['mmsCL.statusC']}" styleClass="#{(viewOnly==1 ) ?'form-label':'form-label'}" />     <ui:remove> <!--  styleClass="#{(viewOnly==1 or isNew==1 or isNew == 2) ?'form-label':'form-label  req'}"  --></ui:remove>
+										<div class="ui-inputgroup"> 
+										    	<p:inputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_OBEKT, mmsSportObEdit.spObekt.status, mmsSportObEdit.currentLang , now)}" readonly="true" />	
+										<ui:remove > <!-- 
+										   	<p:inputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_OBEKT, mmsSportObEdit.spObekt.status, mmsSportObEdit.currentLang , now)}" readonly="true"  rendered="#{!mmsSportObEdit.inpPdf }" />	
+											<p:selectOneMenu value="#{mmsSportObEdit.spObekt.status}" id="stat"  rendered="#{mmsSportObEdit.inpPdf }" >
+								 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+					                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_STATUS_OBEKT, now, mmsSportObEdit.currentLang)}" 
+					                               var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />
+											</p:selectOneMenu>
+										-->	</ui:remove> 
+										
+											
+										</div>  
+		                         </div>
+		                         <div class="p-col-12 p-lg-1">
+			                    		<h:outputText value="#{labels['compReg.dateActStatus']}" styleClass=" #{(viewOnly==1)?'form-label':'form-label'}"/>  <ui:remove> <!--   styleClass="#{(viewOnly==1 or isNew==1 or isNew == 2) ?'form-label':'form-label  req'}"  --></ui:remove>
+			                    			
+			                    			<p:inputText value="#{mmsSportObEdit.spObekt.dateStatus}" readonly="true">	
+												<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+							               </p:inputText>		
+							             
+			                    		<ui:remove>    <!-- 
+			                    			<p:datePicker  id="dateStat"   showIcon="true" mask="true"  value="#{mmsSportObEdit.spObekt.dateStatus}"   disabled="true"
+													pattern="dd.MM.yyyy" locale="bg"    tabindex="500"
+													showTime="false"  />      -->	</ui:remove>    <ui:remove>  <!--   disabled="#{viewOnly==1 or isNew==1  or isNew == 2}"  --></ui:remove>
+										  		 
+		                    	     </div>`
+	                    	       										
+										 <div class="p-grid p-col-12 p-lg-12"  jsf:rendered="#{mmsSportObEdit.dmOpis.active ?'true':'false'}"  >
+									                <span class=" p-mx-1"/>
+									        	  <h:outputText value="#{labels['spOb.opis']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmOpis.required?'form-label  req':'form-label' )}" />
+									        	  <p:inputTextarea id="opis"  value="#{mmsSportObEdit.spObekt.opisanie}"  readonly="#{viewOnly==1}" />
+								 	      								         
+										   </div>      	                    	     
+									   
+								      <div class="p-grid p-col-12 p-lg-12 "  jsf:rendered="#{mmsSportObEdit.dmIdentif.active ?'true':'false'}">   
+								               <span class=" p-mx-1"/>
+								        	  <h:outputText value="#{labels['spOb.identif']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmIdentif.required?'form-label  req':'form-label' )}"/>
+								        	  <p:inputTextarea  id="ident"  value="#{mmsSportObEdit.spObekt.identif}"    readonly="#{viewOnly==1}" />
+							 	      								         
+									   </div>         	
+	                    	     </h:panelGroup>
+	                    	        <h:panelGroup rendered="#{isNew==1 and mmsSportObEdit.beginInp}">	
+	                    	             
+	                    	       	<div class="p-col-12 p-lg-9" jsf:rendered="#{mmsSportObEdit.dmVidSport.active?'true':'false'}">
+	                    	       	     <span class=" p-mx-1"/>
+			                    		<h:outputText value="#{labels['sf.vidSport']}" styleClass="#{(mmsSportObEdit.dmVidSport.required and viewOnly != 1) ?'form-label req':'form-label'} "/>
+			                    							            
+							            <div class="ui-inputgroup" >
+		                   					<p:inputText value="#{mmsSportObEdit.selectedVidSportTxt}" readonly="true" id="vidSpTxt2"   style="width:100%"/>
+					            
+							            
+							            	<ibg:selectManyModalA  
+												showRadioBtn="true" saveStateTree="false" readonly="#{viewOnly == 1}"
+												codeClassif="#{DocuConstants.CODE_CLASSIF_VIDOVE_SPORT}" 
+												dateClassif="#{now}" styleAutoComp=""
+												sortByName="true"
+												selectedCodes="#{mmsSportObEdit.selectedVidSport}" 
+												selectedText="#{mmsSportObEdit.selectedVidSportTxt}"  
+												update="mmsSObform:vidSpTxt2" isSelectNode="false"
+												dopInfoAutoComp="true" itemtipAtPosition="center bottom" compType="1" maxResults="50" />
+							            </div>
+			                    	</div>
+	                    	             
+	                    	             <ui:remove > <!--   
+	                    	             <div class="p-col-12 p-lg-9"  jsf:rendered="#{mmsSportObEdit.dmFunkCat.active ?'true':'false'}" >
+	                    	                 <span class=" p-mx-1"/>
+											<h:outputText value="#{labels['spOb.funcPr']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmFunkCat.required?'form-label  req':'form-label' )}" />
+											<div class="ui-inputgroup"> 
+												<p:selectOneMenu value="#{mmsSportObEdit.spObekt.funkCategory}"  id="spCatOb1"   disabled="#{viewOnly == 1}">
+									 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+						                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_FUNC_CATEGORIA_SPORTEN_OBEKT, now, mmsSportObEdit.currentLang)}" 
+						                               var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />
+												</p:selectOneMenu>
+											</div>
+										</div>	
+										 --></ui:remove> 
+										 
+										 <div class="p-grid p-col-12 p-lg-12" jsf:rendered="#{mmsSportObEdit.dmOpis.active ?'true':'false'}"  >
+									                <span class=" p-mx-1"/>
+									        	  <h:outputText value="#{labels['spOb.opis']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmOpis.required?'form-label  req':'form-label' )}" />
+									        	  <p:inputTextarea  id="opis0"  value="#{mmsSportObEdit.spObekt.opisanie}"  readonly="#{viewOnly==1}" />
+								 	      								         
+										   </div>      
+												                      	     
+										 <div class="p-grid p-col-12 p-lg-12"  jsf:rendered="#{mmsSportObEdit.dmIdentif.active ?'true':'false'}"  >
+									                <span class=" p-mx-1"/>
+									        	  <h:outputText value="#{labels['spOb.identif']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmIdentif.required?'form-label  req':'form-label' )}"/>
+									        	  <p:inputTextarea  id="ident0" value="#{mmsSportObEdit.spObekt.identif}"  readonly="#{viewOnly==1}" />
+								 	      								         
+										   </div>         	
+	                    	              
+	                    	        </h:panelGroup>
+	                    	     
+	                    	 </div>			
+		                      <div class="p-grid p-col-12 p-lg-12" jsf:rendered="#{mmsSportObEdit.dmDopInfo.active ?'true':'false'}"   >
+					        	<span class=" p-mx-1"/>
+					        	  <h:outputText value="#{labels['spObekt.dopInfo']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmDopInfo.required?'form-label  req':'form-label' )}" />
+					        	  <p:inputTextarea  id="dop" value="#{mmsSportObEdit.spObekt.dopInfo}" styleClass="p-col-12 p-lg-12" rows="2"  readonly="#{viewOnly==1}" />
+				 	        					         
+						       </div>         	
+					
+					<ui:remove >   <!-- 
+					 <div class="p-grid">
+						<div class=" p-col-12">
+							<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '#mmsSObform:panelMesto')">
+								<h:outputText value="Местонахождение на спортния обект" />
+								<i class="fas fa-caret-right"></i>
+							</p:commandLink>
+						</div>
+	                
+	          
+					<div  jsf:id="panelMesto" class="p-grid p-col-12 p-lg-12 ui-fluid ">      
+					 -->          						
+					</ui:remove>	
+					 				
+					 			<p:panel header="#{labels['spOb.mestoC']}:" style="text-align:left" styleClass="p-col-12 p-lg-12">
+                                 <h:panelGrid columns="1" style="width:100%">								 					
+										      <h:panelGroup  rendered="#{(mmsSportObEdit.spObekt.country == null or (mmsSportObEdit.spObekt.country != null and (mmsSportObEdit.spObekt.country == mmsSportObEdit.countryBG))) or (mmsSportObEdit.dmNasMesto.active)  or (mmsSportObEdit.dmPostCode.active and mmsSportObEdit.dmPostCode.required) }" >
+										         
+												 <div class="p-grid p-col-12 p-lg-12" >  
+										          <div class=" p-col-12 p-lg-3"  jsf:rendered="#{mmsSportObEdit.dmCountry.active ?'true':'false'}" >
+											          <span class=" p-mx-1"/>
+													<h:outputText value="#{ui_labels['general.country']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmCountry.required?'form-label  req':'form-label' )}"  />
+													<ibg:selectOneModalA  id="cntryB"     readonly="#{viewOnly==1}"
+														codeClassif="#{DocuConstants.CODE_CLASSIF_COUNTRIES}"		
+														sortByName="true"						
+														selectedCode="#{mmsSportObEdit.spObekt.country}" 
+														emptyMessage="#{labels['docu.countryEmptyMsg']}"
+														saveStateTree="false" withBtnClear="true" compType="3" minQueryLength="2"
+														styleAutoComp=""  
+														onComplete="cmdChCountry()"/>	
+														<p:remoteCommand name="cmdChCountry" 
+														  	partialSubmit="true" process="@this"  update="@this"
+														 	actionListener="#{mmsSportObEdit.actionChangeCountry}"/>
+													   
+											 </div>				
+													   
+														<div class="p-col-12 p-lg-4" jsf:rendered="#{mmsSportObEdit.dmNasMesto.active ?'true':'false'}"  >
+														<span class=" p-mx-1"/>
+														<h:outputText value="#{ui_labels['general.ekatte']}" styleClass="#{viewOnly==1?'form-label':'form-label  req' }"  />  <ui:remove> styleClass="#{mmsSportObEdit.spObekt.country ne null ? 'form-label req' :'form-label'}" </ui:remove>
+														<ibg:selectOneModalA  id="mestoC"      readonly="#{viewOnly==1}"
+														  	update="@form"
+															codeClassif="#{DocuConstants.CODE_CLASSIF_EKATTE}"			
+															specifics="#{mmsSportObEdit.specificsEKATTE}"					
+															selectedCode="#{mmsSportObEdit.spObekt.nas_mesto}"
+															emptyMessage="#{labels['docu.mestoEmptyMsg']}"
+															saveStateTree="false" withBtnClear="true" compType="3" minQueryLength="3"
+															styleAutoComp=""
+															dopInfoAutoComp="true" dopInfoTitleAutoComp="#{ui_labels['general.ekatteObshObl']}"
+																onComplete="cmdChNasMesto()" />	
+															<p:remoteCommand name="cmdChNasMesto" update="@this"
+															  	partialSubmit="true" process="@this" 
+															 	actionListener="#{mmsSportObEdit.actionChangeNasMesto}" />	
+													
+													  </div>  
+															  					
+													<div class="p-col-12 p-lg-4" jsf:rendered="#{mmsSportObEdit.dmNasMesto.active ?'true':'false'}"  >
+													   
+														<h:outputText value="#{ui_labels['general.ekatteObshObl']}" styleClass="form-label" />
+														<p:inputText  value="#{systemData.decodeItemDopInfo(DocuConstants.CODE_CLASSIF_EKATTE, mmsSportObEdit.spObekt.nas_mesto, mmsSportObEdit.currentLang, mmsSportObEdit.currentDate)}"  readonly="true" />
+														
+													</div>
+													<div class="p-col-12 p-lg-1" jsf:rendered="#{mmsSportObEdit.dmPostCode.active ?'true':'false'}"  >
+													  
+															<h:outputText value="#{ui_labels['general.adrPostCode']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmPostCode.required?'form-label  req':'form-label' )}"  />
+															<p:inputText  value="#{mmsSportObEdit.spObekt.postCode}"   readonly="#{viewOnly==1}" />
+												         
+													</div>
+													</div>	
+													  <div class="p-grid p-col-12 p-lg-12"  id="contactRef">
+											        	<div class="p-col-12 p-lg-5"  jsf:rendered="#{mmsSportObEdit.dmAddress.active ?'true':'false'}">
+															        <span class=" p-mx-1"/>
+																	<h:outputText value="#{ui_labels['general.adres']}"  styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmAddress.required?'form-label  req':'form-label' )}" />
+																	<p:inputText  value="#{mmsSportObEdit.spObekt.adres}"  readonly="#{viewOnly==1}" />
+														         
+															</div>
+															
+													<div class="p-col-12  p-lg-4"  jsf:rendered="#{mmsSportObEdit.dmEMail.active ?'true':'false'}"> 
+														<h:outputText value="#{ui_labels['general.email']}"  styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmEMail.required?'form-label  req':'form-label' )}" />
+														<p:inputText   id="mail"  value="#{mmsSportObEdit.spObekt.e_mail}"   
+														onchange="commonValidation('#{mmsSportObEdit.dmEMail.getValidMethod()}',this,'',null,null, 'Невалиден  e_mail!')"		
+														readonly="#{viewOnly==1}"  >
+														     <p:ajax event="change"  listener="#{mmsSportObEdit.actionChangeMail}"  update="@this @form   mmsSObform:panelSendMail  mmsSObform:dMail  " />   
+													    </p:inputText>   
+													</div>
+													<div class="p-col-12  p-lg-3" jsf:rendered="#{mmsSportObEdit.dmTel.active ?'true':'false'}" > 
+														<h:outputText value="#{ui_labels['general.phone']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmTel.required?'form-label  req':'form-label' )}"  />
+														<p:inputText   value="#{mmsSportObEdit.spObekt.tel}"   readonly="#{viewOnly==1}"  />
+													</div>
+													
+									    		  </div>
+									    								    											 
+										       </h:panelGroup>
+										       
+										     <h:panelGroup    rendered="#{ (mmsSportObEdit.spObekt.country!= null  and mmsSportObEdit.spObekt.country != mmsSportObEdit.countryBG) and !(mmsSportObEdit.dmNasMesto.active) and !(mmsSportObEdit.dmPostCode.active and mmsSportObEdit.dmPostCode.required) }">
+											     <div class="p-grid p-col-12 p-lg-12" > 
+											       <div class="p-col-12  p-lg-3 "   jsf:rendered="#{mmsSportObEdit.dmCountry.active ?'true':'false'}" >
+											          <span class=" p-mx-1"/>
+													<h:outputText value="#{ui_labels['general.country']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmCountry.required?'form-label  req':'form-label' )}"  />
+													<ibg:selectOneModalA  id="cntryC"     readonly="#{viewOnly==1}"
+														codeClassif="#{DocuConstants.CODE_CLASSIF_COUNTRIES}"	
+														sortByName="true"							
+														selectedCode="#{mmsSportObEdit.spObekt.country}" 
+														emptyMessage="#{labels['docu.countryEmptyMsg']}"
+														saveStateTree="false" withBtnClear="true" compType="3" minQueryLength="2"
+														styleAutoComp=""  
+														onComplete="cmdChCountry()"/>	
+														<p:remoteCommand name="cmdChCountry" 
+														  	partialSubmit="true" process="@this"  update="@this"
+														 	actionListener="#{mmsSportObEdit.actionChangeCountry}"/>
+													   
+											 </div>				
+											 
+													<div class="p-col-12 p-lg-5" jsf:rendered="#{mmsSportObEdit.dmAddress.active ?'true':'false'}"  >
+													  
+															<h:outputText value="#{ui_labels['general.adres']}"  styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmAddress.required?'form-label  req':'form-label' )}"  />
+															<p:inputText  value="#{mmsSportObEdit.spObekt.adres}"  readonly="#{viewOnly==1}" />
+												         
+													</div>
+													
+													<div class="p-col-12 p-lg-2"  jsf:rendered="#{mmsSportObEdit.dmEMail.active ?'true':'false'}" >
+														<h:outputText value="#{ui_labels['general.email']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmEMail.required?'form-label  req':'form-label' )}"  />
+														<p:inputText   value="#{mmsSportObEdit.spObekt.e_mail}"  
+														onchange="commonValidation('#{mmsSportObEdit.dmEMail.getValidMethod()}',this,'',null,null, 'Невалиден  e_mail!')"
+														readonly="#{viewOnly==1}"  >
+														   <p:ajax event="change"  listener="#{mmsSportObEdit.actionChangeMail}"   update="@this @form mmsSObform:panelSendMail  mmsSObform:dMail " />
+														</p:inputText>   
+													</div> 
+													<div class="p-col-12 p-lg-2 "  jsf:rendered="#{mmsSportObEdit.dmTel.active ?'true':'false'}"  > 
+														<h:outputText value="#{ui_labels['general.phone']}" styleClass="#{viewOnly==1?'form-label':(mmsSportObEdit.dmTel.required?'form-label  req':'form-label' )}" />
+														<p:inputText   value="#{mmsSportObEdit.spObekt.tel}"   readonly="#{viewOnly==1}" />
+													</div>
+													</div>
+													
+												  </h:panelGroup>
+									
+									<ui:remove >	<!--  				
+								       </div>
+								     </div>         
+								     -->	 
+								   </ui:remove>
+							</h:panelGrid>
+							</p:panel>	  
+	                   </h:panelGroup>
+	                              
+					</div>
+				
+				<h:panelGroup  rendered="#{   ( isNew eq 1 and  !mmsSportObEdit.beginInp)  or (isNew eq 2  and  !mmsSportObEdit.beginInp) or  viewOnly eq 1 }">
+					 <div class="p-grid">
+						<div class=" p-col-12">
+							<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '#mmsSObform:panelLica')">
+								<h:outputText value="Лица, имащи отношение към спортния обект" />
+								<i class="fas fa-caret-right"></i>
+							</p:commandLink>
+						</div>
+	                
+	          
+					<div  jsf:id="panelLica" class="p-grid ui-fluid ">
+					  <h:panelGroup   rendered="#{viewOnly != 1 }">
+					    <h:panelGroup rendered="#{(mmsSportObEdit.spObektLice.idLice == nulll and mmsSportObEdit.spObektLice.ime == null  and mmsSportObEdit.spObektLice.prezime == null and mmsSportObEdit.spObektLice.familia == null )  and  !mmsSportObEdit.inpPdf}">
+						<div class="p-col-12 p-lg-7">
+						     <span class=" p-mx-1"/>
+							<h:outputText value="Въвеждане лице (юридическо/физическо) за връзка:"
+								styleClass="form-label" />
+							<div class="selectModalA-with-buttons">
+								<h:panelGroup id="refCorrInp" layout="block" styleClass="koresp-input">
+								   
+								    	<ibg:selectOneModalA id="refCorrInp1" readonly="#{viewOnly eq 1}"
+										codeClassif="#{DocuConstants.CODE_CLASSIF_REFERENTS}"
+										dateClassif="#{mmsSportObEdit.currentDate}"										
+										selectedCode="#{mmsSportObEdit.spObektLice.idLice}"
+										selectedText="#{mmsSportObEdit.spObektLice.nameLice}" hiddenTxt="true"
+										saveStateTree="false" withBtnClear="true" minQueryLength="2"
+										compType="3" filtered="false"
+										styleAutoComp=""										
+										itemtipAtPosition="center bottom"
+										update="mmsSObform:refCorr @form " />
+															
+								    <ui:remove > <!--      	 Нов вариант - не е необходим в случая, тъй като съдържанието на nameLice се формира допълнително в бина
+								           <ibg:mmsSelectReferents id="refCorrInp1"     corespCompId="PF('mCorrD').show(); "
+		                                     readonly="#{isView eq 1}"
+		                                       selectedCode="#{mmsSportObEdit.spObektLice.idLice}"
+		                                       searchWord="#{mmsSportObEdit.spObektLice.nameLice}" 
+		                                     update="mmsSObform:refCorrInp  mmsSObform:refCorr  @form"
+		                                     typeSearch="EIK"                                   
+		                                    dateClassif="#{mmsSportObEdit.currentDate}"         
+		                                    оnComplete= "" />
+								     --></ui:remove> 
+																
+								</h:panelGroup>
+								
+								<div jsf:id="refCorr">
+									<ui:remove>	<!--  Корекция на данни за лице	--></ui:remove>
+									<p:commandButton id="btnCorrD"
+										rendered="#{viewOnly ne 1 and mmsSportObEdit.spObektLice.idLice ne null}"
+										icon="#{(viewOnly ne 1) ? 'fas fa-edit' : 'fas fa-eye'}" partialSubmit="true"
+										process="mmsSObform:dpCorrData @this @form"
+										update="mmsSObform:dpCorrData "
+										oncomplete="PF('mCorrD').show(); "
+										title="#{viewOnly ne 1 ? ( userData.hasAccess(DocuConstants.CODE_CLASSIF_MENU, DocuConstants.CODE_ZNACHENIE_MENU_CORESP) ? labels['docu.titleEditCoresp'] : labels['docu.correspView']) : labels['docu.correspView']}"/>
+	
+									<ui:remove><!--  Разширено търсене на данни за лице  --></ui:remove>
+									<p:commandButton id="btnCorrS"
+										onmousemove="document.getElementById('mmsSObform:btnCorrS').focus();"
+										rendered="#{viewOnly ne 1 and (mmsSportObEdit.spObektLice.idLice eq null and mmsSportObEdit.spObektLice.ime eq null and mmsSportObEdit.spObektLice.prezime eq null and mmsSportObEdit.spObektLice.familia eq null) }"
+										icon="fas fa-list-ul" partialSubmit="true"
+										process="mmsSObform:dpCorrSearch @this @form"
+										update="mmsSObform:dpCorrSearch"
+										oncomplete="PF('mCorrS').show(); "
+										title=" Търсене на въведено лице (юридическо/физическо)" />
+	
+									<ui:remove>	<!-- Въвеждане на данни за ново лице	--></ui:remove>
+									<p:commandButton id="btnCorrN"
+										onmousemove="document.getElementById('mmsSObform:btnCorrN').focus();"
+										rendered="#{viewOnly ne 1 and (mmsSportObEdit.spObektLice.idLice eq null and mmsSportObEdit.spObektLice.ime eq null and mmsSportObEdit.spObektLice.prezime eq null and mmsSportObEdit.spObektLice.familia eq null)}"
+										icon="fas fa-plus" partialSubmit="true" 
+										process="mmsSObform:dpCorrData @this @form"
+										update="mmsSObform:dpCorrData "
+										oncomplete="PF('mCorrD').show();"
+										title="Добавяне ново лице  (юридическо/физическо)	в базата " />            
+																
+								</div>
+							</div>
+
+						</div>
+							</h:panelGroup>
+							
+							  <h:panelGroup id="pLice"    rendered="#{mmsSportObEdit.spObektLice.idLice != null or mmsSportObEdit.spObektLice.ime != null or mmsSportObEdit.spObektLice.prezime != null or mmsSportObEdit.spObektLice.familia != null  }"    styleClass="p-grid p-col-12">
+								
+									 <div class="p-col-12 p-sm-7 p-md-7 p-lg-6 p-xl-6 ui-fluid "> 	
+									     <span class=" p-mx-1"/>
+										<h:outputText value="Въведено лице:"	styleClass="form-label" />
+										<div class="ui-inputgroup">
+											<p:inputText   value="#{mmsSportObEdit.spObektLice.nameLice}"  style="color:blue;" readonly="true" />
+										</div>	
+									</div>
+									
+									
+									<div class="p-col-12 p-sm-6 p-md-3 p-lg-2 p-xl-2 ui-fluid "> 	
+										  
+												<h:outputText value="Връзка със спортния обект" styleClass="form-label" />
+												<div class="ui-inputgroup">
+												 	<p:selectOneMenu   value="#{mmsSportObEdit.spObektLice.typeVrazka}" style="color:blue" >
+									                         <f:selectItem value="#{null}" itemValue="#{null}"/>
+									                        <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_VRAZKA_LICE_SPORTEN_OBEKT, now,  mmsSportObEdit.currentLang)}" 
+									                            var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />
+									                         <p:ajax event="change" update="@form"  />   
+								                    </p:selectOneMenu>
+								                 </div>   
+									         
+										</div>
+									
+										<div class="p-col-12 p-sm-6 p-md-2 p-lg-2 p-xl-2 ui-fluid  "> 
+										             <h:outputText value="&nbsp;" />
+										        <div class="ui-inputgroup">
+										          	<p:commandButton icon="fas fa-save"  id="btnVrazkaLice" value="#{ui_labels['general.save']} връзка с избранота лице"  rendered="#{viewOnly != 1 and mmsSportObEdit.spObektLice.typeVrazka != null and !mmsSportObEdit.inpPdf}"
+							                           actionListener="#{mmsSportObEdit.actionSaveLiceVrazka}"   update="mmsSObform"  process="@this mmsSObform" partialSubmit="true"/>
+							                          	<p:commandButton icon="fas fa-save"  id="btnChangeVrazkaLice" value="Промяна връзка "  rendered="#{viewOnly != 1 and mmsSportObEdit.spObektLice.typeVrazka != null and mmsSportObEdit.inpPdf}"
+							                                actionListener="#{mmsSportObEdit.actionChangeLiceVrazka}"   update="mmsSObform"  process="@this mmsSObform" partialSubmit="true"/>   
+								                </div>  
+								             </div>    
+								              <div class="p-col-12 p-sm-6 p-md-1 p-lg-1 p-xl-1 ui-fluid  ">    
+								                  <h:outputText value="&nbsp;" />
+								         	  	 <div class="ui-inputgroup">					                 
+								                  <p:commandButton  id="btnVrazkaLiceClear" value="Отказ " update="mmsSObform" process="@this" partialSubmit="true"  
+								                  	actionListener="#{mmsSportObEdit.clearSelLice }" icon="fas fa-eraser"  	styleClass="ui-button-warning"   />
+								             	</div>						                 
+								              </div>   
+								         								
+								     </h:panelGroup>
+							 						   
+							 </h:panelGroup>; 
+							  
+						 	<div class="p-col-12 p-lg-12">
+						 	  
+                    		<div class="table-toolbar">
+								<h:outputText  id="brL"  value="Брой свързани с обекта лица: #{mmsSportObEdit.obLicaList.size()}" styleClass="form-label"/>	
+								
+							</div>
+							  
+													    
+                    		<p:dataTable id="tblLica" var="row" value="#{mmsSportObEdit.obLicaList}" lazy="true" 	 
+								rowIndexVar="idx"  emptyMessage=""  sortMode="single" reflow="true"
+								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+								rows="5" rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom"
+								paginatorAlwaysVisible="false" paginator="true"  >							<ui:remove > <!--   emptyMessage="#{ui_labels['general.norows']}  --></ui:remove>			
+													
+							  	<p:column width="6px" exportable="false" headerText="#{ui_labels['general.No-symbol'] }" >
+									<h:outputText value="#{idx + 1}" />
+								</p:column>	
+								
+									<p:column style="width: 20px" exportable="false" >
+									   <ui:remove><!--   Редакция на връзка с лице      --></ui:remove>
+									   <h:panelGroup>
+							                <p:commandButton action="#{mmsSportObEdit.editLiceVrazkaFromList(row)}" update="@form"    rendered="#{mmsSportObEdit.viewOnly != DocuConstants.CODE_ZNACHENIE_DA }" 
+							                	icon="fas fa-edit" styleClass="ui-button-success" title="#{ui_labels['general.edit']} на връзката" >
+							                </p:commandButton>
+							                <span class=" p-mx-1"/>
+							                    <ui:remove>	<!--  Изобразяване данни на лице	--></ui:remove>
+												<p:commandButton id="btnViewD"    action="#{mmsSportObEdit.setIdViewLice(row)}" rendered="#{row.idLice != null }"
+													icon="fas fa-eye" partialSubmit="true"
+													process="mmsSObform:dpViewData @this @form"
+													update="mmsSObform:dpViewData "
+													oncomplete="PF('mViewD').show(); "
+													title="Разглеждане даннии за лице (юридическо/физическо)"/>
+											</h:panelGroup>		
+							        </p:column>        
+														
+								<p:column width="260"   headerText="Име (ЕИК/ЕГН/ЛНЧ);  Нас. място" sortable="true" >
+									<h:outputText value="#{row.nameLice}"  />								    
+								</p:column>
+																
+								<p:column width="60"   headerText="Тип връзка" sortable="true" >
+								             <h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_VRAZKA_LICE_SPORTEN_OBEKT, row.typeVrazka, mmsSportObEdit.currentLang, now)}" />								    
+								</p:column>
+								
+							    	<p:column style="width: 10px" exportable="false" rendered="#{mmsSportObEdit.viewOnly != DocuConstants.CODE_ZNACHENIE_DA and !mmsSportObEdit.inpPdf}" >
+							    	         		 <ui:remove>	<!--  Изтриване на връзката с лице	--></ui:remove>
+							                <p:commandButton action="#{mmsSportObEdit.removeLiceFromList(row)}" update="@form" 
+							                	icon="fas fa-trash" styleClass="ui-button-danger" title="Премахване връзка със свързано лице"  >
+							                    <p:confirm header="#{ui_labels['general.delete']}" message="#{beanMessages['general.confirmDeleteMsg']}" icon="fas fa-exclamation-triangle"/>
+							                </p:commandButton>
+							    	</p:column>
+					        															
+							</p:dataTable>
+                    	</div>
+                    
+					</div>
+				  </div>	
+					   
+					<div class="p-col-12">
+						<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '#mmsSObform:panelVpisvane')">
+							<h:outputText value="Вписвания" />
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+					</div>
+	
+	                <ui:remove> <!-- 
+					<div jsf:id="panelVpisvane" class="p-grid ui-fluid" >
+					          	<div class="p-grid p-col-12" >
+						         <div class="p-col-12 p-lg-3 ">
+		                    		<h:outputText value="Статус посл. вписване" styleClass="form-label"  />
+		                    		<div class="ui-inputgroup">
+		                    		    <p:inputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_REGISTRATION,mmsSportObEdit.status_posl_vp, mmsSportObEdit.currentLang , now)}" readonly="true" 
+		                    		        style="width:350px" />	
+									</div>	   
+										  
+		                    	</div>
+	                    	     <div class="p-col-12 p-lg-2">
+		                    		<h:outputText value="Дата статус " styleClass="form-label" />
+		                    		<div class="ui-inputgroup">
+		                    		    <p:inputText value="#{mmsSportObEdit.date_posl_vp}" readonly="true"  >	
+												<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+							            </p:inputText>			
+		                    				  
+		                    		</div>
+		                    	</div>
+		                      </div>	
+					
+						<div class="p-grid ">
+                    		<div class="p-col-2" >
+                    		  <div class="table-toolbar">
+							  	<h:outputText value="Бр. вписвания: #{mmsSportObEdit.regsList.rowCount}" styleClass="form-label"/>  
+							    <span class="fas fa-ellipsis-v SoftGray p-mx-2"/>
+							   </div>
+							 </div>
+							 <div class="p-col-2 p-lg-2" >    
+							    	<p:commandButton  icon="fas fa-edit" value="Ново вписване"    rendered="#{viewOnly != 1}"
+									actionListener="#" styleClass="ui-button-success" title="#{labels['compReg.basicData']}" update="@form">     
+								</p:commandButton>	
+								 						
+							</div>
+							 --> </ui:remove> 	    <ui:remove><!--  oncomplete="PF('vpisvaneNew').show()"  --> </ui:remove>
+							 
+					 <div jsf:id="panelVpisvane" class="p-grid extended-search" >
+						<div class="p-col-12 p-lg-12">
+                    		<div class="table-toolbar">
+								<h:outputText value="Брой вписвания: #{mmsSportObEdit.regsList.rowCount}" styleClass="form-label"/>
+								<h:panelGroup rendered="#{viewOnly != 1}">
+								<span class="fas fa-ellipsis-v SoftGray"  />
+								<span class=" p-mx-2"/>
+								
+					<ui:remove> <p:commandButton id="btnNewReg" action="mmsVpisvaneEdit.jsf"  value="#{labels['compReg.newReg']}" icon="fas fa-plus" ajax="false" styleClass="ui-button-success"  rendered="#{mmsSportObEdit.spObekt.nas_mesto ne null and !mmsSportObEdit.inpPdf}" >
+									<f:param name="idObject" value="#{mmsSportObEdit.spObekt.id}"/>
+									<f:param name="codeObject" value="97"/>
+									<f:param name="nameObject" value="#{mmsSportObEdit.spObekt.name}" />
+									<f:param name="vidDoc" value="#{mmsSportObEdit.vidDocVp}"/>
+									<f:param name="regNomer" value="#{mmsSportObEdit.spObekt.regNomer}"/>
+									<f:param name="ekatte" value="#{mmsSportObEdit.spObekt.nas_mesto}"/>
+								</p:commandButton>   
+					</ui:remove>
+								<span class=" p-mx-2"/>
+								<p:commandButton id="btnReadVp" action="#{mmsSportObEdit.findVpisvAll ()}"  value="Изчитане вписвания" icon="fas fa-plus" ajax="false" styleClass="ui-button" 
+								    update="@form"  rendered="false"/>
+								
+								    <ui:remove>  <!-- 
+										<p:commandButton  icon="fas fa-edit" value="#{labels['compReg.basicData']}"  oncomplete="PF('vpisvaneNew').show()" rendered="#{viewOnly != 1}"
+											actionListener="#" styleClass="ui-button-success" title="#{labels['compReg.basicData']}" update="tblVpisvane">
+										</p:commandButton>	
+								     -->   </ui:remove>
+								</h:panelGroup>
+							</div>
+                    		<p:dataTable id="tblVpisvane" var="row" value="#{mmsSportObEdit.regsList}" lazy="true" 	 
+								rowIndexVar="idx" sortMode="single" reflow="true" emptyMessage="" 
+								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+								rows="5" rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom"
+								paginatorAlwaysVisible="false" paginator="true">	
+								<f:facet name="{Exporters}">
+
+	                                <div style="float: left">
+	
+	                                       <h:commandLink id="excel">
+	                                             <h:graphicImage library="images" name="excel2.png" />
+	                                             <p:dataExporter type="xls" target="tblVpisvane" fileName="regsListXls" />
+	                                       </h:commandLink>
+	
+	                                       <h:commandLink id="pdf">
+	                                             <h:graphicImage library="images" name="pdf.png" />
+	                                             <p:dataExporter type="pdf"  target="tblVpisvane" fileName="regsListPdf" encoding="windows-1251" />     
+	                                		  </h:commandLink>
+	
+	                                       <h:commandLink id="csv">
+	                                             <h:graphicImage library="images" name="csv.png" />
+	                                             <p:dataExporter type="csv" target="tblVpisvane" fileName="regsListCsv" encoding="CP1251" />
+	                                       </h:commandLink>
+	
+	                                </div>
+
+                                 </f:facet>
+								
+						
+
+            <p:columnGroup type="header">
+                <p:row>
+                 <ui:remove > <!--          <p:column colspan="3" width="103"  headerText="" rendered="#{viewOnly ne 1}"/>   --></ui:remove>
+                   <ui:remove > <!--         <p:column colspan="2" width="55"  headerText="" rendered="#{viewOnly eq 1}"/>    --></ui:remove>
+                   <p:column colspan="2" width="55"  headerText=""  />
+                   <p:column colspan="4" headerText="Данни за заявление"/>
+                    <p:column colspan="4" headerText="Данни за вписване"/>
+                </p:row>
+                <p:row>  
+                    <p:column headerText="#{ui_labels['general.No-symbol'] }" width="7" exportable="false" />
+                  <ui:remove > <!--       <p:column headerText= ""  width="48"  exportable="false" rendered="#{viewOnly ne 1}" />     --></ui:remove>
+                   <p:column headerText= ""  width="48"  exportable="false"  /> 
+                   <p:column headerText="Рег. номер" width="110"  sortBy="#{row.RN_DOC_ZAIAVLENIE}" />
+                    <p:column headerText="Дата " width="60" sortBy="#{row.DATE_DOC_ZAIAVLENIE}"  />
+                    <p:column headerText="Статус " width="140" sortBy="#{row.STATUS_RESULT_ZAIAVLENIE}" />
+                    <p:column headerText="Дата статус" width="60" sortBy="#{row.DATE_STATUS_ZAIAVLENIE}"  />
+                    <ui:remove > <!--     <p:column headerText="Основание статус" width="200"  />      --></ui:remove>
+                     <p:column headerText="Рег. номер  док." width="110" sortBy="#{row.RN_DOC_VPISVANE}" />
+                    <p:column headerText="Дата док." width="60" sortBy="#{row.DATE_DOC_VPISVANE}"  />
+                    <p:column headerText="Статус " width="140" sortBy="#{row.STATUS_VPISVANE}" />
+                    <p:column headerText="Дата статус" width="60" sortBy="#{row.DATE_STATUS_VPISVANE}" />
+                    <ui:remove> <!--  <p:column headerText="Основание статус" width="200"  />  --> </ui:remove>
+                </p:row>
+            </p:columnGroup>
+																	
+													
+							  	<p:column   >
+									<h:outputText value="#{idx + 1}" />
+								</p:column>	
+								<p:column rendered="#{viewOnly ne 1}" >
+										<p:commandButton action="mmsVpisvaneEdit.jsf" styleClass="btn-new"   ajax="false" icon="fas fa-edit" title="#{ui_labels['general.edit']}"  rendered="#{mmsSportObEdit.spObekt.nas_mesto ne null}" >   <ui:remove>  <!--  styleClass="ui-button-success" --> </ui:remove>
+											<f:param name="idReg" value="#{row[0]}"/>
+											<f:param name="idObject" value="#{mmsSportObEdit.spObekt.id}"/>
+											<f:param name="codeObject" value="#{mmsSportObEdit.spObekt.codeMainObject}"/>
+											<f:param name="nameObject" value="#{mmsSportObEdit.spObekt.name}"/>
+											<f:param name="vidDoc" value="#{mmsSportObEdit.vidDocVp}"/>
+											<f:param name="regNomer" value="#{mmsSportObEdit.spObekt.regNomer}"/>
+											<f:param name="ekatte" value="#{mmsSportObEdit.spObekt.nas_mesto}"/>
+											<f:param name="vidObject" value="#{mmsSportObEdit.spObekt.vidObekt}"/>
+										</p:commandButton>
+								</p:column>	
+								 <p:column rendered="#{viewOnly eq 1}" >
+							             <p:button icon="fas fa-eye" href="mmsVpisvaneView.xhtml?faces-redirect=true" target="_blank" title="#{ui_labels['general.view']}">
+                                              <f:param name="idReg" value="#{row[0]}"/>
+                                              <f:param name="idObject" value="#{mmsSportObEdit.spObekt.id}"/>
+                                              <f:param name="codeObject" value="#{mmsSportObEdit.spObekt.codeMainObject}"/>
+                                             <f:param name="nameObject" value="#{mmsSportObEdit.spObekt.name}"/>                                
+                                             <f:param name="readonly" value="#{viewOnly eq 1}" />
+                                      </p:button>
+							  </p:column>
+								
+								<p:column   >    <ui:remove> <!--   headerText="#{labels['compReg.rnZaiavReg']}"  --></ui:remove>
+									<h:outputText value="#{row[1]}"  />								    
+								</p:column>
+								
+								<p:column  >		<ui:remove> <!--  headerText="#{labels['compReg.dateZaiav']}"   --></ui:remove>							  
+									<h:outputText value="#{row[2]}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+									</h:outputText>							    
+								</p:column>
+								
+								<p:column  >  <ui:remove > <!--  headerText="Статус на заявлението"  --></ui:remove>
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_ZAIAVLENIE, row[3], mmsSportObEdit.currentLang , now)}"  />								    
+								</p:column>
+							
+								<p:column  >    <ui:remove > <!--  headerText="Дата статус на заявлението"  --></ui:remove>
+									<h:outputText value="#{row[4]}"  >
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+									</h:outputText>									    
+								</p:column>
+								
+								<ui:remove> <!--   
+								<p:column  >      
+								     <h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_REASON_STATUS_ZAIAVLENIE , row[5], mmsSportObEdit.currentLang , now)}"  />	
+									<h:outputText value="#{ row[6]}"  />								    
+								</p:column>
+								 --></ui:remove>
+								 															
+								<p:column  >   <ui:remove > <!--  headerText="Рег. номер на док. за вписване"  --></ui:remove>
+								      <h:outputText value="#{row[11]}"  rendered="#{row[11] != null or !empty row[11]}" />
+								       <h:outputText value="#{row[7]}"  rendered="#{row[11] == null or empty row[11]}" /> 
+									
+								</p:column>
+								
+								<p:column  >		<ui:remove >  <!--  headerText="Дата на док. за вписване"  --></ui:remove>							  
+									 <h:outputText value="#{row[12]}" rendered="#{row[12] != null}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+									</h:outputText>	
+									 <h:outputText value="#{row[8]}" rendered="#{row[12] == null}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+									</h:outputText>							    						    
+								</p:column>
+										
+								<p:column  >    <ui:remove > <!--  headerText="Статус на вписването"  --></ui:remove>
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_REGISTRATION, row[13], mmsSportObEdit.currentLang , now)}"  />								    
+								</p:column>
+								
+								<p:column   >     <ui:remove > <!--  headerText="Дата статус на вписването"  --> </ui:remove>
+									<h:outputText value="#{row[14]}"  >
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+									</h:outputText>									    
+								</p:column>
+								
+								<ui:remove> <!--   							
+								<p:column   >        
+								      <h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_REASON_STATUS_ZAIAVLENIE, row[15], mmsSportObEdit.currentLang , now)}"  />	
+								     <h:outputText value="#{row[16]}"  />		
+								</p:column>
+							    --></ui:remove>	
+							    
+							</p:dataTable>
+                    	</div>
+					</div>  
+					
+					<div class="p-col-12">
+						<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '#mmsSObform:panelDocs')">
+							<h:outputText value="Документи" />
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+					</div>
+	
+					<div jsf:id="panelDocs" class="p-grid ui-fluid">
+						<div class="p-col-12 p-lg-12">
+                    		<div class="table-toolbar">
+                    		    
+								<h:outputText value="Брой документи:  0 "  styleClass="form-label"  rendered="#{mmsSportObEdit.docsList == null or mmsSportObEdit.docsList.rowCount==null}" />  
+								<h:outputText value="Брой документи: #{mmsSportObEdit.docsList.rowCount}" styleClass="form-label"  rendered="#{mmsSportObEdit.docsList != null}"  />	
+									<ui:remove>
+									<span class="fas fa-ellipsis-v SoftGray p-mx-2"/>
+									<p:commandButton  icon="fas fa-edit" value="#{labels['docu.titleNewDoc']}"  oncomplete="PF('docNew').show()"
+										actionListener="#" styleClass="ui-button-success" title="#{labels['docu.newDoc']}" >
+									</p:commandButton>
+								</ui:remove>
+							</div>
+							
+                    		<p:dataTable id="tblDocs2" var="row" value="#{mmsSportObEdit.docsList}" lazy="true" 	 
+								rowIndexVar="idx" sortMode="single" reflow="true" emptyMessage="" 
+								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+								rows="5" rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom"
+								paginatorAlwaysVisible="false" paginator="true">										
+													
+							  					
+							  	<p:column width="10" exportable="false" headerText="#{ui_labels['general.No-symbol'] }" >
+									<h:outputText value="#{idx + 1}" />
+								</p:column>	
+								
+								<p:column width="65" exportable="false">	
+								 
+									   <p:button icon="fas fa-eye" href="docView.xhtml?faces-redirect=true" target="_blank" title="#{ui_labels['general.view']}">
+											<f:param name="idObj" value="#{row[4]}" />
+											<f:param name="codeObj" value="97"/>
+											<f:param name="nameObj" value="#{mmsSportObEdit.spObekt.name}" />
+											<f:param name="addressObj" value="#{mmsSportObEdit.spObekt.adres}" />
+											<f:param name="nasMObj" value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_EKATTE, mmsSportObEdit.spObekt.nas_mesto, mmsSportObEdit.currentLang, mmsSportObEdit.currentDate)}" />
+											<f:param name="oblastObj" value="#{systemData.decodeItemDopInfo(DocuConstants.CODE_CLASSIF_EKATTE, mmsSportObEdit.spObekt.nas_mesto, mmsSportObEdit.currentLang, mmsSportObEdit.currentDate)}"  />
+											<f:param name="postCodeObj" value="#{mmsSportObEdit.spObekt.postCode}" />
+											<f:param name="telObj" value="#{mmsSportObEdit.spObekt.tel}" />
+										</p:button>
+		
+									<p:commandButton id="btnPlik" styleClass="ui-button-success"  
+				                          partialSubmit="true" update="mmsSObform:panelPlik"  title="#{labels['docDatDvij.envPrint']}"
+				                          icon="fas fa-print" actionListener="#{mmsSportObEdit.preparePostCoverNotice(idx)}"
+				                          oncomplete="PF('modalPlik').show(); "
+				                         
+				                           >	
+				                			<f:param name="idObj" value="#{row[4]}" />
+								         </p:commandButton>
+		<ui:remove>	
+										<p:commandButton id="btnPlik2" styleClass="ui-button-success"  
+										title="#{labels['docDatDvij.envPrint']}"
+										icon="fas fa-print" partialSubmit="true"
+										process="mmsSObform:dpPechatPlik @this @form"
+										update="mmsSObform:dpPechatPlik "
+										oncomplete="PF('mPechatPlik').show(); "
+										/>
+		</ui:remove>
+									  	
+										
+										<ui:remove> <!--   
+										      	<p:button  icon="fas fa-eye" href="#{mmsSportObEdit.actionGoto(row[4])}" target="_blank" 
+											           title="#{ui_labels['general.view']}" >
+											        								  				 
+									  	        </p:button>	
+										   <p:button icon="fas fa-eye" href="docView.xhtml?faces-redirect=true" target="_blank" title="#{ui_labels['general.view']}">
+                                                                         <f:param name="idObj" value="#{row[4]}" />
+                                          	</p:button>	                               																
+										<p:commandButton  icon="fas fa-eye" value=""  oncomplete="PF('docNew').show()" styleClass="btn-new" 
+											actionListener="#"  title="#{labels['doc.titleView']}" >
+										</p:commandButton>
+										 --></ui:remove>	
+								    </p:column>
+								
+								<p:column width="200" sortBy="#{row.doc_vid}" headerText="#{labels['docu.vid']}">
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, row[0], mmsSportObEdit.currentLang , now)}"/>	
+								</p:column>
+													
+								<p:column width="100" sortBy="#{row.rn_doc}" headerText="#{labels['repDoc.regnom']}">
+									<h:outputText value="#{row[1]}"  />								    
+								</p:column>
+								
+								<p:column width="80"  sortBy="#{row.doc_date}"  headerText="Дата рег." >						<ui:remove> <!--   #{labels['docu.docDate']}  --></ui:remove>			  
+									<h:outputText value="#{row[2]}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+									</h:outputText>							    
+								</p:column>
+								
+							
+								<p:column width="150" sortBy="#{row.a8}" headerText="Статус" >
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_ZAIAVLENIE, row[8], mmsSportObEdit.currentLang , now)}" />	
+								</p:column>
+								<p:column width="80"  sortBy="#{row.a9}"  headerText="Дата статус"   >									  
+									<h:outputText value="#{row[9]}"  >	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+								    </h:outputText>		
+								</p:column>  
+								
+								<p:column  width="295"  headerText="#{labels['docu.otnosno']}">
+									<h:outputText value="#{row[3]}"  />								    
+								</p:column>
+								  
+							</p:dataTable>
+                    	</div>
+					</div>  
+					 </h:panelGroup>
+				</div>
+				
+				
+				<p:toolbar id="panelButtonsBottom" rendered="false" >
+				<f:facet name="left">									
+					<p:commandButton icon="fas fa-save" value="#{ui_labels['general.save']}" rendered="#{viewOnly != 1}"
+						action="#{mmsSportObEdit.actionSave}" id="btnSaveBottom" update="mmsSObform"  process="@this mmsSObform" partialSubmit="true"/>
+					<span class=" p-mx-2"/>
+                       <p:commandButton icon="fas fa-plus" id="btnNewBottom" value="#{ui_labels['general.new']}o" update="mmsSObform" process="@this" partialSubmit="true"
+						actionListener="#{mmsSportObEdit.actionNew}" styleClass="ui-button-success"  rendered="false">
+					</p:commandButton>
+					   	<p:commandButton icon="fas fa-eraser" value="Регистрация отначало"  rendered="#{viewOnly != 1 and mmsSportObEdit.beginInp }"
+								   partialSubmit="true" process="@this" update="mmsSObform"  styleClass="ui-button-warning"  >
+							       <p:ajax event="click" listener="#{mmsSportObEdit.actionNew}" />  
+						 </p:commandButton>  	   
+				</f:facet>
+			</p:toolbar>
+			<p:toolbar id="panelButtonsBottomSpace"  >
+			    <h:outputLabel value="   " />
+			</p:toolbar>
+			
+			</p:panel>
+	      
+			
+		<h:panelGroup id="dpCorrSearch">	
+		<p:dialog appendTo="@form"  closeOnEscape="true"
+		    header="#{labels['docu.titleExtSrchCoresp']}" 
+		    fitViewport="true"	
+		    responsive="true" 
+		    resizable="true"
+		    position="top"	
+			widgetVar="mCorrS" dynamic="true" id="modalCorrS" 
+			modal="true">
+			<div class="container #{guestPreferences.containerPosition}">		
+				
+			-  
+				 	<ibg:refCorrespSearch id="mCorrS1" myId="mCS1"
+						 codeRef="#{mmsSportObEdit.spObektLice.idLice}"
+						 searchTxt="#{mmsSportObEdit.spObektLice.nameLice}" 
+						 dateClassif="#{mmsSportObEdit.currentDate}"
+						 modal="true"
+						 update="mmsSObform:refCorrInp  mmsSObform:refCorr  @form"
+						 onComplete = "PF('mCorrS').hide();"/>
+					          				
+			</div>
+						
+		</p:dialog>	
+	</h:panelGroup>
+				
+			
+		<h:panelGroup id="dpCorrData">	
+			<p:dialog appendTo="@form"  closeOnEscape="true" 
+		    header="Въвеждане/актуализация на лице"  
+		    fitViewport="true"	
+		    resizable="true"
+		    responsive="true" 
+		    position="top" 		
+			widgetVar="mCorrD" dynamic="true" id="modalCorrD" 
+			modal="true">
+			<div class="container #{guestPreferences.containerPosition}">	
+				
+			 		<ibg:mmsRefCorrespData id="btnCorrD1"  readonly="#{viewOnly eq 1}"
+						 codeRef="#{mmsSportObEdit.spObektLice.idLice}"
+						 searchTxt="#{mmsSportObEdit.spObektLice.nameLice}" 
+						 dateClassif="#{mmsSportObEdit.currentDate}"
+						 modal="true"
+						 update="mmsSObform:refCorrInp  mmsSObform:refCorr  @form"	
+						 onComplete = "PF('mCorrD').hide();document.body.scrollTop = 0; document.documentElement.scrollTop = 0;"/>
+			</div>		
+	 		
+		</p:dialog>	
+		</h:panelGroup>
+		
+		<ui:remove> <!--   
+		<h:panelGroup id="dpPechatPlik">
+			<p:dialog appendTo="@form"  closeOnEscape="true" 
+		    header="Печат на Плик"  
+		    fitViewport="true"	
+		    resizable="true"
+		    responsive="true" 
+		    position="top" 		
+			widgetVar="mPechatPlik" dynamic="true" id="modalPechat" 
+			modal="true">
+			<div class="container #{guestPreferences.containerPosition}">	
+				
+			 		<ibg:mmsPechatPlik id="btnPechat"  readonly="#{viewOnly eq 1}"
+						 codeRef="#{mmsSportObEdit.spObektLice.idLice}"
+						 searchTxt="#{mmsSportObEdit.spObektLice.nameLice}" 
+						 dateClassif="#{mmsSportObEdit.currentDate}"
+						 modal="true"
+						 update="mmsSObform:refCorrInp  mmsSObform:refCorr  @form"	
+						 onComplete = "PF('mPechatPlik').hide();document.body.scrollTop = 0; document.documentElement.scrollTop = 0;"/>
+			</div>		
+	 		
+		</p:dialog>	
+		</h:panelGroup>
+		--></ui:remove>
+		
+		
+			<h:panelGroup id="dpViewData">	
+			<p:dialog appendTo="@form"  closeOnEscape="true" 
+		    header="Данни на лице"  
+		    fitViewport="true"	
+		    resizable="true"
+		    responsive="true" 
+		    position="top" 		
+			widgetVar="mViewD" dynamic="true" id="modalViewD" 
+			modal="true">
+			<div class="container #{guestPreferences.containerPosition}">	
+				
+			 		<ibg:mmsRefCorrespData id="btnViewD1"    readonly="true"
+						 codeRef="#{mmsSportObEdit.idLiceView}"
+						 searchTxt="" 
+						 dateClassif="#{mmsSportObEdit.currentDate}"
+						 modal="true"
+						 update=""	
+						 onComplete = "PF('mViewD').hide();document.body.scrollTop = 0; document.documentElement.scrollTop = 0;"/>
+			</div>		
+	 		
+		</p:dialog>	
+		</h:panelGroup>
+			
+			<h:panelGroup id="vpisvane">
+		                
+				<p:remoteCommand name="hideModal1" process="vpisvane @this" update="@form" partialSubmit="true"
+								 actionListener="#{mmsSportObEdit.findVpisvAll()}"/>
+		
+				<p:dialog appendTo="@form" position="top" widgetVar="vpisvaneNew" header="#{labels['compReg.basicData']}"
+					fitViewport="true" responsive="true" resizable="true" 
+					closeOnEscape="true"  onHide="hideModal1()" id="modalVpisvane" modal="true">
+					<p:ajax event="close" listener="#{mmsSportObEdit.findVpisvAll()}" process="@this" update="@form"  />
+						<div class="container #{guestPreferences.containerPosition}">		
+							<ui:remove>
+							<ibg:compMMSVpisvane id="docSearchT2" idObject="#{mmsSportObEdit.spObekt.id}" codeObject="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORTS_OBJECTS}" 
+								buttonConfirmLabel="#{ui_labels['general.save']}" update="@form" readonly="#{viewOnly == 1}" nameObject="#{labels['compReg.basicData']}" vidDoc="36" />
+								</ui:remove>
+						</div>
+				</p:dialog>
+			</h:panelGroup>
+									
+		<h:panelGroup id="coresp1PG">
+		                
+				<p:remoteCommand name="hideModal1" process="@this coresp1PG" update="tblDocs2" partialSubmit="true"
+								 actionListener="#{mmsSportObEdit.registerNewDoc()}" />
+		
+				<p:dialog appendTo="@form" position="top" widgetVar="docNew" header="#{labels['docu.newDoc']}"
+					fitViewport="true" responsive="true" resizable="true"
+					closeOnEscape="true"  onHide="hideModal1()" id="modalCoresp" modal="true">
+						<div class="container #{guestPreferences.containerPosition}">
+									
+						</div>
+				</p:dialog>
+			</h:panelGroup>
+			
+			 <!--   Проверка на списък с намерени спортни обекти с подобни имена -->
+           <!--  ******************************************************************************************************************* --> 
+          <p:dialog appendTo="@form"  closeOnEscape="true"
+		    header="#{mmsSportObEdit.zaglModalProverka} " 
+		    fitViewport="true"		
+		    responsive="true"  
+		    resizable="true"
+		    
+		    position="top" style="font-size: 8pt; margin-top:50px !important" 
+			widgetVar="modalProverka" dynamic="true" id="modalProverkaIdM" 
+			modal="true">
+			   
+			  <p:ajax event="close" listener="#{mmsSportObEdit.handleCloseDialogProverkaOK}" process="@this" update="@this"   />
+						  
+					<div class="p-col-12 p-lg-12">
+                    		<div class="table-toolbar">
+								<h:outputText value="Брой намерени  регистрирани, спортни обекти:  #{mmsSportObEdit.obList.rowCount}" styleClass="form-label"/>	
+							</div>
+					</div>			
+			  <h:panelGroup id="panelT" layout="block"  styleClass="margin-top"  >
+									  
+				       	<p:dataTable id="tblObekts" var="row" value="#{mmsSportObEdit.obList}"  widgetVar="var"
+						rowIndexVar="idx" emptyMessage="#{ui_labels['general.norows']}" rows="10" sortMode="single" reflow="true" 
+						style="font-size: 10pt;"   lazy="true" 
+						paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+						rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom" paginatorAlwaysVisible="false" paginator="true"
+                         >
+						
+						<p:column width="15" exportable="false" headerText="#{ui_labels['general.No-symbol']}" >
+							<h:outputText value="#{idx + 1}" />
+						</p:column>
+                        
+                        <p:column width="15" exportable="false" >     
+                               <p:commandButton action="#{mmsSportObEdit.editSpObekt(row[0])}" update="@form"     oncomplete="PF('modalProverka').hide();"
+							                	icon="fas fa-edit" styleClass="ui-button-success" title="Избор на спортен обект за актуализация" rendered="#{mmsSportObEdit.beginInp}" />
+                         </p:column>        
+						<p:column width="*" sortBy="#{row.NAME}" headerText="Име спортен обект">    
+							<h:outputText value="#{row[1]}" />
+						</p:column>
+						
+						 <p:column width="180" sortBy="#{row.VID}"  headerText="Вид спортен обект">          
+							<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_VID_SPORTEN_OBEKT, row[2], mmsSportObEdit.currentLang, now)}" />
+						</p:column>
+						
+						<ui:remove >
+					      <p:column width="300"   sortBy="#{row.FUNK_CATEGORY}"  headerText="Функц. предназначение">          
+							<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_FUNC_CATEGORIA_SPORTEN_OBEKT, row[3], mmsSportObEdit.currentLang, now)}" />
+						</p:column>	
+						</ui:remove>
+						
+						<p:column width="80"    headerText="Държава "   >   
+						     <h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_COUNTRIES, row[4], mmsSportObEdit.currentLang, now)}" />
+						</p:column>
+										
+	                         <p:column width="100" sortBy="#{row.NAS_MESTO}"   headerText="Нас. място"     >      
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_EKATTE, row[5], mmsSportObEdit.currentLang, now)}" />
+							</p:column>
+							<p:column width="240"   headerText="Община, област"  >   
+							      <h:outputText value="#{systemData.decodeItemDopInfo(DocuConstants.CODE_CLASSIF_EKATTE,row[5], mmsSportObEdit.currentLang, mmsSportObEdit.currentDate)}" />								  
+						    </p:column>		  
+					    
+						<p:column width="200"  headerText="Адрес"  >									  
+							<h:outputText value="#{row[6]}" />		
+												    
+						</p:column>
+						<p:column width="80"  sortBy="#{row.REG_NOMER}"  headerText="Рег. номер" style="text-align:center;">   
+							<h:outputText value="#{row[7]}" />
+						</p:column>  
+						<p:column width="70" sortBy="#{row.DATE_REG}"  headerText="Дата рег."  style="text-align:center;" >									  
+							<h:outputText value="#{row[8]}">	
+								<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+							</h:outputText>							    
+						</p:column>
+											
+					</p:dataTable>
+                 
+				</h:panelGroup>	
+			 
+			 
+			 	<div class="p-grid"> 
+						
+							 <div   class="p-col-12 ui-fluid">
+	                           <h:outputText value=" " />
+	                         </div>
+	                     	<h:panelGroup rendered="true">
+							<p:commandButton icon="fas fa-eraser" value="Отказ от регистрация "   rendered="false"
+								   partialSubmit="true" process="@this" update="mmsSObform"  styleClass="ui-button-warning"   >
+							       <p:ajax event="click" listener="#{mmsSportObEdit.handleCloseDialogProverka}" oncomplete="PF('modalProverka').hide();"  />  
+							 </p:commandButton>  	   
+							</h:panelGroup>	
+			    </div>              
+					
+		</p:dialog>
+		
+		<p:dialog appendTo="@form" widgetVar="dialog-compRegix" closeOnEscape="true" header="#{labels['regixReport.title']}" 
+          fitViewport="true" responsive="true" resizable="true" positionType="fixed" position="center"
+          modal="true" dynamic="true">
+            <div jsf:id="dialogCompRegix" class="container #{guestPreferences.containerPosition}">
+                  <ibg:compRegixReports modal="true" />
+            </div>
+        </p:dialog>
+        
+        <h:panelGroup id="panelSendMail">
+				<p:dialog appendTo="@form" widgetVar="eMail" closeOnEscape="true" header="Изпращане на съобщение до спортен обект" fitViewport="true" responsive="true" 
+							positionType="fixed" position="top" modal="true" dynamic="true"  id="dMail"  >
+						
+						<p:messages id="messagesMail" showDetail="true" closable="false" style="width:100%">
+							<p:autoUpdate />
+						</p:messages>
+					    <ibg:sendMail email="#{mmsSportObEdit.emcoresp.email}" codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORTS_OBJECTS}"  codeSluj="#{mmsSportObEdit.userData.userId}"
+							readonly="#{viewOnly eq 1}" onComplete="#{mmsSportObEdit.closeModalMail()}" rendered="#{mmsSportObEdit.emcoresp ne null and mmsSportObEdit.emcoresp.email ne null}"></ibg:sendMail>
+						<ibg:sendMail email="#{mmsSportObEdit.spObekt.e_mail}" codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORTS_OBJECTS}"  codeSluj="#{mmsSportObEdit.userData.userId}"
+                                formId="mmsSObform" 
+							readonly="#{viewOnly eq 1}"   onComplete="#{mmsSportObEdit.closeModalMail()}" rendered="#{(mmsSportObEdit.emcoresp eq null or mmsSportObEdit.emcoresp.email eq  null) and (mmsSportObEdit.spObekt ne null and mmsSportObEdit.spObekt.e_mail ne null)}"></ibg:sendMail>	
+						
+				</p:dialog>
+			</h:panelGroup>
+			
+	        <!-- модален прозорец за печат на пликове -->
+  			<h:panelGroup id="panelPlik">
+                 <p:dialog appendTo="@form" widgetVar="modalPlik" closeOnEscape="true" header="#{labels['docDatDvij.envPrint']}/#{labels['docData.deliverNotFT']}"
+                 			fitViewport="true" responsive="true" 
+                            positionType="fixed" position="top" modal="true" dynamic="true" id="plik">
+                    
+	                  <p:messages id="messagesPlik" showDetail="true" closable="false" style="width:100%">	
+	               		<p:autoUpdate />
+	                  </p:messages>
+	                  
+					<div jsf:id="dialog-env-print" >
+						<div class="p-grid ui-fluid">
+			            	<p:panel styleClass="margin-bottom" >
+								<div class="p-col-12 p-md-12 p-lg-12">
+									<p:panelGrid style="margin-top:20px" id="pgN">
+										<f:facet name="header">
+								          <p:row>
+								          	<p:column colspan="2" style="font-weight: bold; width: 900px;" >#{labels['docDatDvij.settingPostEnv']}</p:column>
+								          </p:row>
+								        </f:facet>
+										<p:row>
+								            <p:column style="width: 450px;">
+								    			<h:outputText value="#{labels['docDatDvij.postEnvSize']}" styleClass="form-label"/>
+												<p:selectOneMenu id="sizeEnv" value="#{mmsCoach.formatPlik}">
+												     <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_POST_ENVELOPS, now, docDataDvijenia.currentLang)}" 
+												         var="envSize" itemLabel="#{envSize.tekst}" itemValue="#{envSize.code}" />
+											    </p:selectOneMenu>	
+											</p:column>
+				            			</p:row>
+				        			</p:panelGrid>
+								</div>
+							    <div class="p-col-12 p-md-12 p-lg-12">
+									<p:panelGrid id="pgB">
+										<f:facet name="header">
+								             <p:row>
+									            <p:column style="font-weight: bold; width: 450px;" >#{labels['docDatDvij.recipientData']}</p:column>
+									            <p:column style="font-weight: bold; width: 450px;">#{labels['docDatDvij.senderData']}</p:column>
+							            	</p:row>
+								        </f:facet> 
+										<p:row>
+							             	<p:column>
+												<h:outputText value="#{labels['opis.poluch']}" styleClass="form-label req" />
+												<p:inputText id="corName" value="#{mmsCoach.corespName}" /> 
+											</p:column>
+							
+											<p:column>
+												<h:outputText value="#{labels['general.sender']}" styleClass="form-label req" />
+												<p:inputText id="sendName" value="#{mmsCoach.senderName}" /> 
+											</p:column>
+						            	</p:row>
+
+						            	<p:row>
+							             	<p:column>
+												<h:outputText value="#{labels['docDatDvij.adressCoresp']}" styleClass="form-label req" />
+												<p:inputText id="corAdr" value="#{mmsCoach.corespAddress}" />  
+											</p:column>
+							
+											<p:column>
+												<h:outputText value="#{labels['docDatDvij.adressCoresp']}" styleClass="form-label req" />
+												<p:inputText id="sendAdr" value="#{mmsCoach.senderAddress}" /> 
+											</p:column>
+						            	</p:row>
+						            	<p:row>
+							             	<p:column>
+												<h:outputText value="#{labels['global.oblast']}" styleClass="form-label req" rendered="#{null eq DataDvijenia.adr.addrCountry or DataDvijenia.adr.addrCountry eq mmsCoach.countryBg}"/>
+												<p:inputText id="corObl" value="#{mmsCoach.corespObl}" rendered="#{null eq DataDvijenia.adr.addrCountry or DataDvijenia.adr.addrCountry eq docDataDvijenia.countryBg}"/> 
+											</p:column>
+							
+											<p:column>
+												<h:outputText value="#{labels['global.oblast']}" styleClass="form-label req" rendered="#{null eq DataDvijenia.adr.addrCountry or docDataDvijenia.adr.addrCountry eq mmsCoach.countryBg}"/>
+												<p:inputText id="sendObl" value="#{mmsCoach.senderObl}" rendered="#{null eq DataDvijenia.adr.addrCountry or DataDvijenia.adr.addrCountry eq mmsCoach.countryBg}"/>  
+											</p:column>
+						            	</p:row>
+			            	
+						            	<p:row>
+							             	<p:column>
+												<h:outputText value="#{labels['global.postCode']}" styleClass="form-label req" rendered="#{null eq DataDvijenia.adr.addrCountry or mmsCoach.adr.addrCountry eq mmsCoach.countryBg}"/>
+												<p:inputText id="corPC" value="#{mmsCoach.corespPostCode}" rendered="#{null eq DataDvijenia.adr.addrCountry or mmsCoach.adr.addrCountry eq mmsCoach.countryBg}"/>
+											</p:column>
+							
+											<p:column>
+												<h:outputText value="#{labels['global.postCode']}" styleClass="form-label req" rendered="#{null eq DataDvijenia.adr.addrCountry or mmsCoach.adr.addrCountry eq mmsCoach.countryBg}"/>
+												<p:inputText id="sendPC" value="#{mmsCoach.senderPostCode}" rendered="#{null eq DataDvijenia.adr.addrCountry or mmsCoach.adr.addrCountry eq mmsCoach.countryBg}"/>   
+											</p:column>
+						            	</p:row>
+			            	
+						            	<p:row>
+							             	<p:column>
+												<h:outputText value="#{labels['global.nasMesto']}" styleClass="form-label req" />
+												<p:inputText id="corNM" value="#{mmsCoach.corespNM}" /> 
+											</p:column>
+							
+											<p:column>
+												<h:outputText value="#{labels['global.nasMesto']}" styleClass="form-label req" />
+											<p:inputText id="sendNM" value="#{mmsCoach.senderNM}" />  
+											</p:column>
+						            	</p:row>
+			            	
+						            	<p:row>
+							             	<p:column>
+												<h:outputText value="#{labels['global.country']}" styleClass="form-label" rendered="#{null ne DataDvijenia.adr.addrCountry and mmsCoach.adr.addrCountry ne mmsCoach.countryBg}"/>
+												<p:inputText id="corCountr" value="#{mmsCoach.corespCountry}" rendered="#{null ne DataDvijenia.adr.addrCountry and mmsCoach.adr.addrCountry ne mmsCoach.countryBg}"/>
+											</p:column>
+							
+											<p:column>
+												<h:outputText value="#{labels['global.country']}" styleClass="form-label" rendered="#{null ne DataDvijenia.adr.addrCountry and mmsCoach.adr.addrCountry ne mmsCoach.countryBg}"/>
+												<p:inputText id="sendCountr" value="#{mmsCoach.senderCountry}" rendered="#{null ne DataDvijenia.adr.addrCountry and mmsCoach.adr.addrCountry ne mmsCoach.countryBg}"/> 
+											</p:column>
+						            	</p:row>
+			            	
+						            	<p:row>
+							             	<p:column>
+												<h:outputText value="#{labels['admStruct.telefon']}" styleClass="form-label" />
+												<p:inputText id="corTel" value="#{mmsCoach.corespTel}" />
+											</p:column>
+							
+											<p:column >
+												<h:outputText value="#{labels['admStruct.telefon']}" styleClass="form-label" />
+												<p:inputText id="sendTel" value="#{mmsCoach.senderTel}" />   
+											</p:column>
+						            	</p:row>
+								
+									</p:panelGrid>
+								</div>
+								<div align="center">
+									<p:commandButton id="btnForEnvPrint" value="#{labels['docDatDvij.envPrintShort']}" 
+										title="#{labels['docDatDvij.envPrint']}"  tabindex="-1" 
+										action="#{mmsCoach.actionPrint(1)}" styleClass="ui-button-info" 
+										icon="fas fa-print table-icon" ajax="false"	style="width:150px"	
+									    partialSubmit="true" process="@this"/>
+									<span style="padding-right: 15px;"/>
+									
+									<p:commandButton id="btnForObrRazp" value="#{labels['docData.deliverNotice']}" 
+										title="#{labels['docData.deliverNotFT']}"  tabindex="-1" 
+										action="#{mmsCoach.actionPrint(2)}" styleClass="ui-button-info" 
+										icon="fas fa-envelope-open" ajax="false" style="width:150px"	
+									    partialSubmit="true" process="@this"/>
+									    
+								</div>	    
+				    							
+								
+
+							</p:panel>
+			     		</div>
+					</div>			
+	                  
+	  			</p:dialog>
+  			</h:panelGroup>
+			
+			
+			
+			
+	<h:panelGroup id="panelOtkaz">
+				<p:dialog appendTo="@form" widgetVar="otkazReg" closeOnEscape="true" header="Отказ на обработка" fitViewport="true" responsive="true" 
+							positionType="fixed" position="top" modal="true" dynamic="true">
+						
+						<p:messages id="messagesOtkaz" showDetail="true" closable="false" style="width:100%">
+							<p:autoUpdate />
+						</p:messages>
+						
+						<div jsf:id="dialogSendOtkaz" class="container #{guestPreferences.containerPosition}">
+						<div class="card">
+							<div class="p-grid ui-fluid">
+							<div class="p-col-12 p-lg-12">
+	                    		<h:outputText value="Причина за отказ от регистрация:" styleClass="form-label "/>
+	                    		<p:inputTextarea  value="#{mmsSportObEdit.reasonOtkaz}" id="otkazText">
+	                    		</p:inputTextarea>
+	                    	</div>
+	                    	<div class="p-col-12 p-lg-1">
+	                    		<p:commandButton id="btnOtkazModal"   value="Запис" icon="fas fa-save"
+											onmousemove="document.getElementById('mmsSObform:btnOtkazModal').focus();"
+											partialSubmit="true"   update="mmsSObform"
+											process=" @this mmsSObform"
+											action="#{mmsSportObEdit.actionOtkazReg()}"
+											oncomplete="PF('otkazReg').hide(); "
+											title="Отказ от регистрация" />
+										 
+	                    	</div>
+	                    	</div>
+			        	</div>	
+			        </div>
+				</p:dialog>
+			</h:panelGroup>
+	
+        <p:dialog appendTo="@form" widgetVar="dialog_view_zajavl" closeOnEscape="true" header="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, mmsSportObEdit.egovMess.docVid, mmsSportObEdit.currentLang, now)}" 
+			          fitViewport="true" responsive="true" resizable="true" positionType="fixed" position="top"
+			          modal="true" dynamic="true">
+	            
+	            <div jsf:id="dialogMessZajavl" class="container #{guestPreferences.containerPosition}">
+	                <h:panelGroup id="filetablsect" layout="block" >
+	                	<div class="card">
+		                    <div class="p-grid ui-fluid">
+
+		                        <div class="p-col-12 p-lg-2 ui-fluid">
+	                                 <h:outputText value="#{labels['mmsCoach.vhNomVpisvane']}" styleClass="form-label"/>
+	                                 <p:inputText  value="#{mmsSportObEdit.egovMess.docRn}" id="idRegN" readonly="true"/>
+	                            </div>
+	                            <div class="p-col-12 p-lg-2 ui-fluid">    
+	                                 <h:outputText value="#{labels['audit.actionDate']}" styleClass="form-label"/>
+	                                 <p:inputText value="#{mmsSportObEdit.dateRNV}"  readonly="true">
+			                   			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+			                   		</p:inputText>
+			                   	</div>
+			                   	<!--Статус на съобщението-->								
+								<div  class="p-col-12  p-lg-5 ui-fluid">										
+									<h:outputText value="#{labels['docWSStatus.statusMsg']}" styleClass="form-label"/>
+									<p:inputText  value="#{mmsSportObEdit.msgStatusHM.get(mmsSportObEdit.egovMess.msgStatus)}" id="idStatM" readonly="true"/>	
+									
+							  	</div>	
+							  	
+							  	<!--Дата статус-->
+								<div  class="p-col-12 p-lg-2 ui-fluid">
+									<h:outputText value="#{labels['delo.dateStatus']} " styleClass="form-label"/>
+										<p:inputText value="#{mmsSportObEdit.egovMess.msgStatusDate}"  readonly="true">
+				                   			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+				                   		</p:inputText>
+								</div>
+		                         
+		                        <!--Вид на съобщението-->
+								<ui:remove>
+								<div  class="p-col-12 p-lg-4 ui-fluid">
+									<h:outputText value="#{labels['docWSStatus.vidMsg']} " styleClass="form-label"/>
+									<p:inputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, mmsSportObEdit.egovMess.docVid, mmsSportObEdit.currentLang, now)}" readonly="true"/>	
+								</div>
+								</ui:remove>
+								
+								<div class="p-col-12 p-lg-2">
+		                             <h:outputText value="Система източник" styleClass="form-label"/>
+		                             <p:inputText  value="#{mmsSportObEdit.egovMess.source}" readonly="true"/>
+		                        </div>
+								
+								<!--Изпратен от-->
+								<div  class="p-col-12 p-lg-4 ui-fluid">
+									<h:outputText value="#{labels['docList.sendFromReg']} " styleClass="form-label"/>
+									<p:inputText value="#{mmsSportObEdit.egovMess.senderName}" readonly="true"/>	
+								</div>
+								
+								<!--Получател-->
+								<div  class="p-col-12 p-lg-4 ui-fluid">
+									<h:outputText value="#{labels['opis.poluch']} " styleClass="form-label"/>
+									<p:inputText value="#{mmsSportObEdit.egovMess.recepientName}" readonly="true"/>	
+								</div> 
+		                         
+		                        
+								
+								<!--Срок-->
+								<div  class="p-col-12 p-lg-2 ui-fluid">
+									<h:outputText value="#{labels['tasks.srok']} " styleClass="form-label"/>
+									<p:inputText value="#{mmsSportObEdit.egovMess.docSrok}"  readonly="true">
+			                   			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+			                   		</p:inputText>
+								</div> 
+
+		                         <!--Относно-->
+								<div  class="p-col-12 p-lg-12 ui-fluid">
+									<h:outputText value="#{labels['docDoc.otnosno']} " styleClass="form-label"/>
+									<p:inputTextarea  value="#{mmsSportObEdit.egovMess.docSubject}" id="idOtnosnoM" readonly="true"/>	
+								</div>
+								
+								
+								<ui:remove>
+								
+								<div  class="p-col-12 p-lg-12 ui-fluid">
+									<h:outputText value="Физически лица:" styleClass="form-label"/>
+								</div>
+
+								<p:dataTable id="fizLicaList" var="row" value="#{mmsSportObEdit.emcorespList}" styleClass="ui-datatable-gridlines" 
+									rowIndexVar="riv" emptyMessage="" paginatorAlwaysVisible="#{mmsSportObEdit.emcorespList.size()>5}"
+									rows="5" style="margin-bottom:20px" paginator="true" reflow="true"	paginatorPosition="bottom" 
+									paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+							
+									<p:column headerText="№" width="5px" style="text-align: center">
+										<h:outputText value="#{riv + 1}" />
+									</p:column>
+																       	
+							       	<p:column headerText="Имена" width="150px" style="text-align: center;">
+							             <h:outputText value="#{row.ime}" />									             
+							        </p:column>
+									<p:column headerText="ЕГН/ЛНЧ" width="50px" style="text-align: center;">
+							             <h:outputText value="#{row.egn}" />									             
+							        </p:column>
+							        
+							        <p:column headerText="Адрес" width="100px" style="text-align: center;">
+							             <h:outputText value="#{row.adres}" />									             
+							        </p:column>
+							        
+							        <p:column headerText="ПК" width="15px" style="text-align: center;">
+							             <h:outputText value="#{row.pk}" />									             
+							        </p:column>
+							        
+							        <p:column headerText="Имейл" width="100px" style="text-align: center;">
+							             <h:outputText value="#{row.email}" />									             
+							        </p:column>
+							        
+							        <p:column headerText="Телефон" width="60px" style="text-align: center;">
+							             <h:outputText value="#{row.phone}" />									             
+							        </p:column>
+							        
+							        <p:column headerText="Доп.информация" width="200px" style="text-align: center;">
+							             <h:outputText value="#{row.dopInfo}" />									             
+							        </p:column>
+							
+								</p:dataTable>
+								</ui:remove>
+	
+		                     </div>
+                        
+	                
+	                	<div class="table-toolbar">
+							<h:outputText value="Прикачени файлове: " styleClass="form-label"/>
+	                	</div>
+						<p:dataTable id="fileListMess" var="row" value="#{mmsSportObEdit.egovFilesList}" styleClass="ui-datatable-gridlines" 
+							rowIndexVar="riv" emptyMessage="" paginatorAlwaysVisible="#{mmsSportObEdit.egovFilesList.size()>5}"
+							rows="5" style="margin-bottom:20px" paginator="true" reflow="true"	paginatorPosition="bottom" 
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+					       	
+					       	<p:column headerText="№" width="4%" >
+								<h:outputText value="#{riv + 1}" />
+							</p:column>
+							<p:column headerText="" width="4%" style="text-align: center;">									           	
+					           <p:commandButton  id="download" ajax="false" actionListener="#{mmsSportObEdit.download(row)}" icon="fa fa-fw fa-download" title="Изтегляне" />
+					       	</p:column>
+					       	<p:column headerText="Наименование на файл" width="44%" style="text-align: center;">
+					             <h:outputText value="#{row.filename}" escape="false" style="width:96%; text-align: left;"/>									             
+					        </p:column>
+					       	<ui:remove>
+					       	<p:column headerText="Guid" width="44%" style="text-align: center;">									   
+					        	<h:outputText value="#{row.guid}" escape="false" style="width:96%; text-align: left;"/>
+					       	</p:column>
+					       	</ui:remove>
+					   </p:dataTable>
+					   
+					   </div>
+					</h:panelGroup>
+					
+				</div>
+			</p:dialog>		
+		
+		<p:dialog appendTo="@form" widgetVar="dialogZaqvlenie11" closeOnEscape="true" header="Заявление" fitViewport="true" responsive="true" 
+							positionType="fixed" position="top" modal="true" dynamic="true">
+			    
+		
+			<div jsf:id="dialogZaqvlenieFiles" class="container #{guestPreferences.containerPosition}">
+			
+			
+			
+	            <h:panelGroup id="panelZaqvl" layout="block" >
+	       			<div class="card">
+	       				<div class="p-grid ui-fluid ">	
+									
+							<!--Входящ номер-->
+							<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+								<h:outputText value="#{labels['monitoringSSEV.vhNom']} " styleClass="form-label"/>
+								<p:inputText value="#{mmsSportObEdit.egovMess.docRn}" readonly="true"/>
+							</div>
+							
+							<!--Статус на съобщението-->								
+							<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">										
+								<h:outputText value="#{labels['docWSStatus.statusMsg']}" styleClass="form-label"/>
+									<p:selectOneMenu id="statusMsgView11" value="#{mmsSportObEdit.egovMess.msgStatus}" disabled="true">										   
+									    <f:selectItems value="#{mmsSportObEdit.msgStatusList}"/>
+								</p:selectOneMenu>
+							  
+						  	</div>	
+						  	
+						  	<!--Дата статус-->
+							<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+								<h:outputText value="#{labels['delo.dateStatus']} " styleClass="form-label"/>
+									<p:inputText value="#{mmsSportObEdit.egovMess.msgStatusDate}"  readonly="true">
+			                   			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+			                   		</p:inputText>
+							</div>
+							
+							<!--Вид на съобщението-->
+							<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+								<h:outputText value="#{labels['docWSStatus.vidMsg']} " styleClass="form-label"/>
+								<p:inputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, mmsSportObEdit.egovMess.docVid, mmsSportObEdit.currentLang, now)}" readonly="true"/>	
+							</div>
+							
+							<!--Изпратен от-->
+							<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+								<h:outputText value="#{labels['docList.sendFromReg']} " styleClass="form-label"/>
+								<p:inputText value="#{ mmsSportObEdit.egovMess.senderName}" readonly="true"/>	
+							</div>
+							
+							<!--Получател-->
+							<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+								<h:outputText value="#{labels['opis.poluch']} " styleClass="form-label"/>
+								<p:inputText value="#{ mmsSportObEdit.egovMess.recepientName}" readonly="true"/>	
+							</div>
+							
+							<!--Относно-->
+							<div  class="p-col-12 p-sm-12 p-md-6 p-lg-10 p-xl-10 ui-fluid">
+								<h:outputText value="#{labels['docDoc.otnosno']} " styleClass="form-label"/>
+								<p:inputTextarea  value="#{ mmsSportObEdit.egovMess.docSubject}" readonly="true"/>	
+							</div>
+							
+							<!--Срок-->
+							<div  class="p-col-12 p-sm-12 p-md-6 p-lg-2 p-xl-2 ui-fluid">
+								<h:outputText value="#{labels['tasks.srok']} " styleClass="form-label"/>
+								<p:inputText value="#{mmsSportObEdit.egovMess.docSrok}"  readonly="true">
+		                   			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSportObEdit.timeZone}"/>
+		                   		</p:inputText>
+							</div>
+							
+				   		</div>
+	       			
+	              		<div class="table-toolbar">
+								<h:outputText value="Прикачени файлове: " styleClass="form-label"/>
+	                	</div>
+						<p:dataTable id="fileList" var="row" value="#{mmsSportObEdit.egovFilesList}" 
+							rowIndexVar="riv"  emptyMessage="#{ui_labels['general.norows']}" 
+							rows="5" style="margin-bottom:20px" paginator="true" reflow="true"	paginatorPosition="bottom"  paginatorAlwaysVisible="false"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"   >
+					       	<p:column headerText="№" width="4%" >
+								<h:outputText value="#{riv + 1}" />
+							</p:column>
+							<p:column headerText="" width="40" style="text-align: center;">									           	
+					           <p:commandButton  id="download" ajax="false" actionListener="#{mmsSportObEdit.download(row)}" icon="fa fa-fw fa-download" title="Изтегляне" />
+					       	</p:column>
+					       	<p:column headerText="Наименование на файл"  style="text-align: center;">
+					             <h:outputText value="#{row.filename}" escape="false" style="width:96%; text-align: left;"/>									             
+					        </p:column>
+					   </p:dataTable>
+			
+		 			</div>
+				</h:panelGroup>
+			</div>
+		</p:dialog>
+		
+	      <!--  ******************************************************************************************************************* --> 
+		     
+		</h:form> 
+	</ui:define>
+	</ui:composition>
+</html>

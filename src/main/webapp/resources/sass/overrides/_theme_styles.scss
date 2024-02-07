@@ -1,0 +1,23 @@
+/* Add your customizations of theme here */
+body {
+    .ui-widget[readonly=readonly] {
+        background-color: $inputReadonlyBackground;
+        border-color: $inputReadonlyBorder;
+
+        &.ui-state-focus {
+            box-shadow: $inputReadonlyFocusShadow;
+        }
+    }
+}
+
+.layout-config {
+    .layout-config-content {
+        .layout-themes {
+            a.large {
+                i {
+                    color: $primaryColor;
+                }
+            }
+        }
+    }
+}

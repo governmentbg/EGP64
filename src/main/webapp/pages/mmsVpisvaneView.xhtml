@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ibg="http://java.sun.com/jsf/composite/components"
+	template="/template/templateView.xhtml">
+	
+	<ui:define name="title">#{navTexts['/pages/mmsVpisvaneView.xhtml']}</ui:define>
+
+	<ui:define name="viewname">		
+		
+		<li> <h:outputText value="#{labels['compReg.viewReg']}" /> </li>
+
+	</ui:define>
+
+	<ui:define name="content">
+
+		<f:metadata>
+			<f:importConstants type="com.ib.docu.system.DocuConstants" />
+			<f:importConstants type="com.ib.system.SysConstants" />
+		</f:metadata>
+		
+		<h:form id="formMMSVpisvaneView">
+						
+			<ibg:compMMSVpisvane id="idVpisvanе" idReg="#{mmsVpisvaneEdit.idReg}" idObject="#{mmsVpisvaneEdit.idObject}" 
+				codeObject="#{mmsVpisvaneEdit.codeObject}"  nameObject="#{mmsVpisvaneEdit.nameObject}" readonly="#{mmsVpisvaneEdit.view}"/>	
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

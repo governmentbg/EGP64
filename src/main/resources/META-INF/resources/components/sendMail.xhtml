@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://java.sun.com/jsf/composite"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ibg="http://java.sun.com/jsf/composite/components">
+
+<cc:interface componentType="sendMail">
+	
+	<cc:attribute name="email" 		type="java.lang.String" shortDescription="e-mail адрес на лицето, към което ще изпращаме съобщението" required="true"  />
+	<cc:attribute name="codeObj" 	type="java.lang.String" shortDescription="Код на обекта, от който ще изпращаме съобщението" required="true"  />
+	<cc:attribute name="codeSluj" 	type="java.lang.Integer" shortDescription="Код на обекта, от който ще изпращаме съобщението" required="true"  />
+	<cc:attribute name="readonly"   type="java.lang.Boolean" shortDescription="само за разглеждане" default="false" />
+	<cc:attribute name="onComplete" type="java.lang.String"  shortDescription="Изпълнява функция след като изпрати е-мейла - подава се името на функцията" />
+</cc:interface>
+
+<cc:implementation>
+	<f:event type="preRenderComponent" listener="#{cc.initM()}" /> 
+	<p:messages id="messageSendModal" autoUpdate="true" showDetail="true" />								
+	
+	<h:panelGroup id="panelSendMail"  >
+		
+		<div class="card">
+	    	<div class="p-grid ui-fluid"> 
+				<div class="p-col-12 p-lg-3">
+                  		<h:outputText value="#{labels['dvijenie.email']}" styleClass="form-label "/>
+                  		<p:inputText  value="#{cc.attrs.email}" readonly="true"/>
+                  	</div>
+				<div class="p-col-12 p-lg-7">
+                  		<h:outputText value="#{labels['general.otnosno']}" styleClass="form-label req"/>
+                  		<p:inputText  value="#{cc.subject}" id="subject"/>
+                  	</div>
+                   <div class="p-col-12 p-lg-10">
+                   	<ibg:compFileUpload listObj="#{cc.uploadFilesList}" codeObj="#{cc.attrs.codeObj}" idObj="1"
+                   		id="filesDoc" header="false" hideDel="#{cc.attrs.readonly}" view="#{cc.attrs.readonly}" autoSave="false" saveFirst="false" display="list" dragDropSupport="true">
+                   	</ibg:compFileUpload>
+                   </div>		                             
+				<div class="p-col-12 p-lg-10">
+                  		<h:outputText value="#{labels['general.text']}" styleClass="form-label req"/>
+                  		<p:inputTextarea  value="#{cc.textMail}" id="mailText">
+                  		</p:inputTextarea>
+                  	</div>
+                  	<div class="p-col-12 p-lg-8">
+                  	</div>
+                  	<div class="p-col-12 p-lg-2">
+                  		<p:commandButton id="btnMailModal" styleClass="ui-button-success"  value="Изпрати" process="@this  #{cc.clientId}:panelSendMail"  update="#{cc.clientId}:panelSendMail"
+								partialSubmit="true" action="#{cc.sendMail()}"  title="Изпращане на е-мейл до формированието" />
+                  	</div>
+                  	</div>
+					    	
+	    	</div>
+	
+	</h:panelGroup>
+
+
+</cc:implementation>
+</html>

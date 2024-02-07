@@ -1,0 +1,257 @@
+13:56:25.789 [main] INFO  com.ib.docu.transform.T4RegTreners - 
+13:56:25.789 [main] INFO  com.ib.docu.transform.T4RegTreners - Start validate register data
+reg_treners.reg_nom=559; EGN=5801204706
+	UNKNOWN vnositel=Българска федерация по шахмат 1929; adm_referents.ref_name
+
+reg_treners.reg_nom=560; EGN=7704257680
+	UNKNOWN vnositel=Българска федерация по шахмат 1930; adm_referents.ref_name
+
+reg_treners.reg_nom=561; EGN=7702038003
+	UNKNOWN vnositel=Българска федерация по шахмат 1931; adm_referents.ref_name
+
+reg_treners.reg_nom=562; EGN=7406038021
+	UNKNOWN vnositel=Българска федерация по шахмат 1932; adm_referents.ref_name
+
+reg_treners.reg_nom=580; EGN=5802180563
+	NOT_VALID egn=5802180563
+
+reg_treners.reg_nom=639; EGN=7606267962
+	NOT_VALID egn=7606267962
+
+reg_treners.reg_nom=792; EGN=6505191053
+	NOT_VALID egn=6505191053
+
+reg_treners.reg_nom=972; EGN=7710078233
+	NOT_VALID egn=7710078233
+
+reg_treners.reg_nom=1058; EGN=9003203121
+	NOT_VALID email=vastak20052abv.bg
+
+reg_treners.reg_nom=1154; EGN=0048107614
+	NOT_VALID egn=0048107614
+
+reg_treners.reg_nom=1232; EGN=6810244748
+	NOT_VALID egn=6810244748
+
+reg_treners.reg_nom=1271; EGN=7404296240
+	NOT_VALID egn=7404296240
+
+reg_treners.reg_nom=1272; EGN=8610236689
+	NOT_VALID egn=8610236689
+
+reg_treners.reg_nom=1319; EGN=8705013594
+	NOT_VALID egn=8705013594
+
+reg_treners.reg_nom=1491; EGN=6510151081
+	NOT_VALID egn=6510151081
+
+reg_treners.reg_nom=1623; EGN=7312266258
+	NOT_VALID egn=7312266258
+
+reg_treners.reg_nom=1690; EGN=6110035860
+	NOT_VALID egn=6110035860
+
+reg_treners.reg_nom=1692; EGN=7902086302
+	NOT_VALID egn=7902086302
+
+reg_treners.reg_nom=1731; EGN=7505043243
+	UNKNOWN vnositel=Българска федерация по спортен риболов; adm_referents.ref_name
+
+reg_treners.reg_nom=1732; EGN=6907147722
+	UNKNOWN vnositel=Българска федерация по спортен риболов; adm_referents.ref_name
+
+reg_treners.reg_nom=1733; EGN=7708026020
+	UNKNOWN vnositel=Българска федерация по спортен риболов; adm_referents.ref_name
+
+reg_treners.reg_nom=1920; EGN=8211033065
+	NOT_VALID egn=8211033065
+
+reg_treners.reg_nom=1921; EGN=7402226360
+	NOT_VALID email=ivo sergiev@gmail.com
+
+reg_treners.reg_nom=1982; EGN=6710025445
+	NOT_VALID email=ivtziv1967@abv,bg
+
+reg_treners.reg_nom=2003; EGN=8207175365
+	NOT_VALID egn=8207175365
+
+reg_treners.reg_nom=2043; EGN=6112251035
+	NOT_VALID egn=6112251035
+
+reg_treners.reg_nom=2116; EGN=6903147283
+	UNKNOWN vnositel=Българска федерация по таекуон-до; adm_referents.ref_name
+
+reg_treners.reg_nom=2117; EGN=7207074427
+	UNKNOWN vnositel=Българска федерация по таекуон-до; adm_referents.ref_name
+
+reg_treners.reg_nom=2118; EGN=7710054620
+	UNKNOWN vnositel=Българска федерация по таекуон-до; adm_referents.ref_name
+
+reg_treners.reg_nom=2119; EGN=8401313483
+	UNKNOWN vnositel=Българска федерация по таекуон-до; adm_referents.ref_name
+
+reg_treners.reg_nom=2120; EGN=7909059108
+	UNKNOWN vnositel=Българска федерация по таекуон-до; adm_referents.ref_name
+
+reg_treners.reg_nom=2121; EGN=7808246348
+	UNKNOWN vnositel=Българска федерация по таекуон-до; adm_referents.ref_name
+
+reg_treners.reg_nom=2204; EGN=9210163798
+	NOT_VALID egn=9210163798
+
+reg_treners.reg_nom=2269; EGN=5703126927
+	NOT_VALID egn=5703126927
+	UNKNOWN vnositel=Българска федерация по шахмат 1929; adm_referents.ref_name
+
+reg_treners.reg_nom=2313; EGN=6201124624
+	NOT_VALID egn=6201124624
+
+reg_treners.reg_nom=2314; EGN=6409247253
+	NOT_VALID egn=6409247253
+
+reg_treners.reg_nom=2411; EGN=8912176820
+	NOT_VALID egn=8912176820
+
+reg_treners.reg_nom=2451; EGN=6205195856
+	NOT_VALID egn=6205195856
+
+reg_treners.reg_nom=2566; EGN=8410161401
+	NOT_VALID egn=8410161401
+
+reg_treners.reg_nom=2573; EGN=5610033565
+	NOT_VALID egn=5610033565
+
+reg_treners.reg_nom=2589; EGN=5312195043
+	NOT_VALID email=dmiitarbalanski2abv.bg
+
+reg_treners.reg_nom=2597; EGN=6609141186
+	NOT_VALID egn=6609141186
+
+reg_treners.reg_nom=2616; EGN=6105267306
+	NOT_VALID egn=6105267306
+
+reg_treners.reg_nom=2660; EGN=6809017337
+	NOT_VALID egn=6809017337
+
+reg_treners.reg_nom=2787; EGN=- LNC=3077839150
+	NOT_VALID lnc=3077839150
+
+reg_treners.reg_nom=2933; EGN=8003260132
+	NOT_VALID egn=8003260132
+
+reg_treners.reg_nom=2934; EGN=6412152185
+	NOT_VALID egn=6412152185
+
+reg_treners.reg_nom=3068; EGN=6310092409
+	NOT_VALID egn=6310092409
+
+reg_treners.reg_nom=3074; EGN=5901305901
+	NOT_VALID egn=5901305901
+
+reg_treners.reg_nom=3165; EGN=9503031412
+	NOT_VALID egn=9503031412
+
+reg_treners.reg_nom=3173; EGN=6806147261
+	NOT_VALID egn=6806147261
+
+reg_treners.reg_nom=3221; EGN=4311105520
+	NOT_VALID egn=4311105520
+
+reg_treners.reg_nom=3229; EGN=8808123108
+	NOT_VALID email=todorr182abv.bg
+
+reg_treners.reg_nom=3274; EGN=7006303541
+	NOT_VALID egn=7006303541
+
+reg_treners.reg_nom=3374; EGN=6302268303
+	NOT_VALID egn=6302268303
+
+reg_treners.reg_nom=3397; EGN=4907206383
+	NOT_VALID egn=4907206383
+
+reg_treners.reg_nom=3399; EGN=5202237354
+	NOT_VALID egn=5202237354
+
+reg_treners.reg_nom=3403; EGN=7006178512
+	NOT_VALID egn=7006178512
+
+reg_treners.reg_nom=3543; EGN=6807161649
+	NOT_VALID egn=6807161649
+
+reg_treners.reg_nom=3547; EGN=7208285836
+	NOT_VALID egn=7208285836
+
+reg_treners.reg_nom=3579; EGN=8612176345
+	NOT_VALID egn=8612176345
+
+reg_treners.reg_nom=3619; EGN=7110276676
+	NOT_VALID egn=7110276676
+
+reg_treners.reg_nom=3709; EGN=6411275784
+	NOT_VALID egn=6411275784
+
+reg_treners.reg_nom=3784; EGN=8406051095
+	NOT_VALID egn=8406051095
+
+reg_treners.reg_nom=3985; EGN=6707270521
+	NOT_VALID egn=6707270521
+
+reg_treners.reg_nom=4015; EGN=9607200426
+	NOT_VALID egn=9607200426
+
+reg_treners.reg_nom=4056; EGN=4003065302
+	NOT_VALID egn=4003065302
+
+reg_treners.reg_nom=4138; EGN=9604202962
+	NOT_VALID egn=9604202962
+
+reg_treners.reg_nom=4215; EGN=5202241487
+	NOT_VALID egn=5202241487
+
+reg_treners.reg_nom=4398; EGN=4912183041
+	NOT_VALID egn=4912183041
+
+reg_treners.reg_nom=4416; EGN=6403065847
+	NOT_VALID egn=6403065847
+
+reg_treners.reg_nom=4610; EGN=7103231761
+	NOT_VALID email=team@lokoplovdiv_bc.com
+
+reg_treners.reg_nom=4615; EGN=8503189328
+	NOT_VALID email=petkomavrudiev@gmail.co m
+
+reg_treners.reg_nom=4684; EGN=5810315623
+	NOT_VALID egn=5810315623
+
+reg_treners.reg_nom=4939; EGN=5508136444
+	NOT_VALID egn=5508136444
+
+reg_treners.reg_nom=4985; EGN=8601287252
+	NOT_VALID email=kristina ivanova2801@gmail.com
+
+reg_treners.reg_nom=5310; EGN=5910315910
+	NOT_VALID egn=5910315910
+
+reg_treners.reg_nom=5364; EGN=7109200506
+	NOT_VALID egn=7109200506
+
+reg_treners.reg_nom=5414; EGN=8401268448
+	NOT_VALID egn=8401268448
+
+reg_treners.reg_nom=5433; EGN=7008286300
+	UNKNOWN osn=в изпълнение на съдебното решение по адм. д. № 2276/2022 г. по описа на АССГ, оставено в сила с решението по адм. д. № 7450/2022 г. по описа на ВАС, 6-то отд., на основание чл. 8, ал. 2, т. 3; classif=500
+
+reg_treners.reg_nom=5678; LNC=0152266303
+	NOT_VALID lnc=0152266303
+
+reg_treners.reg_nom=5707; EGN=8008187656
+	NOT_VALID egn=8008187656
+
+reg_treners.reg_nom=5708; EGN=8008187656
+	NOT_VALID egn=8008187656
+
+reg_treners.reg_nom=5761; EGN=8203054612
+	NOT_VALID egn=8203054612
+
+13:56:29.250 [main] INFO  com.ib.docu.transform.T4RegTreners - 84 errors from 5494
+13:56:29.250 [main] INFO  com.ib.docu.transform.T4RegTreners - Validate register data - COMPLETE

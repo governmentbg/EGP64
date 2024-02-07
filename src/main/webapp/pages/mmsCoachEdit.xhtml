@@ -1,0 +1,20 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" 
+                >
+ 
+           		<ui:define name="title">#{navTexts['/pages/mmsCoachEdit.xhtml']}</ui:define>   
+	  	  
+			  	<f:metadata>
+					<f:importConstants type="com.ib.docu.system.DocuConstants" />
+				</f:metadata>
+				
+				<ui:include src="/pages/mmsCoachIncl.xhtml" >
+					<ui:param name="viewOnly" value="2" />
+					<ui:param name="isNew" value="2" />
+				</ui:include>
+				
+	
+</ui:composition>

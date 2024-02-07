@@ -1,0 +1,1336 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ibg="http://java.sun.com/jsf/composite/components">
+     
+
+	<ui:composition template="/template/template.xhtml">
+	<ui:define name="title">#{pageTitle}</ui:define>
+	
+	<ui:define name="viewname">		  
+		
+		<li>
+	       	<p:commandLink title="#{ui_labels['general.back']}" action="#{navigation.goBack()}"  rendered="#{navigation.navPath.size()>1 and viewOnly eq DocuConstants.CODE_ZNACHENIE_NE and isNew eq DocuConstants.CODE_ZNACHENIE_NE}">
+				<i class="fas fa-caret-left" />
+			</p:commandLink>
+		</li>
+		
+		<li>
+			<h:outputText value="#{navTexts['/pages/mmsCoachNew.xhtml']}" rendered="#{viewOnly eq 2 and isNew == DocuConstants.CODE_ZNACHENIE_DA}"/>
+			<h:outputText value="#{navTexts['/pages/mmsCoachEdit.xhtml']}" rendered="#{viewOnly eq 2  and isNew == DocuConstants.CODE_ZNACHENIE_NE}"/>
+			<h:outputText value="#{navTexts['/pages/mmsCoachView.xhtml']}" rendered="#{viewOnly eq 1}"/>
+		</li>
+	
+    </ui:define>
+    
+	<ui:define name="content">
+		<h:form id="mmsCoachform">
+		
+			<div class="card">
+				<div class="p-grid">
+					<div class="p-col-10">
+						<h:outputText value="#{mmsCoach.vidDocVpisvText}:" rendered="#{mmsCoach.vidDocVpisvText ne null}" styleClass="form-label"/>
+						<p:spacer width="5px"></p:spacer>
+						<h:outputText value="#{mmsCoach.regNom}/" rendered="#{mmsCoach.regNom ne null}" styleClass="form-label"/> 
+				       	<h:outputText value="#{mmsCoach.dateRNV}" rendered="#{mmsCoach.dateRNV ne null}" styleClass="form-label" >
+				       		<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsCoach.timeZone}"/>
+				       	</h:outputText>
+					
+					</div>
+					  <h:panelGroup rendered="#{mmsCoach.idSSev != null and mmsCoach.vidSportN ne null}">
+					<div class="p-col-10">
+					   <h:outputText value="Вид спорт: "  styleClass="form-label"  />
+					   <h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_VIDOVE_SPORT, mmsCoach.vidSportN, mmsCoach.currentLang, decodeDate)}" styleClass="form-label" />
+					</div>
+					</h:panelGroup>
+					<div class="p-col-2">
+					
+					</div>
+				
+				</div>
+				
+				<p:toolbar id="panelButtonsTop" rendered="#{viewOnly ne 1}" styleClass="margin-bottom">
+					<f:facet name="left">		
+									
+						<p:commandButton icon="fas fa-save" value="#{ui_labels['general.save']}" rendered="#{viewOnly ne 1 and mmsCoach.mmsCoaches.idObject ne null and (mmsCoach.idSSev eq null or mmsCoach.selOptZajavl eq '2' or mmsCoach.vidDoc ne DocuConstants.CODE_ZNACHENIE_VID_DOC_ZAIAVL_VPISVANE_TREN_KADRI)}"
+							action="#{mmsCoach.actionSave}" id="btnSaveTop" update="@form"  process="@this mmsCoachform" partialSubmit="true" title="Запис в базата"/>
+							
+						<p:commandButton icon="fas fa-save" value="#{ui_labels['general.save']}" rendered="#{viewOnly ne 1 and mmsCoach.mmsCoaches.idObject ne null and mmsCoach.idSSev ne null and mmsCoach.vidDoc eq DocuConstants.CODE_ZNACHENIE_VID_DOC_ZAIAVL_VPISVANE_TREN_KADRI and (mmsCoach.selOptZajavl eq '1' or mmsCoach.selOptZajavl eq null)}"  
+							id="btnSaveTopZ" update="@form"  process="@this mmsCoachform" partialSubmit="true" type="button"
+							onclick="PF('dialogManyUseZajavl').show();" title="Запис в базата с избор"/>	
+
+						<p:spacer width="15px"></p:spacer>	
+						<h:panelGroup rendered="#{mmsCoach.mmsCoaches.id ne null}">    
+						       <ibg:compMMSAddFields idObj="#{mmsCoach.mmsCoaches.id}" codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_COACHES}" readonly="#{viewOnly eq 1}"/>
+						</h:panelGroup>  
+						
+						<ui:remove>
+						<p:spacer width="10px"></p:spacer>
+						<h:outputText value="#{mmsCoach.vidDocVpisvText}:" rendered="#{mmsCoach.vidDocVpisvText ne null}" styleClass="form-label"/>
+						<p:spacer width="5px"></p:spacer>
+						<h:outputText value="#{mmsCoach.regNom}/" rendered="#{mmsCoach.regNom ne null}" styleClass="form-label"/> 
+                   		<h:outputText value="#{mmsCoach.dateRNV}" rendered="#{mmsCoach.dateRNV ne null}" styleClass="form-label" >
+                   			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsCoach.timeZone}"/>
+                   		</h:outputText>
+                   		</ui:remove>
+                   		
+					</f:facet>
+					
+					<f:facet name="right">	
+						
+						<p:commandButton value="Разглеждане заявление" rendered="#{mmsCoach.idSSev ne null}"
+					      partialSubmit="true" process="@this" id="btnViewZajavl" styleClass="ui-button-success" 
+					      oncomplete="PF('dialog_view_zajavl').show();" update="mmsCoachform:dialogMessZajavl"
+					      title="Разглеждане на заявление" />
+						<p:spacer width="20px"></p:spacer>
+						<p:commandButton value="Отказ обработка" rendered="#{mmsCoach.idSSev ne null and !mmsCoach.cancelZajavl}"
+					      partialSubmit="true" process="@this" id="btnCancelZajavl" icon="fas fa-save" 
+					      oncomplete="PF('dialog_cancel_zajavl').show();" update="mmsCoachform:dialogCancelZajavl"
+					      title="Отказ на обработка" />
+					      
+					    <p:spacer width="20px"></p:spacer>
+
+						<p:commandButton id="btnMailC" styleClass="ui-button-success"  value="Email"
+                          onmousemove="document.getElementById('mmsCoachform:btnMailC').focus();"
+                          partialSubmit="true" update="mmsCoachform:panelMail"
+                          process="mmsCoachform:btnMailC @this"
+                          oncomplete="PF('eMail').show(); "
+                          title="Изпращане на е-мейл до треньорски кадър"
+                          rendered="#{ viewOnly != 1 }" />	  
+					
+						<p:spacer width="20px"></p:spacer>
+						
+						<!-- Справки RegiX в модален прозорец -->      
+						<p:commandButton value="#{labels['regixReport.title']}"
+					      partialSubmit="true" process="@this" 
+					      oncomplete="PF('dialog-compRegix').show();" update="mmsCoachform:dialogCompRegix"
+					      title="#{labels['regixReport.title']}" />
+					      
+						<p:spacer width="20px"></p:spacer>
+								 					
+						<p:commandButton icon="fas fa-times"
+				            value="#{ui_labels['general.delete']}" title="#{ui_labels['general.delete']}"
+				           	update="@form" partialSubmit="true" 
+							process="@this mmsCoachform"
+							rendered="#{viewOnly ne 1 and mmsCoach.mmsCoaches.id ne null  and userData.hasAccess(DocuConstants.CODE_CLASSIF_DEF_PRAVA, DocuConstants.CODE_ZNACHENIE_DEF_PRAVA_DEL_MMS_REG)}"	
+							actionListener="#{mmsCoach.actionDelete}" styleClass="ui-button-danger" >
+							
+							<p:confirm header="#{ui_labels['general.comfirmation']}" message="#{beanMessages['general.confirmDeleteMsg']}" icon="fas fa-exclamation-triangle" />
+						</p:commandButton>
+					</f:facet>
+	
+				</p:toolbar>
+				
+				
+				<div class="p-grid">
+															
+					<div class="p-col-5">
+						<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '#mmsCoachform:idBaseDC')">
+							<h:outputText value="#{labels['docu.documentTab']}" />
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+					</div>
+					
+					<ui:remove>
+					<div class="p-col-7">
+	
+						<h:outputText value="#{mmsCoach.vidDocVpisvText}:" rendered="#{mmsCoach.vidDocVpisvText ne null}" styleClass="form-label"/>
+						<p:spacer width="5px"></p:spacer>
+						<h:outputText value="#{mmsCoach.regNom}/" rendered="#{mmsCoach.regNom ne null}" styleClass="form-label"/> 
+                   		<h:outputText value="#{mmsCoach.dateRNV}" rendered="#{mmsCoach.dateRNV ne null}" styleClass="form-label" >
+                   			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsCoach.timeZone}"/>
+                   		</h:outputText>
+					
+					</div>
+					</ui:remove>
+					
+					<div jsf:id="idBaseDC" class="p-grid extended-search ui-fluid" >
+						<ui:remove>
+						<div class="p-col-12 p-lg-12 ui-fluid" jsf:rendered="#{mmsCoach.idSSev ne null}" >
+	                       <h:outputText value="За избраното заявление ще се обработват ли повече треньорски кадри?" styleClass="form-label"/>
+	                      	<p:selectOneRadio id="oneManyC" value="#{mmsCoach.selOptZajavl}" >
+					            <f:selectItem itemLabel="Не" itemValue="2"/>
+					            <f:selectItem itemLabel="Да" itemValue="1"/>
+					        </p:selectOneRadio>	
+                         </div>
+                         </ui:remove>
+
+						<ui:remove>
+						<div class="p-col-12 p-lg-1">
+                    		<h:outputText value="#{labels['admStruct.egn']}" styleClass="form-label" />
+                    		<p:inputText  id="idEGN" value="#{mmsCoach.egnF}" readonly="#{mmsCoach.mmsCoaches.id ne null or viewOnly eq 1}" >
+								<p:ajax event="change" process="@this" partialSubmit="true" listener="#{mmsCoach.findReferentByEGN()}" 
+									update="mmsCoachform" onstart="PrimeFaces.customFocus=true" onkeypress="if(event.keyCode == 13) {event.preventDefault(); $(':focus').blur()} "/>		
+                    		</p:inputText>
+                    	</div>
+                    	</ui:remove>
+ 
+                    	<div class="p-col-12 p-lg-5" jsf:rendered="#{mmsCoach.maRefNameD.active ?'true':'false'}" >
+							<h:outputText value="#{labels['mmsCoach.nameEGNLNC']}"	styleClass="#{mmsCoach.maRefNameD.required and viewOnly eq 2 ?'form-label req':'form-label'}" />
+							<div class="selectModalA-with-buttons" >
+								
+								<h:panelGroup id="refCorrCI" layout="block" styleClass="koresp-input" >
+									
+									<ibg:mmsSelectReferents id="refCorrMCI"  
+										readonly="#{mmsCoach.mmsCoaches.id ne null or mmsCoach.lockSave}"
+										update="mmsCoachform"
+										typeSearch="EGN"
+										dateClassif="#{mmsCoach.decodeDate}"
+										corespCompCommand="PF('mCorrCNE').show();"
+										selectedCode="#{mmsCoach.codeRef}"
+										searchWord="#{mmsCoach.txtCorrMCI}"
+									/>
+									
+									<ui:remove>
+									<ibg:mmsSelectReferents id="refCorrMCI"  
+										readonly="#{mmsCoach.mmsCoaches.id ne null or !mmsCoach.ccevNV}"
+										update="mmsCoachform"
+										typeSearch="EGN"
+										dateClassif="#{mmsCoach.decodeDate}"
+										corespCompCommand="PF('mCorrCNE').show();"
+										selectedCode="#{mmsCoach.codeRef}"
+										searchWord="#{mmsCoach.txtCorrMCI}"
+									/>
+									</ui:remove>
+								
+								</h:panelGroup>
+																
+								<div jsf:id="refCorrCD">
+									<ui:remove>	<!--  Корекция кореспондент	--></ui:remove>
+									<p:commandButton id="btnCorrCC"
+										rendered="#{mmsCoach.mmsCoaches.idObject ne null}"
+										icon="#{(viewOnly ne 1) ? 'fas fa-edit' : 'fas fa-eye'}" partialSubmit="true"
+										process="mmsCoachform:refCorrDataCoach @this"
+										update="mmsCoachform"
+										oncomplete="PF('mCorrCNE').show(); "
+										title="#{viewOnly ne 1 ?  labels['docu.titleEditCoresp'] : labels['docu.correspView'] }"/>
+											   	
+									<ui:remove><!--  Разширено търсене на кореспондент --></ui:remove>
+									<p:commandButton id="btnCorrCS"
+										onmousemove="document.getElementById('mmsCoachform:btnCorrCS').focus();"
+										rendered="#{mmsCoach.mmsCoaches.idObject eq null }"
+										icon="fas fa-list-ul" partialSubmit="true"
+										process="mmsCoachform:refCorrSearchCoach @this"
+										update="mmsCoachform"
+										oncomplete="PF('mCorrCS').show(); "
+										title="#{labels['search.extendRef']}" />
+	
+									<!--  Нов кореспондент	-->
+									<p:commandButton id="btnCorrCN"
+										onmousemove="document.getElementById('mmsCoachform:btnCorrCN').focus();"
+										rendered="#{mmsCoach.mmsCoaches.idObject eq null}"
+										icon="fas fa-plus" partialSubmit="true" 
+										process="mmsCoachform:refCorrDataCoach @this"
+										update="mmsCoachform"
+										oncomplete="PF('mCorrCNE').show();"
+										title="#{labels['docu.refCorrNew']}" />
+								</div>
+							</div>
+						</div>
+						
+						<ui:remove>
+						<div class="p-col-12 p-lg-1" jsf:rendered="#{mmsCoach.maLnc.active and (mmsCoach.referent.fzlLnc ne '' and mmsCoach.referent.fzlLnc ne null) ?'true':'false'}">
+                    		<h:outputText value="#{labels['mmsCoach.lnch']}" styleClass="form-label"/>
+                    		<p:inputText id="idLNC" value="#{mmsCoach.referent.fzlLnc}" readonly="true">
+                    			<ui:remove>
+                    			<p:ajax event="change" process="@this" partialSubmit="true" listener="#{mmsCoach.findReferentByLNCH()}" 
+									update="mmsCoachform" onstart="PrimeFaces.customFocus=true" onkeypress="if(event.keyCode == 13) {event.preventDefault(); $(':focus').blur()} "/>
+								</ui:remove>	
+                    		</p:inputText>
+                    	</div>
+                    	</ui:remove>
+						
+						<div class="p-col-12 p-lg-2" jsf:rendered="#{(mmsCoach.maNomDoc.active and mmsCoach.mmsCoaches.idObject eq null ) ?'true':'false'}" >
+                    		<h:outputText value="#{labels['mmsCoach.lichCard']}" styleClass="form-label" />
+                    		<p:inputText  id="idLK" value="#{mmsCoach.referent.nomDoc}"  readonly="#{mmsCoach.mmsCoaches.id ne null or mmsCoach.lockSave}" > 
+								<p:ajax event="change" process="@this" partialSubmit="true" listener="#{mmsCoach.findReferentByLK()}" 
+									update="mmsCoachform" onstart="PrimeFaces.customFocus=true" onkeypress="if(event.keyCode == 13) {event.preventDefault(); $(':focus').blur()} "/>
+                    		</p:inputText>
+                    	</div>
+                    	
+                    	<div class="p-col-12 p-lg-5" jsf:rendered="#{mmsCoach.maAddress.active ?'true':'false'}">
+                    		<h:outputText value="#{labels['dvijenie.adres']}/#{labels['refCorr.contacts']} " styleClass="form-label"/>
+                    		<p:inputText  value="#{mmsCoach.infoAdres}" readonly="true"/>
+                    	</div>
+     	
+                    	
+                    	<ui:remove>
+                    	<div class="p-col-12 p-lg-1" jsf:rendered="#{mmsCoach.maRegNom.active ?'true':'false'}" > 
+                    		<h:outputText value="#{labels['mmsCoach.regNomCoach']} 3333" styleClass="form-label" />
+                    		<p:inputText id="idND" value="#{mmsCoach.mmsCoaches.regNomer}" readonly="true">
+                    			<ui:remove>
+                    			<p:ajax event="change" process="@this"  listener="#{mmsCoach.findByRegNom()}" 
+									update="mmsCoachform" onstart="PrimeFaces.customFocus=true" onkeypress="if(event.keyCode == 13) {event.preventDefault(); $(':focus').blur()} "/>
+								</ui:remove>
+                    		</p:inputText>
+                    	</div>
+                    	</ui:remove>
+                    	<div class="p-col-12 p-lg-1" >
+                    	    <h:outputText value=" " />
+                    	</div>
+                    	
+                    	<div class="p-col-12 p-lg-2" jsf:rendered="#{mmsCoach.maStatus.active ?'true':'false'}">
+                    		<h:outputText value="#{labels['docu.status']}" styleClass="form-label"/>
+                    		<p:inputText id="idStatusCV" value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_OBEKT, mmsCoach.mmsCoaches.status, mmsCoach.currentLang , now)}" style="min-width: 15rem"  readonly="true"/>
+                    	</div>
+                    	
+                    	<div class="p-col-12 p-lg-2" jsf:rendered="#{mmsCoach.maDateStatus.active ?'true':'false'}">
+                    		<h:outputText value="#{labels['taskList.dataStatus']}" styleClass="form-label"/>
+                    		<p:inputText value="#{mmsCoach.mmsCoaches.dateStatus}" readonly="true" id="idDateStatusCV">
+                    			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsCoach.timeZone}"/>
+                    		</p:inputText>
+                    	</div>
+ 						
+ 						<div class="p-col-12 p-lg-7" jsf:rendered="#{mmsCoach.maDopInfo.active ?'true':'false'}">
+                    		<h:outputText value="#{labels['docu.dopInfo']}" styleClass="#{mmsCoach.maDopInfo.required and viewOnly eq 2 ?'form-label req':'form-label'}"/>
+                    		<p:inputText  value="#{mmsCoach.mmsCoaches.dopInfo}" readonly="#{viewOnly eq 1}" id="idDopInfoC"/>
+
+                    	</div>
+                    	
+                    	
+                    	<!-- Вид спорт -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-3" jsf:rendered="#{viewOnly ne 1 and mmsCoach.idSSev ne null and mmsCoach.selOptZajavl eq '1'  and (mmsCoach.vidDoc eq DocuConstants.CODE_ZNACHENIE_VID_DOC_ZAIAVL_VPISVANE_TREN_KADRI or mmsCoach.vidDoc eq DocuConstants.CODE_ZNACHENIE_VID_DOC_ZAIAVL_PROM_TREN_KADRI or mmsCoach.vidDoc eq DocuConstants.CODE_ZNACHENIE_VID_DOC_ZAIAVL_ZALICH_TREN_KADRI ) }">
+							<h:outputText value="#{labels['compReg.forVidSport']}" styleClass="form-label req" />
+							<ibg:selectOneModalA compType="2" codeClassif="#{DocuConstants.CODE_CLASSIF_VIDOVE_SPORT}"
+								dateClassif="#{now}" filtered="false" selectedCode="#{mmsCoach.vidSportN}" 
+								sortByName="true" id="vidSportC" saveStateTree="false" withBtnClear="true" styleAutoComp="width:100%;" />
+						</div>
+
+						<!-- Длъжност -->
+						  
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2" jsf:rendered="#{viewOnly ne 1 and mmsCoach.idSSev ne null and mmsCoach.selOptZajavl eq '1'   and mmsCoach.vidDoc eq DocuConstants.CODE_ZNACHENIE_VID_DOC_ZAIAVL_VPISVANE_TREN_KADRI }">
+							<h:outputText value="#{labels['regGrSluj.position']}" styleClass="form-label req" />
+							<p:selectOneMenu id="dlajnostC" value="#{mmsCoach.mmsCoaches.dlajnost}" autoWidth="false" >
+								<f:selectItem value="#{null}" itemValue="#{null}" />
+								<f:selectItems value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_DLAJNOST, now, mmsCoach.currentLang)}"
+									var="clD" itemLabel="#{clD.tekst}" itemValue="#{clD.code}" />
+							</p:selectOneMenu>
+						</div>	
+						
+                    	
+					</div>
+					
+					<div class="p-col-12">
+						<p:commandLink class="extended-search-toggle" onclick="toggleSection(this, '#mmsCoachform:panelDiploms')">
+							<h:outputText value="#{labels['mmsCoach.diploms']}" />							
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+					</div>
+
+					<div class="p-grid extended-search " id="panelDiploms">
+						<div class="p-col-12 p-lg-12">
+                    		<div class="table-toolbar">
+								<h:outputText value="#{labels['mmsCoach.brDipl']}: #{mmsCoach.mmsCoaches.coachesDiploms.size()}" styleClass="form-label" />	
+								<span class="fas fa-ellipsis-v SoftGray p-mx-2" jsf:rendered="#{mmsCoach.mmsCoaches.id ne null and viewOnly eq 2}"/>
+								<p:commandButton id="idNewDC" icon="fas fa-plus" value="#{labels['mmsCoach.newDipl']}"  oncomplete="PF('coachDiplNew').show();" 
+									rendered="#{viewOnly eq 2}"
+									action="#{mmsCoach.newDiploma}" styleClass="ui-button-success" title="Въвеждане на нова диплома" 
+									update="mmsCoachform:modalDiploma" partialSubmit="true" process="@this"/>
+							
+							</div>
+                    		<p:dataTable id="tblCD" var="row" value="#{mmsCoach.mmsCoaches.coachesDiploms}"   
+								rowIndexVar="idx" sortMode="single" reflow="true" emptyMessage="" styleClass="ui-datatable-gridlines"
+								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {L stPageLink} {Exporters}"
+								rows="5" rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom"
+								paginatorAlwaysVisible="#{mmsCoach.mmsCoaches.coachesDiploms.size()>5}" paginator="true">		
+								
+								<ui:remove>
+								<f:facet name="{Exporters}" >
+                                   <div style="float: left">
+                                        <h:commandLink id="excel" rendered="#{mmsCoach.mmsCoaches.coachesDiploms.size()>0}">
+                                              <h:graphicImage library="images" name="excel2.png" />
+                                              <p:dataExporter type="xls" target="tblCD" fileName="diplomsCoachXls" 
+                                              	postProcessor="#{mmsCoach.postProcessXLS}" />
+                                        </h:commandLink>
+                                         
+                                         <h:commandLink id="pdf" rendered="#{mmsCoach.mmsCoaches.coachesDiploms.size()>0}">
+                                               <h:graphicImage library="images" name="pdf.png" />
+                                               <p:dataExporter type="pdf"  target="tblCD" fileName="diplomsCoachPdf" encoding="windows-1251" 
+                                               	 preProcessor="#{mmsCoach.preProcessPDF}"  options="#{mmsCoach.pdfOptions()}" />    
+                                   		</h:commandLink>
+                                         
+                                         <h:commandLink id="csv" rendered="#{mmsCoach.mmsCoaches.coachesDiploms.size()>0}">
+                                               <h:graphicImage library="images" name="csv.png" />
+                                               <p:dataExporter type="csv" target="tblCD" fileName="diplomsCoachCsv" encoding="CP1251" 
+                                               	postProcessor="#{mmsCoach.postProcessCSV}" />
+                                         </h:commandLink>
+                                   </div>
+                                </f:facet>	
+                                </ui:remove>							
+												
+							  	<p:column width="1px" exportable="false" headerText="#{ui_labels['general.No-symbol'] }" style="text-align: center">
+									<h:outputText value="#{idx + 1}" />
+								</p:column>	
+	
+								<p:column width="5px" exportable="false" style="text-align: center" rendered="#{viewOnly eq 2 }">																				
+									<p:commandButton id="btnEditDipl" title="#{ui_labels['general.edit']}"	icon="fas fa-edit" 					
+									    action="#{mmsCoach.editDiploma(idx)}" partialSubmit="true" process="@this" update="mmsCoachform:modalDiploma"
+									    oncomplete="PF('coachDiplNew').show();"/>
+								</p:column>
+								
+								<p:column width="5px" exportable="false" style="text-align: center" rendered="#{viewOnly eq 1}">																				
+									<p:commandButton id="btnEditDiplV" title="#{ui_labels['general.view']}"	icon="fas fa-eye" 					
+									    actionListener="#{mmsCoach.editDiploma(idx)}" partialSubmit="true" process="@this mmsCoachform" update="mmsCoachform:modalDiploma"
+									    oncomplete="PF('').show()"/>
+								</p:column>
+								
+								<p:column width="100px" sortBy="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_VID_DOC_OBR_ZENS, row.vidDoc, mmsCoach.currentLang, decodeDate)}" headerText="Вид документ">									  
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_VID_DOC_OBR_ZENS, row.vidDoc, mmsCoach.currentLang, decodeDate)}" />	
+								</p:column>
+																
+								<p:column width="50px" sortBy="#{row.regNomer}" headerText="#{labels['mmsCoach.regNomCoach']}">
+									<h:outputText value="#{row.regNomer}"  />								    
+								</p:column>
+								
+								<p:column width="85px" sortBy="#{row.seriaFnom}" headerText="#{labels['mmsCoach.serFabrNom']}">
+									<h:outputText value="#{row.seriaFnom}"  />								    
+								</p:column>
+								
+								<p:column width="50px" sortBy="#{row.yearIssued}" headerText="#{labels['docSchema.year']}" style="text-align: center">									  
+									<h:outputText value="#{row.yearIssued}"/>	
+								</p:column>
+
+								<p:column width="130px" sortBy="#{row.uchebnoZavedenie ne null ? systemData.decodeItem(DocuConstants.CODE_CLASSIF_UCHEB_ZAVEDENIE, row.uchebnoZavedenie, mmsCoach.currentLang, decodeDate) : row.uchebZavText}" 
+									headerText="#{labels['mmsCoach.institutDipl']}">
+									<h:outputText value="#{row.uchebnoZavedenie ne null ? systemData.decodeItem(DocuConstants.CODE_CLASSIF_UCHEB_ZAVEDENIE, row.uchebnoZavedenie, mmsCoach.currentLang, decodeDate) : row.uchebZavText}"/>				    
+								</p:column>
+								
+								<p:column width="180px" headerText="#{labels['docu.dopInfo']}">
+									<h:outputText value="#{row.dopInfo}"/>				    
+								</p:column>
+								
+								<p:column width="5px" exportable="false" rendered="#{mmsCoach.mmsCoaches.id ne null and viewOnly eq 2}">
+					                <p:commandButton actionListener="#{mmsCoach.removeDiplom(row)}" update="mmsCoachform:tblCD" ajax="true"
+					                	icon="fas fa-trash" styleClass="ui-button-danger" title="#{ui_labels['general.delete']}">
+					                    <p:confirm header="#{ui_labels['general.delete']}" message="#{beanMessages['general.confirmDeleteMsg']}" icon="fas fa-exclamation-triangle"/>
+					                </p:commandButton>
+					            </p:column>
+
+							</p:dataTable>
+                    	</div>
+					</div>
+			
+					
+		<!--	<div jsf:rendered="#{mmsCoach.mmsCoaches.id ne null}" > -->			
+					
+					<div class="p-col-12">
+						<p:commandLink class="extended-search-toggle collapse" onclick="toggleSection(this, '#mmsCoachform:panelVpisvaneDC')">
+							<h:outputText value="#{labels['mmsCoach.vpisvane']}" />
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+					</div>
+	
+				
+					<div jsf:id="panelVpisvaneDC" class="p-grid extended-search" >
+						<div class="p-col-12 p-lg-12">
+                    		<div class="table-toolbar">
+								<h:outputText value="#{labels['mmsCoach.brVpisv']}: #{mmsCoach.regsListCV.size()}" styleClass="form-label"/>
+	
+								<ui:remove>
+								<p:commandButton  icon="fas fa-edit" value="#{labels['compReg.basicData']}"  oncomplete="PF('vpisvaneNew').show()" rendered="#{mmsCoach.mmsCoaches.id ne null and viewOnly eq 2}"
+									actionListener="#" styleClass="ui-button-success" title="#{labels['compReg.basicData']}" update="tblRegsListCV">       
+								</p:commandButton>	
+								
+								
+								<span class="fas fa-ellipsis-v SoftGray p-mx-2" jsf:rendered="#{mmsCoach.mmsCoaches.id ne null and viewOnly eq 2}"/>
+								<p:commandButton id="btnNewReg" action="mmsVpisvaneEdit.jsf"  value="#{labels['compReg.newReg']}" icon="fas fa-plus" 
+									ajax="false" styleClass="ui-button-success" rendered="#{mmsCoach.mmsCoaches.id ne null and viewOnly eq 2}">
+						          <f:param name="idObject" value="#{mmsCoach.mmsCoaches.id}"/>
+						          <f:param name="codeObject" value="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_COACHES}"/>
+						          <f:param name="nameObject" value="#{mmsCoach.referent.refName}"/>
+						          <f:param name="vidDoc" value="#{DocuConstants.CODE_ZNACHENIE_VID_DOC_ZAIAVL_VPISVANE_TREN_KADRI}"/>
+						          <f:param name="regNomer" value="#{mmsCoach.mmsCoaches.regNomer}"/>
+								</p:commandButton>
+								</ui:remove>
+							</div>
+
+                    		<p:dataTable id="tblRegsListCV" var="row" value="#{mmsCoach.regsListCV}" rowIndexVar="idx" 
+                                 emptyMessage="" rows="5" sortMode="single" reflow="true" styleClass="ui-datatable-gridlines"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                 rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom" paginatorAlwaysVisible="#{mmsCoach.regsListCV.size()>5}" paginator="true">
+                                 
+                                 <ui:remove>
+                                 <f:facet name="{Exporters}">
+                                   <div style="float: left">
+                                        <h:commandLink id="excel" rendered="#{mmsCoach.regsListCV.size()>0}">
+                                              <h:graphicImage library="images" name="excel2.png" />
+                                              <p:dataExporter type="xls" target="tblRegsListCV" fileName="vpisvaneCoachXls" 
+                                              	postProcessor="#{mmsCoach.postProcessXLS}" />
+                                        </h:commandLink>
+                                         
+                                         <h:commandLink id="pdf" rendered="#{mmsCoach.regsListCV.size()>0}">
+                                               <h:graphicImage library="images" name="pdf.png" />
+       										    <p:dataExporter type="pdf"  target="tblRegsListCV" fileName="vpisvaneCoachPdf" encoding="windows-1251"  
+                                           		preProcessor="#{mmsCoach.preProcessPDF}"  options="#{mmsCoach.pdfOptions()}" />    
+                                   		</h:commandLink>
+                                   		
+                                         
+                                         <h:commandLink id="csv" rendered="#{mmsCoach.regsListCV.size()>0}">
+                                               <h:graphicImage library="images" name="csv.png" />
+                                               <p:dataExporter type="csv" target="tblRegsListCV" fileName="vpisvaneCoachCsv" encoding="CP1251" 
+                                               	postProcessor="#{mmsCoach.postProcessCSV}" />
+                                         </h:commandLink>
+                                   </div>
+                                </f:facet>	
+                                </ui:remove>								
+									
+									
+								<p:columnGroup type="header">
+									<p:row>
+						                <p:column colspan="2" headerText="" width="5px" />
+						                <p:column colspan="4" headerText="#{labels['mms.zaqv']}" width="105px" style="border: 1px solid #d0d0d0;font-weight:bold;"/>
+						                <p:column colspan="6" headerText="#{labels['mmsCoach.RezVpisv']}" width="195px" style="border: 1px solid #d0d0d0;font-weight:bold;"/>
+						            </p:row>
+						            <p:row>
+					                    <p:column headerText="#{ui_labels['general.No-symbol'] }" style="text-align: center" width="1px"/>
+					                    <p:column headerText="" style="text-align: center" width="4px"/>
+					                    
+					                    <p:column headerText="Вх.№" width="25px" sortBy="#{row.rnDocZaiavlenie}"/>
+					                    <p:column headerText="#{labels['docu.dateDoc']}" width="15px" sortBy="#{row.dateDocZaiavlenie}"/>
+					                    <p:column headerText="#{labels['task.statusData']}" width="60px" sortBy="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_ZAIAVLENIE, row.statusResultZaiavlenie, mmsCoach.currentLang , now)}"/>
+					                    <p:column headerText="Дата статус" width="25px" sortBy="#{row.dateStatusZaiavlenie}"/>
+					                    
+					                    <p:column headerText="#{labels['mmsCoach.rnDocVpisvane']}" width="30px" sortBy="#{row.rnDocLicenz}"/>
+					                    <p:column headerText="#{labels['docu.dateDoc']}" width="15px" sortBy="#{row.dateDocLicenz}"/>
+					                    <p:column headerText="#{labels['task.statusData']}" width="50px" sortBy="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_OBEKT, row.statusVpisvane, mmsCoach.currentLang , now)}"/>
+					                    <p:column headerText="Дата статус" width="20px" sortBy="#{row.dateStatusVpisvane}"/>
+					                    
+					                    <p:column headerText="#{labels['sf.vidSport']}" width="55px" sortBy="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_VIDOVE_SPORT, row.vidSport, mmsCoach.currentLang , now)}"/>
+					                    <p:column headerText="#{labels['docu.accessPosition']}" width="40px" sortBy="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DLAJNOST, row.dlajnost, mmsCoach.currentLang , now)}"/>
+					                </p:row>
+								</p:columnGroup>					
+							  	
+							  	<p:column  exportable="false" style="text-align: center">
+									<h:outputText value="#{idx + 1}" />
+								</p:column>	
+								
+                                <p:column  exportable="false" style="text-align: center" rendered="#{mmsCoach.mmsCoaches.id ne null and viewOnly eq 2}">
+								   <p:commandButton action="mmsVpisvaneEdit.jsf" styleClass="btn-new" ajax="false" icon="fas fa-edit" 
+								   		title="#{ui_labels['general.edit']}" update="tblRegsListCV" >
+								          <f:param name="idReg" value="#{row.id}"/>
+								          <f:param name="idObject" value="#{mmsCoach.mmsCoaches.id}"/>
+								          <f:param name="codeObject" value="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_COACHES}"/>
+								          <f:param name="nameObject" value="#{mmsCoach.referent.refName}"/>
+								          <f:param name="vidDoc" value="#{DocuConstants.CODE_ZNACHENIE_VID_DOC_ZAIAVL_VPISVANE_TREN_KADRI}"/>
+								          <f:param name="regNomer" value="#{mmsCoach.mmsCoaches.regNomer}"/>
+								   </p:commandButton>
+								</p:column>
+								
+								<p:column  exportable="false" style="text-align: center" rendered="#{mmsCoach.mmsCoaches.id ne null and viewOnly eq 1}">																				
+									<p:button icon="fas fa-eye" href="mmsVpisvaneView.xhtml?faces-redirect=true" target="_blank" title="#{ui_labels['general.view']}">
+									   	<f:param name="idReg" value="#{row.id}"/>
+										<f:param name="idObject" value="#{mmsCoach.mmsCoaches.id}"/>
+									   	<f:param name="codeObject" value="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_COACHES}"/>
+									   	<f:param name="nameObject" value="#{mmsCoach.referent.refName}"/>                                
+									    <f:param name="readonly" value="#{viewOnly eq 1}"/>
+									</p:button>
+								</p:column>
+														
+								<p:column >
+									<h:outputText value="#{row.rnDocZaiavlenie}"  />								    
+								</p:column>
+								
+								<p:column >									  
+									<h:outputText value="#{row.dateDocZaiavlenie}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsCoach.timeZone}"/>
+									</h:outputText>							    
+								</p:column>
+
+								<p:column >
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_ZAIAVLENIE, row.statusResultZaiavlenie, mmsCoach.currentLang , now)}"  />								    
+								</p:column>
+								
+								<p:column >									  
+									<h:outputText value="#{row.dateStatusZaiavlenie}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsCoach.timeZone}"/>
+									</h:outputText>							    
+								</p:column>
+								
+								<ui:remove>
+								<p:column width="45" >
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_REASON_STATUS_ZAIAVLENIE, row.reasonResult, mmsCoach.currentLang , now)} #{row.reasonResultText}" />
+									
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_REASON_STATUS_ZAIAVLENIE, row.reasonResult, mmsCoach.currentLang , now)}"  rendered="#{row.reasonResult ne null}"/>								    
+									<h:outputText value="#{row.reasonResultText}"  rendered="#{row.reasonResultText ne null}"/>
+									
+								</p:column>
+								</ui:remove>
+										
+								<p:column >
+								     <h:outputText value="#{row.rnDocVpisvane}" rendered="#{row.rnDocVpisvane != null or !empty row.rnDocVpisvane}" />								    
+									<h:outputText value="#{row.rnDocResult}"  rendered="#{row.rnDocVpisvane == null or empty row.rnDocVpisvane}" />			
+								
+								</p:column>
+			  
+								<p:column >									  
+									<h:outputText value="#{row.dateDocVpisvane}" rendered="#{row.dateDocVpisvane != null}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsCoach.timeZone}"/>
+									</h:outputText>								    
+									<h:outputText value="#{row.dateDocResult}" rendered="#{row.dateDocVpisvane == null}">
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsCoach.timeZone}"/>
+									</h:outputText>						    
+								</p:column>
+								
+								<p:column  >
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_OBEKT, row.statusVpisvane, mmsCoach.currentLang , now)}"  />								    
+								</p:column>
+								
+								<p:column  >									  
+									<h:outputText value="#{row.dateStatusVpisvane}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsCoach.timeZone}"/>
+									</h:outputText>							    
+								</p:column>
+								
+								<ui:remove>
+								<p:column >
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_REASON_STATUS_ZAIAVLENIE, row.reasonVpisvane, mmsCoach.currentLang , now)} #{row.reasonVpisvaneText}"  />								    
+								</p:column>
+								
+								<p:column >
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_REASON_STATUS_ZAIAVLENIE, row.reasonVpisvane, mmsCoach.currentLang , now)}"  rendered="#{row.reasonVpisvane ne null}"/>								    
+									<h:outputText value="#{row.reasonVpisvaneText}"  rendered="#{row.reasonVpisvaneText ne null}"/>
+								</p:column>
+								</ui:remove>
+								
+								<p:column >
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_VIDOVE_SPORT, row.vidSport, mmsCoach.currentLang , now)}"  />								    
+								</p:column>
+								
+								<p:column  >
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DLAJNOST, row.dlajnost, mmsCoach.currentLang , now)}"  />								    
+								</p:column>
+	
+							</p:dataTable>
+						</div>
+					</div>
+					
+					<ui:remove>
+					<div class="p-col-12">
+						<p:commandLink class="extended-search-toggle collapse" onclick="toggleSection(this, '#mmsCoachform:panelPoluchavaneDC')">
+							<h:outputText value="Начин на получаване на резултата от вписването" />
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+					</div>
+
+					<div jsf:id="panelPoluchavaneDC" class="p-grid extended-search ui-fluid" >
+
+							<div class="p-col-12 p-lg-4">
+	                    		<h:outputText value="Начин на получаване" styleClass="form-label "/>
+	                    		<p:inputText id="idPoluchavCV" value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_RECEIVE_METHOD, mmsCoach.lastVpisvane.nachinPoluchavane, mmsCoach.currentLang , now)}"  readonly="true"/>
+	                    	</div>
+							
+							<div class="p-col-12 p-lg-8">
+	                    		<h:outputText value="#{(mmsCoach.lastVpisvane.nachinPoluchavane ne DocuConstants.CODE_ZNACHENIE_POLUCHAVANE_EMAIL or mmsCoach.lastVpisvane.nachinPoluchavane eq null) ? 'Адрес' : 'Email'}" styleClass="form-label "/>
+	                    		<p:inputText  value="#{mmsCoach.lastVpisvane.addrMailPoluchavane}" readonly="true" />
+	                    	</div>
+						
+					</div>
+					</ui:remove>
+					
+					<div class="p-col-12">
+						<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '#mmsCoachform:panelDocsCD')">
+							<h:outputText value="#{labels['transferDeloDoc.doc']}" />
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+					</div>
+			
+					<div jsf:id="panelDocsCD" class="p-grid ui-fluid">
+						<div class="p-col-12 p-lg-12">
+	                   		<div class="table-toolbar">
+								<h:outputText value="#{labels['mmsCoach.brDoc']}: #{mmsCoach.docsListCD.rowCount}" styleClass="form-label"/>	
+									<ui:remove>
+									<span class="fas fa-ellipsis-v SoftGray p-mx-2"/>
+									<p:commandButton  icon="fas fa-edit" value="#{labels['docu.titleNewDoc']}"  oncomplete="PF('docNew').show()"
+										actionListener="#" styleClass="ui-button-success" title="#{labels['docu.newDoc']}"  rendered="#{mmsCoach.mmsCoaches.id ne null and viewOnly eq 2}">
+									</p:commandButton>
+									</ui:remove>
+							</div>
+	                   		<p:dataTable id="tblDocsCD" var="row" value="#{mmsCoach.docsListCD}"   
+								rowIndexVar="idx" sortMode="single" reflow="true" emptyMessage="" styleClass="ui-datatable-gridlines" 
+								paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+								rows="5" rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom"
+								paginatorAlwaysVisible="#{mmsCoach.docsListCD.getRowCount()>5}" paginator="true">										
+								
+								<ui:remove>
+								<f:facet name="{Exporters}">
+									<div style="float: left">
+	                                   <h:commandLink id="excel" rendered="#{mmsCoach.docsListCD.getRowCount()>0}">
+	                                         <h:graphicImage library="images" name="excel2.png" />
+	                                         <p:dataExporter type="xls" target="tblDocsCD" fileName="docsCoachXls" 
+	                                         	postProcessor="#{mmsCoach.postProcessXLS}" />
+	                                   </h:commandLink>
+	                                    
+	                                   <h:commandLink id="pdf">
+	                                         <h:graphicImage library="images" name="pdf.png" rendered="#{mmsCoach.docsListCD.getRowCount()>0}"/>
+	                                         <p:dataExporter type="pdf"  target="tblDocsCD" fileName="docsCoachPdf" encoding="windows-1251" 
+	                                         	preProcessor="#{mmsCoach.preProcessPDF}"  options="#{mmsCoach.pdfOptions()}" />    
+	                             		 </h:commandLink>
+	                              		
+	                                    <h:commandLink id="csv">
+	                                          <h:graphicImage library="images" name="csv.png" rendered="#{mmsCoach.docsListCD.getRowCount()>0}"/>
+	                                          <p:dataExporter type="csv" target="tblDocsCD" fileName="docsCoachCsv" encoding="CP1251" 
+	                                           postProcessor="#{mmsCoach.postProcessCSV}" />
+	                                    </h:commandLink>
+ 	                                </div>		
+                                </f:facet>	
+                                </ui:remove>		
+
+							  	<p:column width="1" exportable="false" headerText="#{ui_labels['general.No-symbol'] }" style="text-align: center">
+									<h:outputText value="#{idx + 1}" />
+								</p:column>	
+
+								<p:column width="65px" exportable="false" style="text-align: center" rendered="#{mmsCoach.mmsCoaches.id ne null}">																				
+
+									<p:button icon="fas fa-eye" href="docView.xhtml?faces-redirect=true" target="_blank" title="#{ui_labels['general.view']}">
+										<f:param name="idObj" value="#{row[4]}" />
+									</p:button>
+									
+									<p:commandButton id="btnPlik" styleClass="ui-button-success"  
+			                          partialSubmit="true" update="mmsCoachform:panelPlik"  title="#{labels['docDatDvij.envPrint']}"
+			                          icon="fas fa-print" actionListener="#{mmsCoach.preparePostCoverNotice(idx)}"
+			                          oncomplete="PF('modalPlik').show(); "
+			                         
+			                          rendered="#{viewOnly ne 1 and mmsCoach.referent.contactEmail ne null }" >	
+			                			<f:param name="idObj" value="#{row[4]}" />
+							          </p:commandButton>
+									
+									
+								</p:column>
+								
+								
+								<p:column width="185px" sortBy="#{row.doc_vid}" headerText="#{labels['docu.vid']}">
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, row[0], mmsCoach.currentLang, now)}"/>					    
+								</p:column>
+								
+																
+								<p:column width="60px" sortBy="#{row.rn_doc}" headerText="#{labels['mmsCoach.regNomCoach']}">
+									<h:outputText value="#{row[1]}"  />								    
+								</p:column>
+								
+								<p:column width="45px"  headerText="Дата рег." sortBy="#{row.doc_date}">									  
+									<h:outputText value="#{row[2]}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsCoach.timeZone}"/>
+									</h:outputText>							    
+								</p:column>
+																
+								<p:column width="100" sortBy="#{row.a8}" headerText="Статус" >
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_ZAIAVLENIE, row[8], mmsCoach.currentLang , now)}" />	
+								</p:column>
+								<p:column width="60"  sortBy="#{row.a9}"  headerText="Дата статус"   >									  
+									<h:outputText value="#{row[9]}"  >	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsCoach.timeZone}"/>
+								    </h:outputText>		
+								</p:column>  			 			    
+								<p:column width="100" sortBy="#{row.a10}" headerText="Вид спорт" >
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_VIDOVE_SPORT, row[10], mmsCoach.currentLang , now)}" />	
+								</p:column>		
+								<p:column width="100" sortBy="#{row.a11}" headerText="Длъжност" >
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DLAJNOST, row[11], mmsCoach.currentLang , now)}" />	
+								</p:column>				
+								
+								<p:column width="295px"  headerText="#{labels['docu.otnosno']}" >
+									<h:outputText value="#{row[3]}"  />								    
+								</p:column>
+								
+								
+								
+							</p:dataTable>
+	                   	</div>
+					</div>
+			<!-- 	</div> --> 
+
+				</div>
+				
+				
+				<p:toolbar id="panelButtonsBottom" rendered="#{viewOnly ne 1 and mmsCoach.mmsCoaches.idObject ne null}" >
+					<f:facet name="left">	
+						<p:commandButton icon="fas fa-save" value="#{ui_labels['general.save']}" rendered="#{viewOnly ne 1 and mmsCoach.mmsCoaches.idObject ne null and (mmsCoach.idSSev eq null or mmsCoach.selOptZajavl eq '2')}"
+							action="#{mmsCoach.actionSave}" id="btnSaveBottom" update="@form"  process="@this mmsCoachform" partialSubmit="true" title="Запис в базата"/>
+						
+						<p:commandButton icon="fas fa-save" value="#{ui_labels['general.save']}" rendered="#{viewOnly ne 1 and mmsCoach.mmsCoaches.idObject ne null and mmsCoach.idSSev ne null and (mmsCoach.selOptZajavl eq '1' or mmsCoach.selOptZajavl eq null)}"  
+							id="btnSaveBottomZ" update="@form"  process="@this mmsCoachform" partialSubmit="true" type="button"
+							onclick="PF('dialogManyUseZajavl').show();" title="Запис в базата с избор"/>	
+							
+						
+							
+					</f:facet>
+					<f:facet name="right">	
+						<p:commandButton icon="fas fa-times"
+							            value="#{ui_labels['general.delete']}" title="Изтриване"
+							           	update="@form" partialSubmit="true" 
+										process="@this mmsCoachform"
+										rendered="#{viewOnly ne 1 and mmsCoach.mmsCoaches.id ne null  and userData.hasAccess(DocuConstants.CODE_CLASSIF_DEF_PRAVA, DocuConstants.CODE_ZNACHENIE_DEF_PRAVA_DEL_MMS_REG)}"	
+										actionListener="#{mmsCoach.actionDelete}" styleClass="ui-button-danger" >
+							<p:confirm header="#{ui_labels['general.comfirmation']}" message="#{beanMessages['general.confirmDeleteMsg']}" icon="fas fa-exclamation-triangle" />
+						</p:commandButton>
+					</f:facet>																		
+				</p:toolbar>
+			</div>
+			
+			<!-- Треньори дипломи -->
+			<h:panelGroup id="diplDC">
+				
+				<p:dialog appendTo="@form" position="top" widgetVar="coachDiplNew" header="#{labels['mmsCoach.inpActDipl']}"
+					fitViewport="true" responsive="true" resizable="true" dynamic="true" 
+					closeOnEscape="true" id="modalDiploma" modal="true">
+	
+					<div class="container #{guestPreferences.containerPosition}">
+						<p:messages id="messDipl" showDetail="true" closable="false" style="width:100%">
+							<p:autoUpdate />
+						</p:messages>
+					
+						<div jsf:id="idNADC" class="p-grid extended-search ui-fluid">	
+						
+							<div class="p-grid">	
+								
+								<div class="p-col-12 p-lg-6" jsf:rendered="#{mmsCoach.maVidDocD.active ?'true':'false'}">
+		                    		<h:outputText value="#{labels['docVidSetting.typeDoc']}" styleClass="#{mmsCoach.maVidDocD.required ?'form-label req':'form-label'}"/>
+		                    		<p:selectOneMenu value="#{mmsCoach.mmsDiplom.vidDoc}" id="idVidObrZenz" disabled="#{viewOnly eq 1}">
+						 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+			                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_VID_DOC_OBR_ZENS, now, mmsCoach.currentLang)}" 
+			                               var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />
+									</p:selectOneMenu>
+		                    	</div>
+						
+								<div class="p-col-12 p-lg-1" jsf:rendered="#{mmsCoach.maRegNomD.active ?'true':'false'}">
+		                    		<h:outputText value="#{labels['mmsCoach.regNomCoach']}" styleClass="#{mmsCoach.maRegNomD.required ?'form-label req':'form-label'}"/>
+		                    		<p:inputText  id="idRND" value="#{mmsCoach.mmsDiplom.regNomer}" readonly="#{viewOnly ne 2}"
+		                    			onkeypress="if(event.keyCode == 13) {event.preventDefault(); $(':focus').blur()}"/>
+		                    	</div>
+								
+								<div class="p-col-12 p-lg-2" jsf:rendered="#{mmsCoach.maSeriaFabrNomD.active ?'true':'false'}">
+		                    		<h:outputText value="#{labels['mmsCoach.serFabrNom']}" styleClass="#{mmsCoach.maSeriaFabrNomD.required ?'form-label req':'form-label'}"/>
+		                    		<p:inputText  id="idSFND" value="#{mmsCoach.mmsDiplom.seriaFnom}" readonly="#{viewOnly ne 2}"
+		                    			onkeypress="if(event.keyCode == 13) {event.preventDefault(); $(':focus').blur()}"/>
+		                    	</div>
+		                    	
+								<div class="p-col-12 p-lg-1" jsf:rendered="#{mmsCoach.maYearIssued.active ?'true':'false'}">
+		                    		<h:outputText value="#{labels['mmsCoach.yearDipl']}" styleClass="#{mmsCoach.maYearIssued.required ?'form-label req':'form-label'}"/>
+		                    		<p:inputNumber id="idYear" value="#{mmsCoach.mmsDiplom.yearIssued}" readonly="#{viewOnly ne 2}" decimalPlaces="0" thousandSeparator=""
+		                    			onkeypress="if(event.keyCode == 13) {event.preventDefault(); $(':focus').blur()}"/>		
+		            		    </div>
+		                    	
+								<div class="p-col-12 p-lg-6" jsf:rendered="#{mmsCoach.maUchZaved.active ?'true':'false'}">
+		                    		<h:outputText value="#{labels['mmsCoach.institutDipl']}" styleClass="#{mmsCoach.maUchZaved.required ?'form-label req':'form-label'}"/>
+									<p:selectOneMenu value="#{mmsCoach.mmsDiplom.uchebnoZavedenie}" id="idUZ" 
+										disabled="#{(mmsCoach.mmsDiplom.uchebZavText ne null and mmsCoach.mmsDiplom.uchebZavText ne '') or viewOnly eq 1}" >
+						 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+			                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_UCHEB_ZAVEDENIE, now, mmsCoach.currentLang)}" 
+			                               var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />
+			                              
+			                            <p:ajax event="change" process="@this modalDiploma" partialSubmit="true" 
+											update="mmsCoachform:idUZt" onstart="PrimeFaces.customFocus=true"/>  
+											 
+									</p:selectOneMenu>
+								</div>
+		
+								<div class="p-col-12 p-lg-6">
+		                    		<h:outputText value="#{labels['mmsCoach.instIzdText']}" styleClass="form-label"/>
+		                    		<p:inputText id="idUZt" value="#{mmsCoach.mmsDiplom.uchebZavText}" readonly="#{viewOnly ne 2}"
+		                    			disabled="#{mmsCoach.mmsDiplom.uchebnoZavedenie ne null}">
+		                    			<p:ajax event="change" process="@this modalDiploma" partialSubmit="true" 
+											update="mmsCoachform:idUZ" onstart="PrimeFaces.customFocus=true"/>
+		                    		</p:inputText>
+		                    	</div>
+	           	
+		                    	<div class="p-col-12 p-lg-12" jsf:rendered="#{mmsCoach.maDopInfoD.active ?'true':'false'}">
+		                    		<h:outputText value="#{labels['docu.dopInfo']}" styleClass="#{mmsCoach.maDopInfoD.required ?'form-label req':'form-label'}"/>
+		                    		<p:inputTextarea id="idDopD" value="#{mmsCoach.mmsDiplom.dopInfo}" readonly="#{viewOnly ne 2}" 
+		                    			onkeypress="if(event.keyCode == 13) {event.preventDefault(); $(':focus').blur()}" rows="2" />
+		                    	</div>
+		
+								<div class="p-col-12 p-lg-2" >
+									<p:commandButton icon="fas fa-save" value="#{mmsCoach.indR == -1  ? labels['mmsCoach.addDipl'] : labels['mmsCoach.changeDipl']}" 
+										id="btnSaveCDipl" actionListener="#{mmsCoach.addDipl}"  update="mmsCoachform:tblCD"  
+										process="@this idNADC" partialSubmit="true"  rendered="#{viewOnly eq 2}"/>
+								</div>
+						
+							</div>
+					
+						</div>	
+					</div>
+				
+				</p:dialog>
+			
+			</h:panelGroup>
+	
+			<!-- Референти - лица Въвеждане/актуализация-->
+			<h:panelGroup id="refCorrDataCoach">	
+		
+				<ui:remove><!-- ако има съобщения за грешка, изведено от модалния, при затваряне - да се скрие съобщението -но скрива и съобщ. за запис..
+					TODO - проверка дали потребителя има право за редакция и въвеждане на нов кореспондент!!!
+						<p:remoteCommand name="cmdHideModalD" process="@this" />
+						onHide="cmdHideModalD()" 	
+				--></ui:remove>
+							
+				<p:dialog appendTo="@form"  closeOnEscape="true" 
+				    header="#{labels['mmsCoach.inpActLice']}"  
+				    fitViewport="true"	
+				    resizable="true"
+				    responsive="true" 
+				    position="top" 		
+					widgetVar="mCorrCNE" dynamic="true" id="modalCorrCI" 
+					modal="true">
+					<div class="container #{guestPreferences.containerPosition}">	
+						
+				 		<ibg:mmsRefCorrespData id="btnRefCorCI"  
+				 			readonly="#{viewOnly eq 1}"
+							codeRef="#{mmsCoach.codeRef}"
+							refType="#{DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL}"
+							searchTxt="#{mmsCoach.txtCorrMCI}" 
+							dateClassif="#{mmsCoach.decodeDate}"
+							modal="true"
+							update="mmsCoachform" 
+							onComplete = "PF('mCorrCNE').hide();document.body.scrollTop = 0; document.documentElement.scrollTop = 0;"/>
+					</div>		
+			 		
+				</p:dialog>	
+			</h:panelGroup>	
+			
+			<!-- Референти - лица Търсене-->
+			<h:panelGroup id="refCorrSearchCoach">	
+	
+				<p:dialog appendTo="@form"  
+					closeOnEscape="true"
+				    header="#{labels['docu.titleExtSrchCoresp']}" 
+				    fitViewport="true"	
+				    responsive="true" 
+				    resizable="true"
+				    position="top"	
+					widgetVar="mCorrCS" 
+					dynamic="true" 
+					id="modalCorrCS" 
+					modal="true">
+					<div class="container #{guestPreferences.containerPosition}">		
+						
+						 	<ibg:refCorrespSearch id="btnRefCorCS" 
+						 		myId="bmCS"
+								codeRef="#{mmsCoach.codeRef}"
+								searchTxt="#{mmsCoach.txtCorrMCI}" 
+								dateClassif="#{mmsCoach.decodeDate}"
+								readonly="#{viewOnly eq 1}"
+								modal="true"
+								update="mmsCoachform" 
+								onComplete = "PF('mCorrCS').hide();"/>
+						
+					</div>
+								
+				</p:dialog>	
+			</h:panelGroup>
+			
+			
+			<p:dialog appendTo="@form" widgetVar="dialog-compRegix" closeOnEscape="true" header="#{labels['regixReport.title']}"
+			          fitViewport="true" responsive="true" resizable="true" positionType="fixed" position="top"
+			          modal="true" dynamic="true">
+	            <div jsf:id="dialogCompRegix" class="container #{guestPreferences.containerPosition}">
+	                  <ibg:compRegixReports modal="true" />
+	            </div>
+			</p:dialog>
+			
+			<p:dialog appendTo="@form" widgetVar="dialog_view_zajavl" closeOnEscape="true" header="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, mmsCoach.egovMess.docVid, mmsCoach.currentLang, now)}" 
+			          fitViewport="true" responsive="true" resizable="true" positionType="fixed" position="top"
+			          modal="true" dynamic="true">
+	            
+	            <div jsf:id="dialogMessZajavl" class="container #{guestPreferences.containerPosition}">
+	                <h:panelGroup id="filetablsect" layout="block" >
+	                	<div class="card">
+		                    <div class="p-grid ui-fluid">
+
+		                        <div class="p-col-12 p-lg-2 ui-fluid">
+	                                 <h:outputText value="#{labels['mmsCoach.vhNomVpisvane']}" styleClass="form-label"/>
+	                                 <p:inputText  value="#{mmsCoach.egovMess.docRn}" id="idRegN" readonly="true"/>
+	                            </div>
+	                            <div class="p-col-12 p-lg-2 ui-fluid">    
+	                                 <h:outputText value="#{labels['audit.actionDate']}" styleClass="form-label"/>
+	                                 <p:inputText value="#{mmsCoach.dateRNV}"  readonly="true">
+			                   			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsCoach.timeZone}"/>
+			                   		</p:inputText>
+			                   	</div>
+			                   	<!--Статус на съобщението-->								
+								<div  class="p-col-12  p-lg-5 ui-fluid">										
+									<h:outputText value="#{labels['docWSStatus.statusMsg']}" styleClass="form-label"/>
+									<p:inputText  value="#{mmsCoach.msgStatusHM.get(mmsCoach.egovMess.msgStatus)}" id="idStatM" readonly="true"/>	
+									
+							  	</div>	
+							  	
+							  	<!--Дата статус-->
+								<div  class="p-col-12 p-lg-2 ui-fluid">
+									<h:outputText value="#{labels['delo.dateStatus']} " styleClass="form-label"/>
+										<p:inputText value="#{mmsCoach.egovMess.msgStatusDate}"  readonly="true">
+				                   			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsCoach.timeZone}"/>
+				                   		</p:inputText>
+								</div>
+		                         
+		                        <!--Вид на съобщението-->
+								<ui:remove>
+								<div  class="p-col-12 p-lg-4 ui-fluid">
+									<h:outputText value="#{labels['docWSStatus.vidMsg']} " styleClass="form-label"/>
+									<p:inputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, mmsCoach.egovMess.docVid, mmsCoach.currentLang, now)}" readonly="true"/>	
+								</div>
+								</ui:remove>
+								
+								<div class="p-col-12 p-lg-2">
+		                             <h:outputText value="Система източник" styleClass="form-label"/>
+		                             <p:inputText  value="#{mmsCoach.egovMess.source}" readonly="true"/>
+		                        </div>
+								
+								<!--Изпратен от-->
+								<div  class="p-col-12 p-lg-4 ui-fluid">
+									<h:outputText value="#{labels['docList.sendFromReg']} " styleClass="form-label"/>
+									<p:inputText value="#{mmsCoach.egovMess.senderName}" readonly="true"/>	
+								</div>
+								
+								<!--Получател-->
+								<div  class="p-col-12 p-lg-4 ui-fluid">
+									<h:outputText value="#{labels['opis.poluch']} " styleClass="form-label"/>
+									<p:inputText value="#{mmsCoach.egovMess.recepientName}" readonly="true"/>	
+								</div> 
+		                         
+		                        
+								
+								<!--Срок-->
+								<ui:remove>
+								<div  class="p-col-12 p-lg-2 ui-fluid">
+									<h:outputText value="#{labels['tasks.srok']} " styleClass="form-label"/>
+									<p:inputText value="#{mmsCoach.egovMess.docSrok}"  readonly="true">
+			                   			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsCoach.timeZone}"/>
+			                   		</p:inputText>
+								</div> 
+								</ui:remove>
+
+		                         <!--Относно-->
+								<div  class="p-col-12 p-lg-12 ui-fluid">
+									<h:outputText value="#{labels['docDoc.otnosno']} " styleClass="form-label"/>
+									<p:inputTextarea  value="#{mmsCoach.egovMess.docSubject}" id="idOtnosnoM" readonly="true"/>	
+								</div>
+								
+								
+								<ui:remove>
+								
+								<div  class="p-col-12 p-lg-12 ui-fluid">
+									<h:outputText value="Физически лица:" styleClass="form-label"/>
+								</div>
+
+								<p:dataTable id="fizLicaList" var="row" value="#{mmsCoach.emcorespList}" styleClass="ui-datatable-gridlines" 
+									rowIndexVar="riv" emptyMessage="" paginatorAlwaysVisible="#{mmsCoach.emcorespList.size()>5}"
+									rows="5" style="margin-bottom:20px" paginator="true" reflow="true"	paginatorPosition="bottom" 
+									paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+							
+									<p:column headerText="№" width="5px" style="text-align: center">
+										<h:outputText value="#{riv + 1}" />
+									</p:column>
+																       	
+							       	<p:column headerText="Имена" width="150px" style="text-align: center;">
+							             <h:outputText value="#{row.ime}" />									             
+							        </p:column>
+									<p:column headerText="ЕГН/ЛНЧ" width="50px" style="text-align: center;">
+							             <h:outputText value="#{row.egn}" />									             
+							        </p:column>
+							        
+							        <p:column headerText="Адрес" width="100px" style="text-align: center;">
+							             <h:outputText value="#{row.adres}" />									             
+							        </p:column>
+							        
+							        <p:column headerText="ПК" width="15px" style="text-align: center;">
+							             <h:outputText value="#{row.pk}" />									             
+							        </p:column>
+							        
+							        <p:column headerText="Имейл" width="100px" style="text-align: center;">
+							             <h:outputText value="#{row.email}" />									             
+							        </p:column>
+							        
+							        <p:column headerText="Телефон" width="60px" style="text-align: center;">
+							             <h:outputText value="#{row.phone}" />									             
+							        </p:column>
+							        
+							        <p:column headerText="Доп.информация" width="200px" style="text-align: center;">
+							             <h:outputText value="#{row.dopInfo}" />									             
+							        </p:column>
+							
+								</p:dataTable>
+								</ui:remove>
+	
+		                     </div>
+                        
+	                
+	                	<div class="table-toolbar">
+							<h:outputText value="Прикачени файлове: " styleClass="form-label"/>
+	                	</div>
+						<p:dataTable id="fileList" var="row" value="#{mmsCoach.egovMessFilesList}" styleClass="ui-datatable-gridlines" 
+							rowIndexVar="riv" emptyMessage="" paginatorAlwaysVisible="#{mmsCoach.egovMessFilesList.size()>5}"
+							rows="5" style="margin-bottom:20px" paginator="true" reflow="true"	paginatorPosition="bottom" 
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+					       	
+					       	<p:column headerText="№" width="4%" >
+								<h:outputText value="#{riv + 1}" />
+							</p:column>
+							<p:column headerText="" width="4%" style="text-align: center;">									           	
+					           <p:commandButton  id="download" ajax="false" actionListener="#{mmsCoach.download(row)}" icon="fa fa-fw fa-download" title="Изтегляне" />
+					       	</p:column>
+					       	<p:column headerText="Наименование на файл" width="44%" style="text-align: center;">
+					             <h:outputText value="#{row.filename}" escape="false" style="width:96%; text-align: left;"/>									             
+					        </p:column>
+					       	<ui:remove>
+					       	<p:column headerText="Guid" width="44%" style="text-align: center;">									   
+					        	<h:outputText value="#{row.guid}" escape="false" style="width:96%; text-align: left;"/>
+					       	</p:column>
+					       	</ui:remove>
+					   </p:dataTable>
+					   
+					   </div>
+					</h:panelGroup>
+					
+				</div>
+			</p:dialog>		
+			
+			
+			<p:dialog appendTo="@form" widgetVar="dialog_cancel_zajavl" closeOnEscape="true" header="Отказ на обработка" 
+			          fitViewport="true" responsive="true" resizable="true" positionType="fixed" position="center"
+			          modal="true" dynamic="true">
+			          	
+			          	<p:messages id="messCancel" showDetail="true" closable="false" style="width:100%">
+							<p:autoUpdate />
+						</p:messages>
+
+	            <div jsf:id="dialogCancelZajavl" class="container #{guestPreferences.containerPosition}">
+	                <h:panelGroup id="cancelPG" layout="block" >
+	                	<div class="card">
+		                    <div class="p-grid ui-fluid">
+		                         <div class="p-col-12 p-lg-12 ui-fluid">
+			                          <h:outputText value="Причина за отказ на обработката на заявлението" styleClass="form-label req"/>
+			                          <p:inputTextarea  value="#{mmsCoach.reasonCancel}" id="idReason" />
+		                         </div>
+		                         
+		                         
+		                         <div class="p-col-12 p-lg-2">
+		                          	<p:commandButton id="btnCancelZajavl2" styleClass="ui-button-success"  value="Потвърди"
+		                                 onmousemove="document.getElementById('mmsCoachform:btnCancelZajavl2').focus();"
+		                                 partialSubmit="true" update="mmsCoachform:panelButtonsTop" 
+		                                 process=" @this mmsCoachform"  
+		                                 action="#{mmsCoach.cancelZajavl()}"  oncomplete="PF('dialog_cancel_zajavl').hide();"
+		                                 title="Потвърдете отказване на обработката на заявление" />
+	                          	</div>
+			                         
+		                    </div>
+		                    
+		                    
+ 
+					   </div>
+					</h:panelGroup>
+					
+				</div>
+			</p:dialog>		
+					
+
+			<h:panelGroup id="panelMail">
+                 <p:dialog appendTo="@form" widgetVar="eMail" closeOnEscape="true" header="Изпращане на съобщение до треньорски кадър" fitViewport="true" responsive="true" 
+                            positionType="fixed" position="top" modal="true" dynamic="true" id="cMail">
+                    
+                  <p:messages id="messagesMail" showDetail="true" closable="false" style="width:100%">	
+               		<p:autoUpdate />
+                  </p:messages>
+                  <ibg:sendMail email="#{mmsCoach.referent.contactEmail}" codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_COACHES}" 
+							readonly="#{viewOnly eq 1}" onComplete="#{mmsCoach.closeModalMail()}" codeSluj="#{mmsCoach.userData.userId}"></ibg:sendMail>
+							     
+                </p:dialog>
+            </h:panelGroup>
+            
+            <!-- модален прозорец за печат на пликове -->
+  			<h:panelGroup id="panelPlik">
+                 <p:dialog appendTo="@form" widgetVar="modalPlik" closeOnEscape="true" header="#{labels['docDatDvij.envPrint']}/#{labels['docData.deliverNotFT']}"
+                 			fitViewport="true" responsive="true" 
+                            positionType="fixed" position="top" modal="true" dynamic="true" id="plik">
+                    
+	                  <p:messages id="messagesPlik" showDetail="true" closable="false" style="width:100%">	
+	               		<p:autoUpdate />
+	                  </p:messages>
+	                  
+					<div jsf:id="dialog-env-print" >
+						<div class="p-grid ui-fluid">
+			            	<p:panel styleClass="margin-bottom" >
+								<div class="p-col-12 p-md-12 p-lg-12">
+									<p:panelGrid style="margin-top:20px" id="pgN">
+										<f:facet name="header">
+								          <p:row>
+								          	<p:column colspan="2" style="font-weight: bold; width: 900px;" >#{labels['docDatDvij.settingPostEnv']}</p:column>
+								          </p:row>
+								        </f:facet>
+										<p:row>
+								            <p:column style="width: 450px;">
+								    			<h:outputText value="#{labels['docDatDvij.postEnvSize']}" styleClass="form-label"/>
+												<p:selectOneMenu id="sizeEnv" value="#{mmsCoach.formatPlik}">
+												     <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_POST_ENVELOPS, now, docDataDvijenia.currentLang)}" 
+												         var="envSize" itemLabel="#{envSize.tekst}" itemValue="#{envSize.code}" />
+											    </p:selectOneMenu>	
+											</p:column>
+				            			</p:row>
+				        			</p:panelGrid>
+								</div>
+							    <div class="p-col-12 p-md-12 p-lg-12">
+									<p:panelGrid id="pgB">
+										<f:facet name="header">
+								             <p:row>
+									            <p:column style="font-weight: bold; width: 450px;" >#{labels['docDatDvij.recipientData']}</p:column>
+									            <p:column style="font-weight: bold; width: 450px;">#{labels['docDatDvij.senderData']}</p:column>
+							            	</p:row>
+								        </f:facet> 
+										<p:row>
+							             	<p:column>
+												<h:outputText value="#{labels['opis.poluch']}" styleClass="form-label req" />
+												<p:inputText id="corName" value="#{mmsCoach.corespName}" /> 
+											</p:column>
+							
+											<p:column>
+												<h:outputText value="#{labels['general.sender']}" styleClass="form-label req" />
+												<p:inputText id="sendName" value="#{mmsCoach.senderName}" /> 
+											</p:column>
+						            	</p:row>
+
+						            	<p:row>
+							             	<p:column>
+												<h:outputText value="#{labels['docDatDvij.adressCoresp']}" styleClass="form-label req" />
+												<p:inputText id="corAdr" value="#{mmsCoach.corespAddress}" />  
+											</p:column>
+							
+											<p:column>
+												<h:outputText value="#{labels['docDatDvij.adressCoresp']}" styleClass="form-label req" />
+												<p:inputText id="sendAdr" value="#{mmsCoach.senderAddress}" /> 
+											</p:column>
+						            	</p:row>
+						            	<p:row>
+							             	<p:column>
+												<h:outputText value="#{labels['global.oblast']}" styleClass="form-label req" rendered="#{null eq DataDvijenia.adr.addrCountry or DataDvijenia.adr.addrCountry eq mmsCoach.countryBg}"/>
+												<p:inputText id="corObl" value="#{mmsCoach.corespObl}" rendered="#{null eq DataDvijenia.adr.addrCountry or DataDvijenia.adr.addrCountry eq docDataDvijenia.countryBg}"/> 
+											</p:column>
+							
+											<p:column>
+												<h:outputText value="#{labels['global.oblast']}" styleClass="form-label req" rendered="#{null eq DataDvijenia.adr.addrCountry or docDataDvijenia.adr.addrCountry eq mmsCoach.countryBg}"/>
+												<p:inputText id="sendObl" value="#{mmsCoach.senderObl}" rendered="#{null eq DataDvijenia.adr.addrCountry or DataDvijenia.adr.addrCountry eq mmsCoach.countryBg}"/>  
+											</p:column>
+						            	</p:row>
+			            	
+						            	<p:row>
+							             	<p:column>
+												<h:outputText value="#{labels['global.postCode']}" styleClass="form-label req" rendered="#{null eq DataDvijenia.adr.addrCountry or mmsCoach.adr.addrCountry eq mmsCoach.countryBg}"/>
+												<p:inputText id="corPC" value="#{mmsCoach.corespPostCode}" rendered="#{null eq DataDvijenia.adr.addrCountry or mmsCoach.adr.addrCountry eq mmsCoach.countryBg}"/>
+											</p:column>
+							
+											<p:column>
+												<h:outputText value="#{labels['global.postCode']}" styleClass="form-label req" rendered="#{null eq DataDvijenia.adr.addrCountry or mmsCoach.adr.addrCountry eq mmsCoach.countryBg}"/>
+												<p:inputText id="sendPC" value="#{mmsCoach.senderPostCode}" rendered="#{null eq DataDvijenia.adr.addrCountry or mmsCoach.adr.addrCountry eq mmsCoach.countryBg}"/>   
+											</p:column>
+						            	</p:row>
+			            	
+						            	<p:row>
+							             	<p:column>
+												<h:outputText value="#{labels['global.nasMesto']}" styleClass="form-label req" />
+												<p:inputText id="corNM" value="#{mmsCoach.corespNM}" /> 
+											</p:column>
+							
+											<p:column>
+												<h:outputText value="#{labels['global.nasMesto']}" styleClass="form-label req" />
+											<p:inputText id="sendNM" value="#{mmsCoach.senderNM}" />  
+											</p:column>
+						            	</p:row>
+			            	
+						            	<p:row>
+							             	<p:column>
+												<h:outputText value="#{labels['global.country']}" styleClass="form-label" rendered="#{null ne DataDvijenia.adr.addrCountry and mmsCoach.adr.addrCountry ne mmsCoach.countryBg}"/>
+												<p:inputText id="corCountr" value="#{mmsCoach.corespCountry}" rendered="#{null ne DataDvijenia.adr.addrCountry and mmsCoach.adr.addrCountry ne mmsCoach.countryBg}"/>
+											</p:column>
+							
+											<p:column>
+												<h:outputText value="#{labels['global.country']}" styleClass="form-label" rendered="#{null ne DataDvijenia.adr.addrCountry and mmsCoach.adr.addrCountry ne mmsCoach.countryBg}"/>
+												<p:inputText id="sendCountr" value="#{mmsCoach.senderCountry}" rendered="#{null ne DataDvijenia.adr.addrCountry and mmsCoach.adr.addrCountry ne mmsCoach.countryBg}"/> 
+											</p:column>
+						            	</p:row>
+			            	
+						            	<p:row>
+							             	<p:column>
+												<h:outputText value="#{labels['admStruct.telefon']}" styleClass="form-label" />
+												<p:inputText id="corTel" value="#{mmsCoach.corespTel}" />
+											</p:column>
+							
+											<p:column >
+												<h:outputText value="#{labels['admStruct.telefon']}" styleClass="form-label" />
+												<p:inputText id="sendTel" value="#{mmsCoach.senderTel}" />   
+											</p:column>
+						            	</p:row>
+								
+									</p:panelGrid>
+								</div>
+								<div align="center">
+									<p:commandButton id="btnForEnvPrint" value="#{labels['docDatDvij.envPrintShort']}" 
+										title="#{labels['docDatDvij.envPrint']}"  tabindex="-1" 
+										action="#{mmsCoach.actionPrint(1)}" styleClass="ui-button-info" 
+										icon="fas fa-print table-icon" ajax="false"	style="width:150px"	
+									    partialSubmit="true" process="@this"/>
+									<span style="padding-right: 15px;"/>
+									
+									<p:commandButton id="btnForObrRazp" value="#{labels['docData.deliverNotice']}" 
+										title="#{labels['docData.deliverNotFT']}"  tabindex="-1" 
+										action="#{mmsCoach.actionPrint(2)}" styleClass="ui-button-info" 
+										icon="fas fa-envelope-open" ajax="false" style="width:150px"	
+									    partialSubmit="true" process="@this"/>
+									    
+								</div>	    
+				    							
+								
+
+							</p:panel>
+			     		</div>
+					</div>			
+	                  
+	  			</p:dialog>
+  			</h:panelGroup>
+            
+            
+            
+            <p:dialog appendTo="@form" widgetVar="dialogManyUseZajavl" closeOnEscape="true" header="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, mmsCoach.egovMess.docVid, mmsCoach.currentLang, now)}" 
+			          fitViewport="true" responsive="true" resizable="false" positionType="absolute" position="center" 
+			          modal="true" width="700px" blockScroll="false" minimizable="true" >
+			          
+			          	
+			          	
+			          	<p:messages id="messManyUse" showDetail="true" closable="false" style="width:100%">
+							<p:autoUpdate />
+						</p:messages>
+
+	            <div jsf:id="dialogManyCoaches" class="container #{guestPreferences.containerPosition}">
+	            	<div class="card">
+		            	<p:panelGrid columns="2" id="manyCPG" style="text-align: center;" >
+					        <f:facet name="header">
+					            <h:outputText value="За избраното заявление ще се обработват ли други треньорски кадри?" styleClass="form-label"/>
+					        </f:facet>
+					
+					        <p:commandButton id="btnUseManyCoachesN" value="Не" 
+							        	icon="fas fa-save"
+							        	partialSubmit="true" update="mmsCoachform" 
+		                                process=" @this mmsCoachform"  
+		                                action="#{mmsCoach.selectOneManyCoaches('2')}" 
+		                                onComplete = "PF('dialogManyUseZajavl').hide();"/>
+		
+					        <p:commandButton id="btnUseManyCoachesY" value="Да"  icon="fas fa-save"
+							        	styleClass="ui-button-danger" 
+							        	partialSubmit="true" update="mmsCoachform" 
+		                                process="@this mmsCoachform"  
+		                                action="#{mmsCoach.selectOneManyCoaches('1')}" 
+		                                onComplete = "PF('dialogManyUseZajavl').hide();"/>
+		
+					    </p:panelGrid>
+				    </div>
+	            
+	            	
+					
+				</div>
+			</p:dialog>		
+			
+
+		</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

@@ -1,0 +1,305 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:ibg="http://java.sun.com/jsf/composite/ibg">
+
+
+<cc:interface componentType="compMMSFileUpload">
+	 <cc:attribute name="listObj" 		 type="java.util.List" shortDescription="Списък с файловете" required="true"/>
+	 <cc:attribute name="listDelObj" 	 type="java.util.List" shortDescription="Списък с изтритите файловете"/>
+	 <cc:attribute name="idObj" 		 type="java.lang.Integer" shortDescription="ID на обекта, към който се прикача файла" required="true" />
+	 <cc:attribute name="codeObj" 		 type="java.lang.Integer" shortDescription="Код на обекта, към който се прикача файла" required="true" />
+	 <cc:attribute name="view" 			 type="java.lang.Boolean" shortDescription="Дали е само за разглеждане на файлове" default="false" />
+	 <cc:attribute name="hideDel" 		 type="java.lang.Boolean" shortDescription="Дали да скрива бутона за изтриване; по подразбиране: false" default="false" />
+	 <cc:attribute name="saveFirst" 	 type="java.lang.Boolean" shortDescription="Дали да забрани бутона за upload, ако осн. обект не е записан; по подразбиране: true" default="true" />
+	 <cc:attribute name="autoSave"		 type="java.lang.Boolean" shortDescription="true - записва файловете автоматично, по подразбиране: false" default="false"/>
+	 <cc:attribute name="header"		 type="java.lang.Boolean" shortDescription="true - да се вижда ли антетката на тaблицата с файлове" default="false"/>	
+     <cc:attribute name="headerLabel"	 type="java.lang.String"  shortDescription="Наименованието на панела. По подразбиране: Файлове" default="#{ui_labels['general.files']}"/>
+     <cc:attribute name="btnLabel"	     type="java.lang.String"  shortDescription="Наименованието на бутона за добавяне на файл По подразбиране: Нов файл" default="#{ui_labels['files.new']}"/>
+     <cc:attribute name="showTitle"		 type="java.lang.Boolean" shortDescription="true - да има възможност за скриване на тайтъла на компонентата;" default="true"/>
+     <cc:attribute name="showBtnNew"	 type="java.lang.Boolean" shortDescription="true - да се вижда бутона за нов файл. На Деси ѝ трябва в определени ситуации да забранява въвеждане на повече от 1 файл;" default="true"/>	 
+	 <cc:attribute name="onComplete"   	 type="java.lang.String"   shortDescription="Изпълнява функция при връщане на резултата - подава се името на функцията" />	
+	 <cc:attribute name="showUserUpload" type="java.lang.Boolean"  shortDescription="Да показва ли подробности за потребителя, прикачил файла" default="false"/>	 
+	 <cc:attribute name="additionalAction"   	 type="java.lang.String"   shortDescription="Изпълнява функция (от бийна, от който се вика компонентата) при натискане на бутон за допълнително действие" />
+	 <cc:attribute name="additionalBtnValue"   	 type="java.lang.String"   shortDescription="Value на бутона за допълнително действие" default="null" />
+	 <cc:attribute name="additionalBtnTitle"   	 type="java.lang.String"   shortDescription="Title на бутона за допълнително действие" />
+	 <cc:attribute name="additionalBtnIcon"   	 type="java.lang.String"   shortDescription="Icon на бутона за допълнително действие" />
+	
+	 <cc:attribute name="rename"		 		 type="java.lang.Boolean"   shortDescription="Да позволява преименуване на файла (не разрешава да се сменя разширението)" default="false"/>
+</cc:interface>
+
+<cc:implementation>
+
+	<style>
+		.list-container {
+			display: flex;
+    		flex-wrap: wrap;
+		}
+		
+		.file-list {
+			background-color: #ffffff;
+			border: 1px solid #dddddd;
+			width: 220px;
+			height: 55px;
+			margin: 5px;
+			display: flex;
+			flex-wrap: nowrap;
+			align-items: stretch;
+			border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+			box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+		}
+		
+		.file-list .file-details {
+			width: 200px;
+			padding: 4px 2px 4px 4px;
+    		font-size: 0.9em;
+    		position: relative;
+    		height: 100%;
+    		overflow: hidden;
+		}
+		
+		.file-list .file-details .file-icon {
+			position: absolute;
+			top: 4px;
+			right: 2px;
+			font-size: 2rem;
+			opacity: 0.15;			
+		}
+		
+		.file-list .filename {
+			word-break: break-all;			
+		}
+		
+		.file-list .file-options {
+			width: 20px;
+			background-color: #f1f1f1;
+			transition: background-color 0.05 ease-in;
+		}
+		
+		.file-list:hover .file-options {
+			background-color: #e6e6e6;
+		}
+		
+		.file-list .file-options a {
+			display: block;
+			width: 100%;
+			height: 100%;
+			line-height: 48px;
+			text-align: center;
+    		border-left: 1px solid #ddd;
+		}
+	</style>
+	
+	<f:event type="preRenderComponent" listener="#{cc.initRenderComp()}" /> 
+	<p:tooltip escape="false" hideEvent="mouseout click"/>
+	
+	
+	<h:panelGroup layout="block">
+	
+	<div class="p-grid" jsf:id="fileControlPanel">
+		<div class="p-col-12" jsf:rendered="#{cc.attrs.showTitle or !cc.attrs.view}">
+			<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '##{cc.clientId}:files-tbl')" rendered="#{cc.attrs.showTitle}">
+				<h:outputText value="#{cc.attrs.headerLabel}" />
+				<i class="fa fa-fw fa-caret-right"></i>
+			</p:commandLink>
+		
+			<p:fileUpload  id="uplF" rendered="#{!cc.attrs.view and cc.attrs.showBtnNew}" 
+				listener="#{cc.listenerPrime}"   
+				disabled="#{cc.attrs.saveFirst}" 
+				mode="advanced" 
+				dragDropSupport="#{cc.attrs.dragDropSupport}"
+			    multiple="false"  sequential="true" 
+				update="#{cc.clientId}:files-tbl  #{cc.clientId}:pAddition #{cc.clientId}:fileControlPanel" 
+				auto="true" 
+				label="#{cc.attrs.btnLabel}"/>
+			
+			
+			<ui:remove> 
+			<!-- 
+			<p:button onclick="PF('scannerModalDs').show(); return;" icon="fas fa-print" value="#{ui_labels['general.scanner']}" styleClass="ui-button-success" rendered="#{cc.attrs.showScanner}" disabled="#{cc.attrs.idObj == null}"></p:button>
+			
+			 -->
+			 </ui:remove>
+			<p:button onclick="PF('scannerModalIB').show(); return;" icon="fas fa-print" value="#{ui_labels['general.scanner']}" styleClass="ui-button-success p-mr-2" rendered="#{cc.attrs.showScanner}" disabled="#{cc.attrs.idObj == null}"></p:button>
+			
+			<p:commandButton icon="far fa-clone"  rendered="#{cc.attrs.showCompareBtn}"	
+				value="#{ui_labels['fileUpload.compare']}" disabled="#{cc.fileId1 eq null or cc.fileId2 eq null}"
+				id="btnCmp"
+				partialSubmit="true"
+				process="#{cc.clientId}:files-tbl @this"
+				update="#{cc.clientId}:files-tbl cmpareMsgD" 
+				title="#{ui_labels['fileUpload.compareSelected']}" 
+				action="#{cc.actionCompare2Files}"
+				oncomplete="PF('compareMsg').show();" styleClass="p-mr-2"/>
+				
+		
+			<ui:remove><!-- бутон за някакво допълнително действие - например нотификация, че са добавени файлове. Цялото действие се извършва в бейна, от където се вика компонентата!!
+							показва се само, ако в additionalBtnValue има подадено нещо!   
+			--></ui:remove>
+			<h:panelGroup id="pAddition">
+			<p:commandButton icon="#{cc.attrs.additionalBtnIcon}"  
+			    rendered="#{cc.attrs.additionalBtnValue ne null and cc.attrs.additionalBtnValue ne 'null'  and !cc.attrs.view and  cc.attrs.idObj ne null and cc.lstObjTmp.size() gt 0}"	
+				value="#{cc.attrs.additionalBtnValue}" 
+				id="btnAdditionl"
+				partialSubmit="true"
+				process="@this"
+				update="@this" 
+				title="#{cc.attrs.additionalBtnTitle}" 
+				action="#{cc.actionAdditional}"
+				styleClass="p-mr-2"/>
+			</h:panelGroup>
+	
+		</div>
+		<div class="p-col-12" jsf:rendered="#{cc.attrs.showFileUpload and cc.attrs.view}">
+			<p:fileUpload  id="uplF2" 
+				listener="#{cc.listenerPrime}"   
+				disabled="#{cc.attrs.saveFirst}" 
+				mode="advanced" 
+				dragDropSupport="#{cc.attrs.dragDropSupport}"
+			    multiple="true"  sequential="true" 
+				update="#{cc.clientId}:files-tbl" 
+				auto="true" 
+				label="#{cc.attrs.btnLabel}"/>
+				
+			
+		</div>
+	</div>
+	<div class="p-grid">	 
+		<h:panelGroup id="files-tbl" layout="block" class="p-col-12 p-nogutter">
+			
+
+			<h:panelGroup id="file-table" layout="block">
+				<h:panelGroup rendered="#{cc.lstObjTmp.size()>0}" id="file-table1" layout="block">
+					<div id="filesTbl" class="p-grid">
+						<h:panelGroup rendered="#{cc.attrs.header}">
+							<div class="p-col-6 p-sm-6 p-md-6 p-lg-2" >	 
+								<h:outputText value="#{ui_labels['general.No-symbol']}" styleClass="form-label" />	
+							</div>	
+										
+							<div class="p-col-6 p-sm-6 p-md-6 p-lg-2">
+								<h:outputText value="#{ui_labels['general.filename']}" styleClass="form-label" />	
+							</div>	
+							
+										
+							<div class="p-col-6 p-sm-6 p-md-6 p-lg-2">
+								<h:outputText value="#{labels['refCorr.nameUL']}" styleClass="form-label" />	
+							</div>	
+							
+										
+							<div class="p-col-12 p-sm-12 p-md-12 p-lg-5">
+								<h:outputText value="#{ui_labels['files.typeDocFile']}" styleClass="form-label" />	
+							</div>	
+							
+										
+							<div class="p-col-6 p-sm-6 p-md-6 p-lg-1">
+								
+							</div>	
+							
+						</h:panelGroup>
+						<div  class="p-col-12 " style="max-height: 200px;  overflow: auto;">	
+						
+							<p:repeat varStatus="rkv" value="#{cc.lstObjTmp}" var="file" id="fileList" >
+								
+								<div class="p-grid">
+									<div class="p-col-6 p-sm-6 p-md-6 p-lg-2" >	  
+										<h:outputText value="#{rkv.index + 1}" />	
+         								<p:spacer width="30"/>
+										<p:commandButton action="#{cc.download(file)}" id="btnDown"  ajax="false"
+											  			 title="#{ui_labels['general.download']}" styleClass="btn-normal"
+											  			 icon="fa fa-fw fa-download"  />
+											  			 
+									<p:spacer width="10"/>
+									<p:commandButton icon="fas fa-edit" rendered="#{!cc.attrs.view}"
+									
+										actionListener="#{cc.setFileForDopInfo(file)}"
+										partialSubmit="true" process="@this" update="#{cc.clientId}:modalDetailsId"
+										
+										oncomplete = "PF('modalDetails').show();"/>	
+									
+									</div>
+									<div class="p-col-6 p-sm-6 p-md-6 p-lg-2" align="left" >
+										<h:outputText value="#{file.filename}"  />
+									</div>
+									
+									<div class="p-col-6 p-sm-6 p-md-6 p-lg-2" align="left">
+										<h:outputText value="#{file.fileInfo}"  />
+									</div>
+									
+									<div class="p-col-12 p-sm-12 p-md-12 p-lg-5" align="left">															 
+										<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID_ATTACH, file.fileType, cc.lang, now)}" />
+									</div>
+									
+									<div class="p-col-6 p-sm-6 p-md-6 p-lg-1" >
+										<p:commandButton icon="fa fa-fw fa-times"  id="btnRemoveF"
+											rendered="#{!(cc.attrs.view or cc.attrs.hideDel)}" 
+											update="#{cc.clientId}:file-table #{cc.clientId}:fileControlPanel" partialSubmit="true"
+											process="#{cc.clientId}:file-table @this"									
+											actionListener="#{cc.actionDelete(file)}" styleClass="btn-delete" title="#{ui_labels['general.delete']}">
+									
+											<p:confirm header="#{ui_labels['general.comfirmation']}" escape="false"
+											 	message="#{ui_labels['files.confirmDelete']}" icon="ui-icon-alert"/>
+											 		
+										</p:commandButton>
+										
+									</div>
+													
+								</div>
+									
+							</p:repeat>
+						</div>
+				
+					</div>		
+				</h:panelGroup>	
+			</h:panelGroup>
+
+		</h:panelGroup>
+		
+	</div>
+						  
+	
+	</h:panelGroup>
+
+<h:panelGroup id="modalDetailsId" >
+	<p:dialog appendTo="@form" width="650px"
+	    header="#{ui_labels['fileUpload.detaili']}" 
+	    fitViewport="true" closeOnEscape="true"
+	    style="margin-top:50px !important"
+		widgetVar="modalDetails" dynamic="true" id="modalDetailsId1" 
+		modal="true"  >	
+		 
+		 
+		<div class="p-grid  ui-fluid">	
+		
+			<div class=" p-col-12">
+				<h:outputText value="#{labels['refCorr.nameUL']} "	styleClass="form-label" />
+					<p:inputText value="#{cc.fileSelect.fileInfo}" id="info_file" />
+			</div>	
+					
+			<div class=" p-col-12">
+				<h:outputText value="#{ui_labels['files.typeDocFile']}"	styleClass="form-label" />
+					<p:selectOneMenu id="type_file" value="#{cc.fileSelect.fileType}"  disabled="#{cc.attrs.view}">
+						<f:selectItem value="#{null}" itemValue="#{null}"/>
+						<f:selectItems value="#{cc.typeList}" var="item" itemLabel="#{item.tekst}" itemValue="#{item.code}" />
+					</p:selectOneMenu>	
+			</div>
+		
+			
+			
+		</div>
+		<f:facet name="footer">		
+			<p:commandButton value="#{ui_labels['general.save']}" icon="fas fa-save" id="btmSaveDetail" rendered="#{!cc.attrs.view}"
+				partialSubmit="true" actionListener="#{cc.actionDopInfo}"
+				process=" @this type_file info_file"  oncomplete = "PF('modalDetails').hide();" update="#{cc.clientId}:files-tbl">
+			</p:commandButton>
+		</f:facet>
+	</p:dialog>	 
+</h:panelGroup>
+
+	
+</cc:implementation>
+ </html>

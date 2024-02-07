@@ -1,0 +1,994 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:jsf="http://xmlns.jcp.org/jsf"
+	  xmlns:ibg="http://java.sun.com/jsf/composite/components"> 
+	
+	
+	
+<h:form id="sportObedForm" >
+		
+		
+	<div class="card">	
+	<h:panelGroup id="mainPanel" >
+	 
+	 	
+			<p:toolbar id="tbtnPanel1t"	styleClass="margin-bottom">
+				<f:facet name="left">									
+					<p:commandButton icon="fas fa-save" value="#{ui_labels['general.save']}"
+									 rendered="#{isView eq null}" id="btnSave"
+									 partialSubmit="true" 
+									 update="@form"
+									 process="@this sportObedForm "  
+									 actionListener="#{sportObedEdit.actionSave}"
+									 title="Запис" >
+					</p:commandButton>
+					
+					<p:spacer width="20px"></p:spacer>
+					<h:panelGroup rendered="#{sportObedEdit.sportObed.id ne null}">   
+					       <ibg:compMMSAddFields idObj="#{sportObedEdit.sportObed.id}" codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORT_OBED}" readonly="#{isView == 1}"/>
+					 </h:panelGroup>  	
+					 <p:spacer width="20px"></p:spacer>
+						<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, sportObedEdit.vidDoc, sportObedEdit.currentLang, now)}:" rendered="#{sportObedEdit.vidDoc ne null}" styleClass="form-label"/>
+						<p:spacer width="5px"></p:spacer>
+						<h:outputText value="Вх.№: #{sportObedEdit.regNom}" rendered="#{sportObedEdit.regNom ne null}" styleClass="form-label"/> 
+						<p:spacer width="10px"></p:spacer>
+						<h:outputText value="#{labels['mmsCoach.datReg']}: " styleClass="form-label" rendered="#{sportObedEdit.dataDoc ne null}"/>
+                   		<p:spacer width="5px"></p:spacer>
+                   		<h:outputText value="#{sportObedEdit.dateRNV}" rendered="#{sportObedEdit.dateRNV ne null}" styleClass="form-label" >
+                   			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+                   		</h:outputText>
+                   		
+					 
+			</f:facet>
+			 <f:facet name="right">	
+			 	
+			 	<p:commandButton value="Разглеждане на заявление" rendered="#{sportObedEdit.idSSev ne null}"
+					      partialSubmit="true" process="@this" id="btnViewZajavlenie" 
+					      oncomplete="PF('dialogZaqvlenie11').show();" update="sportObedForm:dialogZaqvlenieFiles"
+					      title="Разглеждане на заявление" />
+				
+				<p:spacer width="20px"></p:spacer>
+			 	
+		 
+				<p:commandButton value="Отказ обработка" rendered="#{sportObedEdit.idSSev ne null}"
+					      partialSubmit="true" id="btnOtkazZaqvl" styleClass="ui-button-success" 
+					      oncomplete="PF('otkazReg').show();" update="sportObedForm:panelOtkaz"
+					      process="sportObedForm:btnOtkazZaqvl @this"
+					      title="Отказ на обработка" />
+					       
+										
+				<p:spacer width="20px" rendered="#{sportObedEdit.sportObed.id ne null and sportObedEdit.idSSev ne null}"></p:spacer>	
+				
+			 	<p:commandButton id="btnMail" styleClass="ui-button-success"  value="#{labels['dvijenie.email']}"
+										onmousemove="document.getElementById('sportObedForm:btnMail').focus();"
+										partialSubmit="true" update="sportObedForm:panelMail"
+										process="sportObedForm:btnMail @this"
+										oncomplete="PF('eMail').show(); " rendered="#{sportObedEdit.sportObed.id ne null or sportObedEdit.idSSev ne null}"
+										title="Изпращане на е-мейл до обединение" 
+										
+										/>
+				<p:spacer width="20px" rendered="#{sportObedEdit.sportObed.id ne null}"></p:spacer>	
+				 <p:commandButton value="#{labels['regixReport.title']}"
+				      partialSubmit="true" process="@this"
+				      oncomplete="PF('dialog-compRegix').show();" update="sportObedForm:dialogCompRegix"
+				      title="#{labels['regixReport.title']}" />
+			      
+				<p:spacer width="20px" rendered="#{isView eq null and sportObedEdit.sportObed.id ne null and userData.hasAccess(DocuConstants.CODE_CLASSIF_DEF_PRAVA, DocuConstants.CODE_ZNACHENIE_DEF_PRAVA_DEL_MMS_REG)}"></p:spacer>
+						 					
+				<p:commandButton icon="fas fa-times"
+					            value="#{ui_labels['general.delete']}" title="Изтриване"
+					           	update="@form" partialSubmit="true" 
+								process="@this"
+								rendered="#{isView eq null and sportObedEdit.sportObed.id ne null and userData.hasAccess(DocuConstants.CODE_CLASSIF_DEF_PRAVA, DocuConstants.CODE_ZNACHENIE_DEF_PRAVA_DEL_MMS_REG) and sportObedEdit.regsList.size()==0}"											
+								actionListener="#{sportObedEdit.actionDelete}" styleClass="ui-button-danger" >
+					<p:confirm header="#{ui_labels['general.comfirmation']}" message="Моля, потвърдете изтриването на обединението!" icon="fas fa-exclamation-triangle" />
+				</p:commandButton>
+			</f:facet>
+		</p:toolbar>
+	
+		
+			
+			
+			<h:panelGroup id="panelMainData"  >		
+				 
+				 <div class="p-col-12">
+					<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '#sportObedForm:mainData')">
+						<h:outputText value="#{labels['procDefEdit.basicData']}" />
+						<i class="fas fa-caret-right"></i>
+					</p:commandLink>
+				</div>
+
+				<div jsf:id="mainData" class="p-grid extended-search ui-fluid">
+				 
+				<div id="delo-regdata" class="p-grid"  >
+				
+					<div class="p-col-12 p-sm-12 p-md-12 p-lg-5 p-xl-5 ui-fluid" jsf:rendered="#{sportObedEdit.sd.model.getAttrSpec('nfl_eik', 'sport_obedinenie', sportObedEdit.currentLang, null).active}"> 
+							 	
+							<h:outputText value="Наименование/ЕИК"
+								styleClass="form-label #{sportObedEdit.sd.model.getAttrSpec('nfl_eik', 'sport_obedinenie', sportObedEdit.currentLang, null).required?'req':''}" />
+								
+							<div class="selectModalA-with-buttons">
+								<h:panelGroup id="refCorrInp" layout="block" styleClass="koresp-input">
+									 
+								
+								<ibg:mmsSelectReferents id="findCoresp"  
+										readonly="#{isView eq 1 or (sportObedEdit.sportObed.idObject!=null and sportObedEdit.sportObed.id!=null)}"
+										update="sportObedForm"
+										typeSearch="EIK"
+										dateClassif="#{sportObedEdit.decodeDate}"
+										corespCompCommand="PF('mCorrD').show();"
+										onComplete="#{sportObedEdit.actionCheckExistEik()}"	
+										selectedCode="#{sportObedEdit.sportObed.idObject}"
+										searchWord="#{sportObedEdit.txtCorresp}"/>
+								</h:panelGroup>
+								<div jsf:id="refCorr">
+									<ui:remove>	<!--  Корекция на данни на кореспондент	--></ui:remove>
+									<p:commandButton id="btnCorrD"
+										rendered="#{sportObedEdit.sportObed.idObject ne null}"
+										icon="#{(isView ne 1) ? 'fas fa-edit' : 'fas fa-eye'}" partialSubmit="true"
+										process="sportObedForm:dpCorrData @this"
+										update="sportObedForm:dpCorrData"
+										oncomplete="PF('mCorrD').show(); "
+										title="Актуализация на юридическо лице"/>
+	
+									<ui:remove><!--  Разширено търсене на кореспондент --></ui:remove>
+									<p:commandButton id="btnCorrS"
+										onmousemove="document.getElementById('sportObedForm:btnCorrS').focus();"
+										rendered="#{isView ne 1 and sportObedEdit.sportObed.idObject eq null and sportObedEdit.sportObed.id==null}"
+										icon="fas fa-list-ul" partialSubmit="true"
+										process="sportObedForm:dpCorrSearch @this"
+										update="sportObedForm:dpCorrSearch"
+										oncomplete="PF('mCorrS').show(); "
+										title="#{labels['search.extendRef']}" />
+	
+									<ui:remove>	<!--  Нов кореспондент	-->
+									<p:commandButton id="btnCorrN"
+										onmousemove="document.getElementById('sportObedForm:btnCorrN').focus();"
+										rendered="#{isView ne 1 and sportObedEdit.sportObed.idObject eq null}"
+										icon="fas fa-plus" partialSubmit="true" 
+										process="sportObedForm:dpCorrData @this"
+										update="sportObedForm:dpCorrData"
+										oncomplete="PF('mCorrD').show();"
+										title="#{labels['docu.refCorrNew']}" /></ui:remove>
+								</div>
+							</div>
+
+											
+				    </div>
+					<div class="p-col-12 p-sm-12 p-md-12 p-lg-5 p-xl-5 ui-fluid">
+                   		<h:outputText value="#{ui_labels['general.adres']} за кореспонденция" styleClass="form-label "/>
+                   		<p:inputText  value="#{sportObedEdit.dopInfoAdres}" readonly="true" id="adressCor" />
+                   	</div>
+					<div class="p-col-12 p-sm-6 p-md-1 p-lg-1 p-xl-1 ui-fluid " jsf:rendered="#{sportObedEdit.sd.model.getAttrSpec('type_sport', 'sport_obedinenie', sportObedEdit.currentLang, null).active}"> 	
+						<h:outputText value="Олимпийски" styleClass="form-label"/>
+						<div class="ui-inputgroup"> 	
+                   			<p:selectBooleanCheckbox value="#{sportObedEdit.sportObed.typeSportBool}" id="olimpTypeSport" readonly="true" style="min-width: 30px; height: 30px;" disabled="true"></p:selectBooleanCheckbox>
+						</div>			
+			      	</div>
+					<div class="p-col-12 p-sm-6 p-md-1 p-lg-1 p-xl-1 ui-fluid " jsf:rendered="#{sportObedEdit.sd.model.getAttrSpec('type_sport', 'sport_obedinenie', sportObedEdit.currentLang, null).active}"> 	
+						<h:outputText value="Военно прил." styleClass="form-label"/>
+						<div class="ui-inputgroup"> 	
+                   			<p:selectBooleanCheckbox value="#{sportObedEdit.sportObed.voenenSportBool}" id="voenenTypeSport" readonly="true" style="min-width: 30px; height: 30px;" disabled="true"></p:selectBooleanCheckbox>
+						</div>			
+			      	</div>
+				
+				
+					<div class="p-col-12 p-sm-6 p-md-4 p-lg-3 p-xl-2 ui-fluid " jsf:rendered="#{sportObedEdit.sd.model.getAttrSpec('vid', 'sport_obedinenie', sportObedEdit.currentLang, null).active}"> 	
+						<h:outputText value="Вид обединение" styleClass="form-label #{sportObedEdit.sd.model.getAttrSpec('vid', 'sport_obedinenie', sportObedEdit.currentLang, null).required?'req':''}" />
+						<div class="ui-inputgroup"> 
+							<p:selectOneMenu value="#{sportObedEdit.sportObed.vid}" id="vid" readonly="#{isView eq 1}">
+				 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+	                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_VID_SPORT_OBEDINENIE, now, sportObedEdit.currentLang)}" 
+	                               var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />	                               
+							</p:selectOneMenu>
+						</div>
+										
+			      	</div>
+			      	 <div class="p-col-12 p-sm-6 p-md-6 p-lg-6 p-xl-6 ui-fluid " jsf:rendered="#{sportObedEdit.sd.model.getAttrSpec('vid_sport', 'vid_sport_obedinenie', sportObedEdit.currentLang, null).active}"> 	
+						<h:outputText value="#{labels['sf.vidSport']}" styleClass="form-label #{(sportObedEdit.sd.model.getAttrSpec('vid_sport', 'vid_sport_obedinenie', sportObedEdit.currentLang, null).required and sportObedEdit.sportObed.vid==DocuConstants.CODE_ZNACHENIE_VID_SPORT_OBEDINENIE_SF)?'req':''}"/>
+                   		<div class="ui-inputgroup" >
+                   			<p:inputText value="#{sportObedEdit.selectedVidSportTxt}" readonly="true" id="vidSpTxt"   style="width:100%"/>
+			            
+			            	<ibg:selectManyModalA  
+									showRadioBtn="true" saveStateTree="false"
+									codeClassif="#{DocuConstants.CODE_CLASSIF_VIDOVE_SPORT}" 
+									dateClassif="#{now}" styleAutoComp="" sortByName="true"
+									selectedCodes="#{sportObedEdit.selectedVidSport}" 
+									selectedText="#{sportObedEdit.selectedVidSportTxt}" ajaxConfirmBtn="false"
+									update="sportObedForm:olimpTypeSport sportObedForm:vidSpTxt" isSelectNode="false"
+									dopInfoAutoComp="true" itemtipAtPosition="center bottom" compType="1" maxResults="50" />
+						</div>
+			      	</div>
+			      	
+					<h:panelGroup id="vidSportText" styleClass="p-col-12 p-sm-6 p-md-4 p-lg-4 p-xl-4 ui-fluid "  layout="block" rendered="#{sportObedEdit.sd.model.getAttrSpec('vid_sport', 'sport_obedinenie', sportObedEdit.currentLang, null).active}">		
+						<h:outputText value="Вид спорт текст" styleClass="form-label #{sportObedEdit.sd.model.getAttrSpec('vid_sport', 'sport_obedinenie', sportObedEdit.currentLang, null).required?'req':''}" />
+							<div class="ui-inputgroup"> 	
+								<p:inputText id="vidSpT" value="#{sportObedEdit.sportObed.vidSportText}" 
+								   style=" display:inline-block;">								   
+								</p:inputText>		 
+							</div> 
+					</h:panelGroup>
+					<h:panelGroup id="regNomData" styleClass="p-col-12 p-sm-6 p-md-2 p-lg-2 p-xl-2 ui-fluid "  layout="block" rendered="#{sportObedEdit.sd.model.getAttrSpec('reg_nomer', 'sport_obedinenie', sportObedEdit.currentLang, null).active}">		
+						<h:outputText value="Входящ номер на заявлението" styleClass="form-label #{sportObedEdit.sd.model.getAttrSpec('reg_nomer', 'sport_obedinenie', sportObedEdit.currentLang, null).required?'req':''}" />
+							<div class="ui-inputgroup"> 	
+								<p:inputText id="regNomer" value="#{sportObedEdit.sportObed.regNomer}" 
+								   style=" display:inline-block;" readonly="true"
+								   onkeypress="if(event.keyCode == 13) {event.preventDefault(); $(':focus').blur()} ">								   
+								</p:inputText>		 
+							</div> 
+					</h:panelGroup>
+					
+					
+				    <div class="p-col-12 p-sm-6 p-md-4 p-lg-4 p-xl-4 ui-fluid " jsf:rendered="#{sportObedEdit.sd.model.getAttrSpec('predsedatel', 'sport_obedinenie', sportObedEdit.currentLang, null).active}"> 	
+						<h:outputText value="Председател" styleClass="form-label #{sportObedEdit.sd.model.getAttrSpec('predsedatel', 'sport_obedinenie', sportObedEdit.currentLang, null).required?'req':''}" />
+						<div class="ui-inputgroup"> 
+							<p:inputText value="#{sportObedEdit.sportObed.predsedatel}" id="predsedatel" readonly="#{isView eq 1}"
+							onchange="commonValidation('#{sportObedEdit.sd.model.getAttrSpec('predsedatel', 'sport_obedinenie', sportObedEdit.currentLang, null).getValidMethod()}',this,'',null,null, 'Невалидно председател')">				 					                               
+							</p:inputText>
+						</div>
+			      	</div>
+				    <div class="p-col-12 p-sm-6 p-md-6 p-lg-6 p-xl-6 ui-fluid " jsf:rendered="#{sportObedEdit.sd.model.getAttrSpec('gen_sek_direktor', 'sport_obedinenie', sportObedEdit.currentLang, null).active}"> 	
+						<h:outputText value="Ген. секретар/ Изп. директор" styleClass="form-label #{sportObedEdit.sd.model.getAttrSpec('gen_sek_direktor', 'sport_obedinenie', sportObedEdit.currentLang, null).required?'req':''}" />
+						<div class="ui-inputgroup"> 
+							<p:inputText value="#{sportObedEdit.sportObed.genSekDirektor}" id="genSekDirektor" readonly="#{isView eq 1}"
+							onchange="commonValidation('#{sportObedEdit.sd.model.getAttrSpec('gen_sek_direktor', 'sport_obedinenie', sportObedEdit.currentLang, null).getValidMethod()}',this,'',null,null, 'Невалиден Ген. секретар/ Изп. директор')">				 					                               
+							</p:inputText>
+						</div>
+			      	</div>
+					
+					
+					
+					<div class="p-col-12 p-sm-6 p-md-4 p-lg-3 p-xl-2 ui-fluid " jsf:rendered="#{sportObedEdit.sd.model.getAttrSpec('status', 'sport_obedinenie', sportObedEdit.currentLang, null).active}"> 	
+						<h:outputText value="Статус" styleClass="form-label #{sportObedEdit.sd.model.getAttrSpec('status', 'sport_obedinenie', sportObedEdit.currentLang, null).required?'req':''}" />
+						<div class="ui-inputgroup"> 
+							
+							<p:selectOneMenu value="#{sportObedEdit.sportObed.status}" id="status" readonly="true" disabled="true" >
+				 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+	                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_STATUS_OBEKT, now, sportObedEdit.currentLang)}" 
+	                               var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />
+							</p:selectOneMenu>
+						</div>
+										
+			      	</div>
+					<div class="p-col-12 p-sm-6 p-md-1 p-lg-1 p-xl-1 ui-fluid " jsf:rendered="#{sportObedEdit.sd.model.getAttrSpec('dateStatus', 'sport_obedinenie', sportObedEdit.currentLang, null).active}"> 	
+						<h:outputText value="Дата" styleClass="form-label #{sportObedEdit.sd.model.getAttrSpec('dateStatus', 'sport_obedinenie', sportObedEdit.currentLang, null).required?'req':''}" />
+						<p:inputText  value="#{sportObedEdit.sportObed.dateStatus}"  readonly="true" id="dateStatus">
+                    			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+                   		</p:inputText>
+			      	</div>
+			      	 
+			       <div class="p-col-12 p-sm-6 p-md-1 p-lg-1 p-xl-1 ui-fluid " jsf:rendered="#{sportObedEdit.sd.model.getAttrSpec('br_chlenove', 'sport_obedinenie', sportObedEdit.currentLang, null).active}"> 	
+						<h:outputText value="Членове" styleClass="form-label #{sportObedEdit.sd.model.getAttrSpec('br_chlenove', 'sport_obedinenie', sportObedEdit.currentLang, null).required?'req':''}" />
+						<div class="ui-inputgroup"> 
+							<p:inputText value="#{sportObedEdit.sportFormList.size()}" id="brChlenove" readonly="true">				 					                               
+							</p:inputText>
+						</div>
+			      	</div>
+			      	
+			      	<div class="p-col-12 p-sm-8 p-md-8 p-lg-8 p-xl-8 ui-fluid " jsf:rendered="#{sportObedEdit.sd.model.getAttrSpec('dop_info', 'sport_obedinenie', sportObedEdit.currentLang, null).active}">
+                   		<h:outputText value="#{labels['docu.note']}" styleClass="form-label #{sportObedEdit.sd.model.getAttrSpec('dop_info', 'sport_obedinenie', sportObedEdit.currentLang, null).required?'req':''}"/>
+                   		<p:inputText  value="#{sportObedEdit.sportObed.dopInfo}" readonly="#{viewOnly == 1}" id="note"
+                   		onchange="commonValidation('#{sportObedEdit.sd.model.getAttrSpec('dop_info', 'sport_obedinenie', sportObedEdit.currentLang, null).getValidMethod()}',this,'',null,null, 'Невалидна забележка')"/>
+                   	</div>
+				    
+			      	
+				
+				   
+				</div>
+			</div>
+		</h:panelGroup>
+	</h:panelGroup>
+	
+	
+	<h:panelGroup id="panelChlenstvoFed"  rendered="#{sportObedEdit.sportObed.id!=null}">		
+				 
+		 <div class="p-col-12">
+			<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '#sportObedForm:chlenstvoFed')">
+				<h:outputText value="Членство в Международна организация" />
+				<i class="fas fa-caret-right"></i>
+			</p:commandLink>
+		</div>
+
+		 
+		
+		<div jsf:id="chlenstvoFed" class="p-grid extended-search">
+			<div class="p-col-12 p-lg-12">
+           		<div class="table-toolbar">
+					<h:outputText value="#{ui_labels['general.reportResult']} #{sportObedEdit.mfList.size()}" styleClass="form-label"/>	
+					<span class="fas fa-ellipsis-v SoftGray p-mx-2"/>
+						<p:commandButton id="btnNewChlenstvo" value="Нов член" icon="fas fa-plus" rendered="#{isView ne 1}"
+							action="#{sportObedEdit.actionNewChlenstvoMf}" styleClass="ui-button-success"  oncomplete="PF('chlenstvoFed').show();"
+							partialSubmit="true" update="sportObedForm:chlenstvoFedId"  process="@this" />
+				</div>
+           		<p:dataTable id="tblMf" var="row" value="#{sportObedEdit.mfList}" lazy="true" 	 
+					rowIndexVar="idx" sortMode="single" reflow="true" emptyMessage=" "  styleClass="ui-datatable-gridlines"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					rows="5" rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom"
+					paginatorAlwaysVisible="false" paginator="true">										
+		
+		
+										
+				  	<p:column width="5" exportable="false" headerText="#{ui_labels['general.No-symbol'] }" >
+						<h:outputText value="#{idx + 1}" />
+					</p:column>	
+					
+				  	<p:column width="25" exportable="false"  rendered="#{isView ne 1}">
+						<p:commandButton id="btnEditChlenstvo" icon="fas fa-edit" rendered="#{isView ne 1}"
+							action="#{sportObedEdit.actionEditChlenstvoMf(row)}" styleClass="btn-new"  oncomplete="PF('chlenstvoFed').show();"
+							partialSubmit="true" update="sportObedForm:chlenstvoFedId"  process="@this" />
+					</p:column>	
+					
+					<p:column  sortBy="#{row.mejdFed}" headerText="наименование">
+						<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_MMS_MEJD_FED, row.mejdFed, sportObedEdit.currentLang, now)}"/>
+						<h:outputText value="Ново: #{row.mejdFedText}" rendered="#{row.mejdFed==null}"/>
+							
+					</p:column>
+					
+					 
+					<p:column width="120" sortBy="#{row.dateBeg}" headerText="#{labels['so.startDate']}" >									  
+						<h:outputText value="#{row.dateBeg}">	
+							<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+						</h:outputText>							    
+					</p:column>
+													
+					<p:column width="120" sortBy="#{row.dateEnd}" headerText="#{labels['so.endDate']}" >									  
+						<h:outputText value="#{row.dateEnd}">
+							<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+						</h:outputText>	
+					</p:column>
+					
+					<p:column width="210" sortBy="#{row.regNomer}" headerText="#{labels['docu.regNom']} на протокола" >									  
+						<h:outputText value="#{row.regNomer}" />	
+					</p:column>
+					
+					<p:column width="120" sortBy="#{row.dateDoc}" headerText="#{labels['docu.docDate']}" >									  
+						<h:outputText value="#{row.dateDoc}">	
+							<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+						</h:outputText>							    
+					</p:column>
+					
+					<p:column style="width: 25px" rendered="#{isView ne 1}">
+		                <p:commandButton action="#{sportObedEdit.removeChlenstvFromList(row)}" update="tblMf" 
+		                	icon="fas fa-trash" styleClass="ui-button-danger" title="#{ui_labels['general.delete']}">
+		                    <p:confirm header="#{ui_labels['general.delete']}" message="#{beanMessages['general.confirmDeleteMsg']}" icon="fas fa-exclamation-triangle"/>
+		                </p:commandButton>
+		            </p:column>
+					
+				</p:dataTable>
+                 	</div>
+		</div>
+	</h:panelGroup>
+	
+	<h:panelGroup id="panelChlenstvoFormir"  rendered="#{sportObedEdit.sportObed.id!=null}">		
+				 
+		 <div class="p-col-12">
+			<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '#sportObedForm:chlenstvoFormir')">
+				<h:outputText value="Членове на спортното обединение" />
+				<i class="fas fa-caret-right"></i>
+			</p:commandLink>
+		</div>
+
+		 
+		
+		<div jsf:id="chlenstvoFormir" class="p-grid extended-search">
+			<div class="p-col-12 p-lg-12">
+           		<div class="table-toolbar">
+					<h:outputText value="#{ui_labels['general.reportResult']} #{sportObedEdit.sportFormList.size()}" styleClass="form-label"/>	
+					<span class="fas fa-ellipsis-v SoftGray p-mx-2"/>
+						
+						<p:commandButton id="btnNewChlenstvoFormir" icon="fas fa-plus" action="#{sportObedEdit.actionGoToFormirovanie()}" 
+							styleClass="ui-button-success" value="Нов член"  title="Ново членство" rendered="#{isView != 1}" ajax="false">
+							<f:param name="idObedinenie" value="#{sportObedEdit.sportObed.id}" />
+						</p:commandButton>
+						<ui:remove>
+							<p:spacer width="20px"></p:spacer>
+							<p:commandButton id="btnCloseChlenstvo"  action="#{sportObedEdit.actionCloseChlenstvoFormir()}"  
+								styleClass="ui-button-danger" value="Заличаване на спортни клубове"  title="Заличаване на спортни клубове" 
+								rendered="#{isView != 1 and sportObedEdit.sportObed.status==DocuConstants.CODE_ZNACHENIE_STATUS_OBEKT_ZALICHEN}" update="tblFormir">
+								<f:param name="idObedinenie" value="#{sportObedEdit.sportObed.id}" />
+								<p:confirm header="#{ui_labels['general.comfirmation']}" message="Моля, потвърдете заличаването на спортни клубове!" icon="fas fa-exclamation-triangle" />
+							</p:commandButton>
+						</ui:remove>
+				</div>
+           		<p:dataTable id="tblFormir" var="row" value="#{sportObedEdit.sportFormList}" lazy="true" 	 
+					rowIndexVar="idx" sortMode="single" reflow="true" emptyMessage=" " styleClass="ui-datatable-gridlines"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					rows="5" rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom"
+					paginatorAlwaysVisible="false" paginator="true">										
+										
+				  	<p:column width="5" exportable="false" headerText="#{ui_labels['general.No-symbol'] }" >
+						<h:outputText value="#{idx + 1}" />
+					</p:column>	
+					
+					<p:column width="30" exportable="false" rendered="#{isView==1}">
+						<p:button  icon="fas fa-eye" href="mmsSportFormirovanieView.xhtml?faces-redirect=true" target="_blank"  rendered="#{isView eq 1}" >
+							<f:param name="idObj" value="#{row[8]}" />												
+						</p:button>		
+						
+					</p:column>
+					
+					
+					<p:column   sortBy="#{row[2]}" headerText="Име" >									  
+						<h:outputText value="#{row[2]}">	
+							
+						</h:outputText>							    
+					</p:column>
+								
+					 
+					<p:column width="120" sortBy="#{row[3]}" headerText="#{labels['so.startDate']}" >									  
+						<h:outputText value="#{row[3]}">	
+							<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+						</h:outputText>							    
+					</p:column>
+													
+					<p:column width="120" sortBy="#{row[4]}" headerText="#{labels['so.endDate']}" >									  
+						<h:outputText value="#{row[4]}">
+							<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+						</h:outputText>	
+					</p:column>
+					
+					<p:column width="210" sortBy="#{row[5]}" headerText="#{labels['docu.regNom']} на протокола" >									  
+						<h:outputText value="#{row[5]}" />	
+					</p:column>
+					
+					<p:column width="210" sortBy="#{row[6]}" headerText="#{labels['docu.docDate']} на протокола" >									  
+						<h:outputText value="#{row[6]}">	
+							<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+						</h:outputText>							    
+					</p:column>
+					
+					<p:column style="width: 25px" rendered="#{isView ne 1}">
+		                <p:commandButton action="#{sportObedEdit.removeChlenstvoFormirList(row)}" update="tblFormir, sportObedForm:brChlenove" 
+		                	icon="fas fa-trash" styleClass="ui-button-danger" title="#{ui_labels['general.delete']}">
+		                    <p:confirm header="#{ui_labels['general.delete']}" message="#{beanMessages['general.confirmDeleteMsg']}" icon="fas fa-exclamation-triangle"/>
+		                </p:commandButton>
+		            </p:column>
+					
+				</p:dataTable>
+                 	</div>
+		</div>
+	</h:panelGroup>
+	
+	
+	<h:panelGroup id="panelVpisvane"  rendered="#{sportObedEdit.sportObed.id!=null}">		
+				 
+		 <div class="p-col-12">
+			<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '#sportObedForm:vpisvaniaDiv')">
+				<h:outputText value="Вписвания" />
+				<i class="fas fa-caret-right"></i>
+			</p:commandLink>
+		</div>
+
+		 
+		
+		<div jsf:id="vpisvaniaDiv" class="p-grid extended-search">
+			<div class="p-col-12 p-lg-12">
+           		<div class="table-toolbar">
+					<h:outputText value="#{ui_labels['general.reportResult']} #{sportObedEdit.regsList.size()}" styleClass="form-label"/>	
+					<span class="fas fa-ellipsis-v SoftGray p-mx-2"/>
+						 
+						<p:commandButton id="btnNewReg"  action="mmsVpisvaneEdit.jsf"  value="#{labels['compReg.newReg']}" icon="fas fa-plus" ajax="false" 
+											styleClass="ui-button-success" rendered="false and #{sportObedEdit.sportObed.id != null and isView ne 1 and sportObedEdit.checkReadyForVpisvane()}">
+							          <f:param name="idObject" value="#{sportObedEdit.sportObed.id}" />
+							          <f:param name="codeObject" value="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORT_OBED}"/>
+							          <f:param name="nameObject" value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_REFERENTS, sportObedEdit.sportObed.idObject, sportObedEdit.currentLang, now)}}"/>
+							          <f:param name="vidDoc" value="#{DocuConstants.CODE_ZNACHENIE_VID_DOC_ZAIAVL_VPISVANE_SPORTNO_OBEDINENIE}"/>
+							          <f:param name="regNomer" value="#{sportObedEdit.sportObed.regNomer}"/>
+							          <f:param name="vidObject" value="#{sportObedEdit.sportObed.vid}"/>
+							</p:commandButton>
+				</div>
+				<p:spacer width="100%"></p:spacer>
+				<div class="p-grid">
+					<div class="p-col-6 p-lg-6"  style="border: 1px solid #d0d0d0;font-weight:bold;">
+						заявление за ново вписване
+					</div>
+					<div class="p-col-6 p-lg-6"  style="border: 1px solid #d0d0d0;font-weight:bold;">
+						данни за вписването
+					</div>
+				</div>
+           		<p:dataTable id="tblVpisvane" var="row" value="#{sportObedEdit.regsList}" rowIndexVar="idx" 
+                                 emptyMessage=" " rows="5" sortMode="single" reflow="true" styleClass="ui-datatable-gridlines"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                 rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom" paginatorAlwaysVisible="false" paginator="true" >
+
+                                 <f:facet name="{Exporters}">
+
+                                       <div style="float: left">
+
+                                              <h:commandLink id="excel">
+                                                    <h:graphicImage library="images" name="excel2.png" />
+                                                    <p:dataExporter type="xls" target="tblVpisvane" fileName="regsListXls" />
+                                              </h:commandLink>
+
+                                              <h:commandLink id="pdf">
+                                                    <h:graphicImage library="images" name="pdf.png" />
+                                                    <p:dataExporter type="pdf"  target="tblVpisvane" fileName="regsListPdf" encoding="windows-1251" />     
+                                       </h:commandLink>
+
+                                              <h:commandLink id="csv">
+                                                    <h:graphicImage library="images" name="csv.png" />
+                                                    <p:dataExporter type="csv" target="tblVpisvane" fileName="regsListCsv" encoding="CP1251" />
+                                              </h:commandLink>
+
+                                       </div>
+
+                                 </f:facet>
+
+                                 <p:column width="1%" exportable="false" headerText="#{ui_labels['general.No-symbol']}" >
+                                       <h:outputText value="#{idx + 1}" />
+                                 </p:column>
+
+                                 <p:column width="2%" exportable="false" rendered="#{isView ne 1}">
+									   <p:commandButton action="#{sportObedEdit.actionCheckBeforeChangeVpisvane()}" styleClass="btn-new" ajax="false" icon="fas fa-edit" title="#{ui_labels['general.edit']}" >
+								          <f:param name="idReg" value="#{row.id}"/>
+								          <f:param name="idObject" value="#{sportObedEdit.sportObed.id}" />
+								          <f:param name="codeObject" value="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORT_OBED}"/>
+								          <f:param name="nameObject" value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_REFERENTS, sportObedEdit.sportObed.idObject, sportObedEdit.currentLang, now)}"/>
+								          <f:param name="vidDoc" value="#{DocuConstants.CODE_ZNACHENIE_VID_DOC_ZAIAVL_VPISVANE_SPORTNO_OBEDINENIE}"/>
+								          <f:param name="regNomer" value="#{sportObedEdit.sportObed.regNomer}"/>
+								          <f:param name="vidObject" value="#{sportObedEdit.sportObed.vid}"/>
+								   		</p:commandButton>
+													   
+                                 </p:column>
+                                 <p:column width="2%" exportable="false" rendered="#{isView eq 1}">
+									   <p:button icon="fas fa-eye" href="mmsVpisvaneView.xhtml?faces-redirect=true" target="_blank" title="#{ui_labels['general.view']}">
+									   		<f:param name="idReg" value="#{row.id}"/>
+											<f:param name="idObject" value="#{sportObedEdit.sportObed.id}"/>
+										    <f:param name="codeObject" value="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORT_OBED}"/>
+										    <f:param name="nameObject" value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_REFERENTS, sportObedEdit.sportObed.idObject, sportObedEdit.currentLang, now)}}"/>                                 
+										    <f:param name="readonly" value="#{isView eq 1}"/>
+										</p:button>
+
+													   
+                                 </p:column>
+
+                                <p:column width="11%" sortBy="#{row.rnDocZaiavlenie}" headerText="Вх. №" >
+									<h:outputText value="#{row.rnDocZaiavlenie}"  />								    
+								</p:column>
+								
+								<p:column width="11%" sortBy="#{row.dateDocZaiavlenie}" headerText="дата" >									  
+									<h:outputText value="#{row.dateDocZaiavlenie}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+									</h:outputText>							    
+								</p:column>
+								
+								<p:column width="11%" sortBy="#{row.statusResultZaiavlenie}" headerText="статус"> 
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_ZAIAVLENIE, row.statusResultZaiavlenie, sportObedEdit.currentLang , now)}"  />								    
+								</p:column>
+								
+								<p:column width="12%" sortBy="#{row.dateStatusZaiavlenie}" headerText="Дата статус">
+									<h:outputText value="#{row.dateStatusZaiavlenie}"  >
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+									</h:outputText>									    
+								</p:column>
+								
+								 
+								<p:column width="13%" sortBy="#{row.rnDocVpisvane}" headerText="#{labels['mmsCoach.regNomCoach']}"> 
+									<h:outputText value="#{row.rnDocVpisvane}" rendered="#{row.rnDocVpisvane != null or !empty row.rnDocVpisvane}" />								    
+									<h:outputText value="#{row.rnDocResult}"  rendered="#{row.rnDocVpisvane == null or empty row.rnDocVpisvane}" />								    
+								</p:column>
+								
+								<p:column width="13%" sortBy="#{row.dateDocVpisvane}" headerText="#{labels['mmsCoach.datReg']}">
+									<h:outputText value="#{row.dateDocVpisvane}" rendered="#{row.dateDocVpisvane != null}">	
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+									</h:outputText>								    
+									<h:outputText value="#{row.dateDocResult}" rendered="#{row.dateDocVpisvane == null}">
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+									</h:outputText>								    
+								</p:column>
+					
+								<p:column width="13%" sortBy="#{row.statusVpisvane}" headerText="статус"> 
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_REGISTRATION, row.statusVpisvane, sportObedEdit.currentLang , now)}"  />								    
+								</p:column>
+								
+								<p:column width="12%" sortBy="#{row.dateStatusVpisvane}" headerText="дата статус">
+									<h:outputText value="#{row.dateStatusVpisvane}"  >
+										<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+									</h:outputText>									    
+								</p:column>
+																
+                                                                 
+
+                          </p:dataTable>
+
+                 	</div>
+		</div>
+		
+		<div class="p-col-12">
+			<p:commandLink class="extended-search-toggle" onclick="toggleSection(this, '#sportObedForm:panelDocs')">
+					<h:outputText value="Документи" />
+					<i class="fas fa-caret-right"></i>
+				</p:commandLink>
+		</div>
+	
+		<div jsf:id="panelDocs" class="p-grid extended-search">
+			<div class="p-col-12 p-lg-12">
+             	<div class="table-toolbar">
+					<h:outputText value="#{ui_labels['general.reportResult']} #{sportObedEdit.docsList.rowCount}" styleClass="form-label" />	
+					<ui:remove>
+						<span class="fas fa-ellipsis-v SoftGray p-mx-2"/>
+						<p:commandButton  icon="fas fa-edit" value="#{labels['docu.titleNewDoc']}"  oncomplete="PF('docNew').show()"
+							actionListener="#" styleClass="ui-button-success" title="#{labels['docu.newDoc']}" >
+						</p:commandButton>
+					</ui:remove>
+				</div>
+              	<p:dataTable id="tblDocs2" var="row" value="#{sportObedEdit.docsList}" lazy="true" 	 
+					rowIndexVar="idx" sortMode="single" reflow="true"  emptyMessage=" "
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					rows="5" rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom"
+					paginatorAlwaysVisible="false" paginator="true" >										
+										
+				  	<p:column width="10" exportable="false" headerText="#{ui_labels['general.No-symbol'] }" >
+						<h:outputText value="#{idx + 1}" />
+					</p:column>	
+					
+					<p:column width="30" exportable="false">																				
+						<ui:remove>
+							<p:commandButton  icon="fas fa-eye" value=""  oncomplete="PF('docNew').show()" styleClass="btn-new" 
+								actionListener="#"  title="#{labels['doc.titleView']}" >
+							</p:commandButton>
+						</ui:remove>
+						<p:column width="30" exportable="false">
+							<p:button icon="fas fa-eye" href="docView.xhtml?faces-redirect=true" target="_blank" title="#{ui_labels['general.view']}">
+								<f:param name="idObj" value="#{row[4]}" />
+							</p:button>
+						</p:column>
+					</p:column>
+					
+					<p:column width="400" sortBy="#{row.doc_vid}" headerText="#{labels['docu.vid']}">
+						<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, row[0], sportObedEdit.currentLang, now)}"/>					    
+					</p:column>
+					
+					<p:column width="100" sortBy="#{row.rn_doc}" headerText="Рег. №">
+						<h:outputText value="#{row[1]}"  />								    
+					</p:column>
+					
+					<p:column width="100"  headerText="дата" >									  
+						<h:outputText value="#{row[2]}">	
+							<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+						</h:outputText>							    
+					</p:column>
+					
+					<p:column width="*"  headerText="#{labels['docu.otnosno']}">
+						<h:outputText value="#{row[3]}"  />								    
+					</p:column>
+					
+				</p:dataTable>
+	                	</div>
+		</div>
+		
+	</h:panelGroup>
+				
+				
+	<h:panelGroup id="panelChlenstvoFedDialog">	
+	
+		<p:dialog appendTo="@form"  closeOnEscape="true"
+		    header="Членство в Международна организация"
+		    fitViewport="true"	
+		    responsive="true" 
+		    resizable="true"
+		    position="top"	
+			widgetVar="chlenstvoFed" dynamic="true" id="chlenstvoFedId" 
+			modal="true">
+			<div class="container #{guestPreferences.containerPosition}">		
+				<p:messages id="messagesMF" showDetail="true" closable="false" style="width:100%">
+							<p:autoUpdate />
+						</p:messages>
+			 	<div jsf:id="delo-regdata" class="p-grid"  >
+				
+					<div class="p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-6 ui-fluid" >
+						<h:outputText value="Организация" styleClass="form-label req" />
+						 <div class="ui-inputgroup"> 
+							<p:selectOneMenu filterMatchMode="contains" filter="true" value="#{sportObedEdit.currentMf.mejdFed}" id="mejdFed" >
+				 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+	                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_MMS_MEJD_FED, now, sportObedEdit.currentLang)}" 
+	                               var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />	                               
+							</p:selectOneMenu>
+						</div>
+					</div>
+					<div class="p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-6 ui-fluid" >
+					</div>
+					
+					<div class="p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-6 ui-fluid" >
+						<h:outputText value="Организация текст" styleClass="form-label req" />
+						 <div class="ui-inputgroup"> 
+				 			<p:inputText value="#{sportObedEdit.currentMf.mejdFedText}" id="mejdFedТ" >				 					                               
+							</p:inputText>	
+						</div>
+					</div>
+					<div class="p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-6 ui-fluid" >
+					</div>
+					<div class="p-col-12 p-sm-12 p-md-12 p-lg-3 p-xl-3 ui-fluid" >
+						<h:outputText value="Начална дата" styleClass="form-label req" />
+						<div class="ui-inputgroup"> 
+							<p:datePicker id="dateBegMf" showIcon="true"  locale="bg"
+									pattern="dd.MM.yyyy"  
+									mask="true" value="#{sportObedEdit.currentMf.dateBeg}"
+									disabled="#{isView==1}" readonly="#{isView==1}" >									
+							</p:datePicker>
+						</div>
+					</div>
+					<div class="p-col-12 p-sm-12 p-md-12 p-lg-3 p-xl-3 ui-fluid" >
+						<h:outputText value="Крайна дата" styleClass="form-label " />
+						<div class="ui-inputgroup"> 
+							<p:datePicker id="dateEndMf" showIcon="true"  locale="bg"
+									pattern="dd.MM.yyyy"  
+									mask="true" value="#{sportObedEdit.currentMf.dateEnd}"
+									disabled="#{isView==1}" readonly="#{isView==1}" >									
+							</p:datePicker>
+						</div>
+					</div>
+					<div class="p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-6 ui-fluid" >
+					</div>
+					<div class="p-col-12 p-sm-12 p-md-12 p-lg-3 p-xl-3 ui-fluid" >
+						<h:outputText value="Вх. №" styleClass="form-label " />
+						<div class="ui-inputgroup"> 
+							<p:inputText value="#{sportObedEdit.currentMf.regNomer}" id="regNomerMf" >				 					                               
+							</p:inputText>
+						</div>
+					</div>
+					<div class="p-col-12 p-sm-12 p-md-12 p-lg-3 p-xl-3 ui-fluid" >
+						<h:outputText value="#{labels['docu.dateDoc']}" styleClass="form-label " />
+						<div class="ui-inputgroup"> 
+							<p:datePicker id="dateDoc" showIcon="true"  locale="bg"
+									pattern="dd.MM.yyyy"  
+									mask="true" value="#{sportObedEdit.currentMf.dateDoc}"
+									disabled="#{isView==1}" readonly="#{isView==1}" >									
+							</p:datePicker>
+						</div>
+					</div>
+					<div class="p-col-12 p-sm-12 p-md-12 p-lg-12 p-xl-12" >
+						<p:commandButton icon="fas fa-save" value="#{ui_labels['general.save']}"
+										 rendered="#{isView eq null}" id="btnSaveMf"
+										 partialSubmit="true" 
+										 update="tblMf"
+										 process="@this delo-regdata"  
+										 actionListener="#{sportObedEdit.actionSaveChlenstvoMf}"
+										 title="#{labels['delo.saveTitle']}" >
+						</p:commandButton>
+						
+					</div>
+					
+				</div>
+			</div>
+						
+		</p:dialog>	
+	</h:panelGroup>	
+				
+	<h:panelGroup id="dpCorrSearch">	
+	
+		<p:dialog appendTo="@form"  closeOnEscape="true"
+		    header="#{labels['docu.titleExtSrchCoresp']}" 
+		    fitViewport="true"	
+		    responsive="true" 
+		    resizable="true"
+		    position="top"	
+			widgetVar="mCorrS" dynamic="true" id="modalCorrS" 
+			modal="true">
+			<div class="container #{guestPreferences.containerPosition}">		
+				
+				 	<ibg:mmsRefCorrespSearch id="mCorrS1" myId="mCS1"
+						 codeRef="#{sportObedEdit.sportObed.idObject}"
+						 searchTxt="#{sportObedEdit.txtCorresp}" 
+						 dateClassif="#{sportObedEdit.decodeDate}"
+						 modal="true" refType="#{DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL}"
+						 update="sportObedForm"
+						 onComplete = "PF('mCorrS').hide();#{sportObedEdit.actionCheckExistEik()};"/>
+				
+			</div>
+						
+		</p:dialog>	
+	</h:panelGroup>
+	
+	<h:panelGroup id="vpisvane">
+		                
+		<p:remoteCommand name="hideModal1" process="vpisvane @this" update="sportObedForm:tblVpisvane" partialSubmit="true"
+						 actionListener="#{sportObedEdit.findVpisvane()}"/>
+
+		<p:dialog appendTo="@form" position="top" widgetVar="vpisvaneNew" header="#{labels['compReg.basicData']}"
+			fitViewport="true" responsive="true" resizable="true" 
+			closeOnEscape="true"  onHide="hideModal1()" id="modalVpisvane" modal="true">
+			<p:ajax event="close" listener="#{sportObedEdit.findVpisvane()}" process="@this" update="tblVpisvane"  />
+				<div class="container #{guestPreferences.containerPosition}">		
+					<ibg:compMMSVpisvane rendered="false" id="docSearchT2" idObject="#{sportObedEdit.sportObed.id}" 
+						codeObject="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORT_OBED}" 
+						buttonConfirmLabel="#{ui_labels['general.save']}" update="sportObedForm:tblVpisvane" 
+						readonly="#{viewOnly == 1}" nameObject="#{labels['compReg.basicData']}" vidDoc="36" />
+				</div>
+		</p:dialog>
+	</h:panelGroup>
+	
+	
+				
+
+				
+	<ui:remove><!--Редактиране на данни за кореспонден	--></ui:remove>
+	<h:panelGroup id="dpCorrData">	
+		
+		<ui:remove><!-- ако има съобщения за грешка, изведено от модалния, при затваряне - да се скрие съобщението -но скрива и съобщ. за запис..
+			TODO - проверка дали потребителя има право за редакция и въвеждане на нов кореспондент!!!
+				<p:remoteCommand name="cmdHideModalD" process="@this" />
+				onHide="cmdHideModalD()" 	
+		--></ui:remove>
+					
+		<p:dialog appendTo="@form"  closeOnEscape="true" 
+		    header="Въвеждане/актуализация на лице"  
+		    fitViewport="true"	
+		    resizable="true"
+		    responsive="true" 
+		    position="top" 		
+			widgetVar="mCorrD" dynamic="true" id="modalCorrD" 
+			modal="true">
+			<div class="container #{guestPreferences.containerPosition}">	
+				
+			 		<ibg:mmsRefCorrespData id="btnCorrD1"  readonly="#{isView eq 1}"
+						 codeRef="#{sportObedEdit.sportObed.idObject}"
+						 searchTxt="#{sportObedEdit.txtCorresp}" 
+						 dateClassif="#{sportObedEdit.decodeDate}"
+						 modal="true" refType="#{DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL}"
+						 update="sportObedForm:refCorrInp sportObedForm:refCorr sportObedForm:adressCor"	
+						 onComplete = "PF('mCorrD').hide();document.body.scrollTop = 0; document.documentElement.scrollTop = 0;"/>
+			</div>		
+	 		
+		</p:dialog>	
+	</h:panelGroup>	
+	
+	<p:dialog appendTo="@form" widgetVar="dialog-compRegix" closeOnEscape="true" header="#{labels['regixReport.title']}" 
+          fitViewport="true" responsive="true" resizable="true" positionType="fixed" position="top"
+          modal="true" dynamic="true">
+            <div jsf:id="dialogCompRegix" class="container #{guestPreferences.containerPosition}">
+                  <ibg:compRegixReports modal="true" />
+            </div>
+	</p:dialog>
+	
+</div>
+
+
+	<h:panelGroup id="panelMail">
+				<p:dialog appendTo="@form" widgetVar="eMail" closeOnEscape="true" header="Изпращане на съобщение до обединение" fitViewport="true" responsive="true" 
+							positionType="fixed" position="top" modal="true" dynamic="true">
+						
+						<p:messages id="messagesMail" showDetail="true" closable="false" style="width:100%">
+							<p:autoUpdate />
+						</p:messages>
+						<ibg:sendMail email="#{sportObedEdit.referent.contactEmail}" codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORT_OBED}" 
+							readonly="#{viewOnly eq 1}" onComplete="#{sportObedEdit.closeModalMail()}" codeSluj="#{sportObedEdit.userData.userId}"></ibg:sendMail>
+						
+				</p:dialog>
+			</h:panelGroup>
+			
+	<h:panelGroup id="panelOtkaz">
+				<p:dialog appendTo="@form" widgetVar="otkazReg" closeOnEscape="true" header="Отказване от регистрация" fitViewport="true" responsive="true" 
+							positionType="fixed" position="top" modal="true" dynamic="true">
+						
+						<p:messages id="messagesOtkaz" showDetail="true" closable="false" style="width:100%">
+							<p:autoUpdate />
+						</p:messages>
+						<div jsf:id="dialogSendOtkaz" class="container #{guestPreferences.containerPosition}">
+						<div class="card">
+							<div class="p-grid ui-fluid">
+							<div class="p-col-12 p-lg-12">
+	                    		<h:outputText value="Причина за отказ от регистрация:" styleClass="form-label "/>
+	                    		<p:inputTextarea  value="#{sportObedEdit.reasonOtkaz}" id="otkazText">
+	                    		</p:inputTextarea>
+	                    	</div>
+	                    	<div class="p-col-12 p-lg-1">
+	                    		<p:commandButton id="btnOtkazModal"   value="Запис" icon="fas fa-save"
+											onmousemove="document.getElementById('sportObedForm:btnOtkazModal').focus();"
+											partialSubmit="true" update="sportObedForm:otkazText, sportObedForm:dateStatus, sportObedForm:status"
+											process="@this sportObedForm"
+											action="#{sportObedEdit.actionOtkazReg()}"
+											title="Отказ от регистрация" />
+										 
+	                    	</div>
+	                    	</div>
+			        	</div>	
+			        </div>
+				</p:dialog>
+			</h:panelGroup>
+	
+	
+	<h:panelGroup>	
+	 
+	<p:dialog appendTo="@form" widgetVar="dialogZaqvlenie11" closeOnEscape="true" header="Заявление" fitViewport="true" responsive="true" 
+							positionType="fixed" position="top" modal="true" dynamic="true">
+			    
+		
+		<div jsf:id="dialogZaqvlenieFiles" class="container #{guestPreferences.containerPosition}">
+		
+		
+		
+            <h:panelGroup id="panelZaqvl" layout="block" >
+       			<div class="card">
+       				<div class="p-grid ui-fluid ">	
+								
+						<!--Входящ номер-->
+						<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+							<h:outputText value="#{labels['monitoringSSEV.vhNom']} " styleClass="form-label"/>
+							<p:inputText value="#{sportObedEdit.egovMess.docRn}" readonly="true"/>
+						</div>
+						
+						<!--Статус на съобщението-->								
+						<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">										
+							<h:outputText value="#{labels['docWSStatus.statusMsg']}" styleClass="form-label"/>
+								<p:selectOneMenu id="statusMsgView11" value="#{sportObedEdit.egovMess.msgStatus}" disabled="true">										   
+								    <f:selectItems value="#{sportObedEdit.msgStatusList}"/>
+							</p:selectOneMenu>
+						  
+					  	</div>	
+					  	
+					  	<!--Дата статус-->
+						<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+							<h:outputText value="#{labels['delo.dateStatus']} " styleClass="form-label"/>
+								<p:inputText value="#{sportObedEdit.egovMess.msgStatusDate}"  readonly="true">
+		                   			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+		                   		</p:inputText>
+						</div>
+						
+						<!--Вид на съобщението-->
+						<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+							<h:outputText value="#{labels['docWSStatus.vidMsg']} " styleClass="form-label"/>
+							<p:inputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, sportObedEdit.egovMess.docVid, sportObedEdit.currentLang, now)}" readonly="true"/>	
+						</div>
+						
+						<!--Изпратен от-->
+						<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+							<h:outputText value="#{labels['docList.sendFromReg']} " styleClass="form-label"/>
+							<p:inputText value="#{ sportObedEdit.egovMess.senderName}" readonly="true"/>	
+						</div>
+						
+						<!--Получател-->
+						<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+							<h:outputText value="#{labels['opis.poluch']} " styleClass="form-label"/>
+							<p:inputText value="#{ sportObedEdit.egovMess.recepientName}" readonly="true"/>	
+						</div>
+						
+						<!--Относно-->
+						<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+							<h:outputText value="#{labels['docDoc.otnosno']} " styleClass="form-label"/>
+							<p:inputText value="#{ sportObedEdit.egovMess.docSubject}" readonly="true"/>	
+						</div>
+						
+						<!--Срок-->
+						<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+							<h:outputText value="#{labels['tasks.srok']} " styleClass="form-label"/>
+							<p:inputText value="#{sportObedEdit.egovMess.docSrok}"  readonly="true">
+	                   			<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{sportObedEdit.timeZone}"/>
+	                   		</p:inputText>
+						</div>
+						
+			   		</div>
+       			
+              		<div class="table-toolbar">
+							<h:outputText value="Прикачени файлове: " styleClass="form-label"/>
+                	</div>
+					<p:dataTable id="fileList" var="row" value="#{sportObedEdit.egovFilesList}" 
+						rowIndexVar="riv" emptyMessage="#{labels['general.norows']}" 
+						rows="5" style="margin-bottom:20px" paginator="true" reflow="true"	paginatorPosition="bottom" 
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+				       	<p:column headerText="№" width="4%" >
+							<h:outputText value="#{riv + 1}" />
+						</p:column>
+						<p:column headerText="" width="40" style="text-align: center;">									           	
+				           <p:commandButton  id="download" ajax="false" actionListener="#{sportObedEdit.download(row)}" icon="fa fa-fw fa-download" title="Изтегляне" />
+				       	</p:column>
+				       	<p:column headerText="Наименование на файл"  style="text-align: center;">
+				             <h:outputText value="#{row.filename}" escape="false" style="width:96%; text-align: left;"/>									             
+				        </p:column>
+				   </p:dataTable>
+		
+	 			</div>
+			</h:panelGroup>
+		</div>
+	</p:dialog>
+	</h:panelGroup>
+</h:form>
+
+
+
+
+</html>

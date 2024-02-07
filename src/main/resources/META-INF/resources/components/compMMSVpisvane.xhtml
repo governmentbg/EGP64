@@ -1,0 +1,666 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf" 
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:cc="http://java.sun.com/jsf/composite"
+	xmlns:ibg="http://java.sun.com/jsf/composite/components">
+
+	<cc:interface componentType="compMMSVpisvane">
+
+		<cc:attribute name="idReg" 			type="java.lang.Integer" 	shortDescription="Ид на вписване" deafult="#{null}" />
+		<cc:attribute name="idObject" 		type="java.lang.Integer" 	shortDescription="Ид на обекта" deafult="#{null}" />
+		<cc:attribute name="codeObject" 	type="java.lang.Integer" 	shortDescription="Код на обекта" deafult="#{null}" />
+		<cc:attribute name="nameObject" 	type="java.lang.String" 	shortDescription="Наименование на обекта" deafult="null" />
+		<cc:attribute name="vidDoc" 		type="java.lang.Integer" 	shortDescription="Вид на документа" deafult="#{null}" />
+		<cc:attribute name="regNomer" 		type="java.lang.String" 	shortDescription="Регистров номер на обекта" deafult="null" />
+		<cc:attribute name="regNomerObed" 	type="java.lang.String" 	shortDescription="Регистров номер на обединение" deafult="null" />
+		<cc:attribute name="ekatte" 		type="java.lang.Integer" 	shortDescription="За спортен обект се подава ekatte, тъй като рег. номер се формира от общината" deafult="#{null}" />
+		<cc:attribute name="vidObject" 		type="java.lang.Integer" 	shortDescription="За обединения, формирования и спортни обекти трябва да се подава и Вид на обекта, за да се генерира рег. номер" deafult="#{null}" />
+		
+		<cc:attribute name="dateClassif" 	type="java.util.Date" 		shortDescription="Дата, към която да се заредят класификации и за разкодиране. По подразбиране - днешна дата." />
+		<cc:attribute name="update" 		type="java.lang.String" 	shortDescription="Полета, които трябва да се обновят" />
+		<cc:attribute name="readonly" 		type="java.lang.Boolean" 	shortDescription="Само за разглеждане" default="false" />
+		<cc:attribute name="onComplete" 	type="java.lang.String" 	shortDescription="Изпълнява функция при връщане на резултата - подава се името на функцията" />
+		
+		<cc:attribute name="nachinPoluch" 			type="java.lang.Integer" 	shortDescription="Начин на получаване на резултата" deafult="#{null}" />
+		<cc:attribute name="dopInfoNachinPoluch" 	type="java.lang.String" 	shortDescription="Допълнителна информация за начин на получаване" deafult="null" />
+	
+	</cc:interface>
+
+	<cc:implementation>
+
+		<f:event type="preRenderComponent" listener="#{cc.initRegsComp()}" />
+		<!--  За да се инициализира компонентата-->
+
+		<div jsf:id="dpDataC" jsf:rendered="#{cc.showMe}">
+
+			<div jsf:id="panelDataReg">
+
+				<div class="title-group">
+					<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '##{cc.clientId}:dataReg')">
+						<h:outputText value="#{labels['compReg.basicData']} #{labels['registraturaData.to']} #{cc.typeObj} #{cc.nameObject}" />
+						<i class="fas fa-caret-right"></i>
+					</p:commandLink>
+				</div>
+
+				<div jsf:id="dataReg" class="card">
+					
+					<p:toolbar styleClass="margin-bottom" rendered="#{!cc.attrs.readonly}" id="tlbButton">
+						<f:facet name="left">
+							<p:commandButton icon="fas fa-save" value="#{ui_labels['general.save']}" id="btnSave" rendered="#{!cc.attrs.readonly}"
+								action="#{cc.actionSave}" update="#{cc.clientId}:dataReg" partialSubmit="true" process="#{cc.clientId}:dataReg @this" />
+
+						<ui:remove>	<h:outputText value=" #{cc.errMsg}" styleClass="form-label" style="color:red" id="errMsg" escape="false" /> </ui:remove>
+
+						</f:facet>
+
+						<f:facet name="right">
+							<!-- Бутон удост. документ -->  
+							<p:commandButton action="#{cc.actionUdostovDocum}" styleClass="btn-new" icon="fas fa-file-alt" value="#{labels['compReg.udostDoc']}" ajax="false"
+								rendered="#{cc.viewBtnUdostDoc}" update="#{cc.clientId}:dataReg" process="#{cc.clientId}:dataReg @this" partialSubmit="true"/>
+							
+							<span class="fas fa-ellipsis-v SoftGray p-mx-2" />
+											
+							<h:panelGroup id="pDocInfo" rendered="#{cc.reg.id ne null}">
+								<ibg:compObjAudit id="regHistory" idObj="#{cc.reg.id}"
+									codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_REGISTRATION}"
+									identInfo="#{cc.reg.identInfo}" />
+							</h:panelGroup>
+							<!-- КК каза да се скрие бутона за изтриване на вписването - изтрият ли вписването - цялата връзка изчезва -->
+							<!-- КК каза да има отново бутона за изтриване на вписването - и сменям статуса на обекта в статус "В разглеждане" след изтриване  -  чакам да разкоментирам изтриването като се оправи изтриването на процедура-->
+							<ui:remove> <p:commandButton icon="fas fa-times" id="btnDelete" rendered="#{!cc.attrs.readonly and cc.reg.id ne null}"
+								value="#{ui_labels['general.delete']}" update="#{cc.clientId}:panelDataReg" partialSubmit="true" process="#{cc.clientId}:panelDataReg @this"
+								action="#{cc.actionDelete}" styleClass="ui-button-danger p-ml-2">
+								<p:confirm header="#{ui_labels['general.comfirmation']}" message="#{beanMessages['general.confirmDeleteMsg']}" icon="fas fa-exclamation-triangle" />
+							</p:commandButton> </ui:remove>
+						</f:facet>
+					</p:toolbar>
+
+					<div class="p-col-12">
+						<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '##{cc.clientId}:regMainData')">
+							<h:outputText value="#{labels['registratura.basicData']}" />
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+					</div>
+
+					<div jsf:id="regMainData" class="p-grid p-col-12 ui-fluid p-align-end">
+					
+						<!-- Рег. номер на заявление за вписване -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2" >
+							<h:outputText value="#{labels['compReg.rnZaiavReg']}" styleClass="form-label" style="white-space:nowrap"/>
+							<p:inputText id="regNum" value="#{cc.reg.rnDocZaiavlenie}" readonly="true" />
+						</div>
+
+						<!-- Дата рег. на заявление -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2" >
+							<h:outputText value="#{labels['compReg.dateZaiav']}" styleClass="form-label" />	
+							<p:calendar id="datDoc" value="#{cc.reg.dateDocZaiavlenie}" pattern="dd.MM.yyyy" mask="true" locale="bg" styleClass="form-control" readonly="true" >
+	                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{cc.timeZone}"/>
+	                        </p:calendar> 
+						</div>
+						
+						<!-- Дата на регистрация в ЕИС -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2">
+							<h:outputText value="#{labels['compReg.dateReg']}" styleClass="form-label" />	
+							<p:calendar id="datReg" value="#{cc.reg.dateReg}" pattern="dd.MM.yyyy HH:mm" mask="true" locale="bg" styleClass="form-control" readonly="true" >
+	                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="#{cc.timeZone}"/>
+	                        </p:calendar> 
+						</div>
+						
+						<!-- Състояние на заявлението -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2">
+							<h:outputText value="#{labels['compReg.sastZaiav']}" styleClass="form-label" />
+							<p:inputText id="sastZaiav" value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_ZAIAVLENIE, cc.sastoianieZaiav, cc.lang, now)}" readonly="true" /> 
+						</div>
+						
+					</div>					
+					
+					<div class="p-col-12">
+						<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '##{cc.clientId}:decisionZaiavVpis')">
+							<h:outputText value="#{labels['compReg.decisionZaiav']}" />
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+					</div>
+
+					<div jsf:id="decisionZaiavVpis" class="p-grid p-col-12 ui-fluid p-align-end" >					
+						
+						<!-- Статус на заявление -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2">
+							<h:outputText value="#{labels['compReg.decision']}" styleClass="form-label req" />
+							<p:selectOneMenu id="statusZaiavlenie" value="#{cc.reg.statusResultZaiavlenie}" autoWidth="false" disabled="#{cc.attrs.readonly or (cc.reg.statusResultZaiavlenie ne null and cc.reg.statusResultZaiavlenie ne DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_V_RAZGLEJDANE) and !cc.changeStatusZaiav}" >
+								<f:selectItem value="#{null}" itemValue="#{null}" />
+								<f:selectItems value="#{cc.resheniaList}"  var="statusZ" itemLabel="#{statusZ.tekst}" itemValue="#{statusZ.code}" />
+								<p:ajax event="change" update="#{cc.clientId}:decisionZaiavVpis" partialSubmit="true" process="#{cc.clientId}:decisionZaiavVpis @this" listener="#{cc.actionChangeStatusZaiavlenie(false)}" />
+							</p:selectOneMenu>
+						</div>
+						
+						<!-- Дата на статус на заявление -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-1">
+							<h:outputText value="#{labels['compReg.dateActStatus']}" styleClass="form-label" />
+							<p:calendar id="dateStatusZ" value="#{cc.reg.dateStatusZaiavlenie}" pattern="dd.MM.yyyy" mask="true" locale="bg" styleClass="form-control" readonly="true" >
+	                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{cc.timeZone}"/>
+	                        </p:calendar>							
+						</div>						
+						
+						<!-- Основание за статус на заявление -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2" jsf:rendered="#{cc.reg.statusResultZaiavlenie ne null and cc.reg.statusResultZaiavlenie ne DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_V_RAZGLEJDANE and not empty cc.reasonZaiavleniaList}" jsf:id="reasonR">
+							<h:outputText value="#{labels['compReg.reason']}" styleClass="form-label" />
+							<p:selectOneMenu id="reasonResult" value="#{cc.reg.reasonResult}" autoWidth="false" disabled="#{cc.attrs.readonly}" >
+								<f:selectItem value="#{null}" itemValue="#{null}" />
+								<f:selectItems value="#{cc.reasonZaiavleniaList}" var="reasonR" itemLabel="#{reasonR.tekst}" itemValue="#{reasonR.code}" />
+							</p:selectOneMenu>
+						</div>
+						
+						<!-- Основание за статус на заявление - текст -->
+						<div  class="#{cc.reg.statusResultZaiavlenie ne null and not empty cc.reasonZaiavleniaList ? 'p-col-12 p-sm-12 p-md-12 p-lg-3' : 'p-col-12 p-sm-12 p-md-12 p-lg-5'}" jsf:rendered="#{cc.reg.statusResultZaiavlenie ne null and cc.reg.statusResultZaiavlenie ne DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_V_RAZGLEJDANE}">						
+							<h:outputText value="#{labels['compReg.reasonText']}" styleClass="form-label" />
+							<p:inputText id="reasonResultText" value="#{cc.reg.reasonResultText}" readonly="#{cc.attrs.readonly}" />
+						</div>
+						
+						<!-- Рег. номер на документа за вписване/отказ -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2" jsf:rendered="#{cc.reg.statusResultZaiavlenie ne null and cc.reg.statusResultZaiavlenie ne DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_V_RAZGLEJDANE}" >
+							<h:outputText value="#{labels['compReg.rnDocResult']}" styleClass="form-label"/>	
+							<p:inputText id="rnDocResult" value="#{cc.reg.rnDocResult}" readonly="#{(cc.reg.rnDocResult ne null and cc.reg.rnDocResult ne '')  or cc.attrs.readonly}" >
+								<p:ajax event="blur" listener="#{cc.actionCheckExistZapByRegNumAndData}" update="#{cc.clientId}:regNumD"/>
+							</p:inputText>
+						</div>
+
+						<!-- Дата рег. на документа за вписване/отказ -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2" jsf:rendered="#{cc.reg.statusResultZaiavlenie ne null and cc.reg.statusResultZaiavlenie ne DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_V_RAZGLEJDANE}">
+							<h:outputText value="#{labels['compReg.dateDocResult']}" styleClass="form-label" />
+							<div class="ui-inputgroup">
+							<p:calendar id="dateDocResult" value="#{cc.reg.dateDocResult}" pattern="dd.MM.yyyy" mask="true" locale="bg" styleClass="form-control" readonly="#{(cc.reg.dateDocResult ne null and cc.reg.dateDocResult ne '')  or cc.attrs.readonly}" >
+	                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{cc.timeZone}"/>
+	                        </p:calendar>
+	                        <p:commandButton title="Изтриване на решение" action="#{cc.actionDeleteStatusZaiavlenie}"  styleClass="ui-button-danger" icon="fas fa-remove" update="#{cc.clientId}:dataReg" />
+							</div>								
+						</div>							
+									
+						<!-- Рег. номер на удост. документ -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2" jsf:rendered="#{cc.reg.statusResultZaiavlenie ne null and cc.reg.statusVpisvane ne null and cc.reg.statusResultZaiavlenie eq DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_VPISAN}">
+							<h:outputText value="#{labels['compReg.nomUdostDoc']}" styleClass="#{cc.checkUdostDoc or cc.readOnlyDataLicenz ? 'form-label':'form-label req'}" />
+							<p:inputText id="regNumL" value="#{cc.reg.rnDocLicenz}" readonly="#{cc.checkUdostDoc or cc.readOnlyDataLicenz}"/>
+						</div>
+
+						<!-- Дата рег. на удост. документ -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2" jsf:rendered="#{cc.reg.statusResultZaiavlenie ne null and cc.reg.statusVpisvane ne null and cc.reg.statusResultZaiavlenie eq DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_VPISAN}">
+							<h:outputText value="#{labels['compReg.dateUdostDoc']}" styleClass="#{cc.checkUdostDoc or cc.readOnlyDataLicenz ? 'form-label':'form-label req'}" style="white-space:nowrap"/>							
+							<p:datePicker id="datDocL" pattern="dd.MM.yyyy" mask="true" showIcon="false" locale="bg"  
+					         	value="#{cc.reg.dateDocLicenz}" styleClass="form-control" rendered="#{!cc.checkUdostDoc and !cc.readOnlyDataLicenz}">
+					        </p:datePicker>						     
+							<p:inputText id="datDocL1" rendered="#{cc.checkUdostDoc or cc.readOnlyDataLicenz}" readonly="true" value="#{cc.reg.dateDocLicenz}">
+								<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{cc.timeZone}"/>
+							</p:inputText>	
+						</div>
+						
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-3" align="left" jsf:rendered="#{cc.reg.statusResultZaiavlenie ne null and cc.reg.statusVpisvane ne null and cc.reg.statusResultZaiavlenie eq DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_VPISAN and cc.viewCheckUdostDoc}">
+							<p:selectBooleanCheckbox value="#{cc.checkUdostDoc}" itemLabel="#{labels['compReg.udostovDoc']}" >
+								<p:ajax event="change" update="#{cc.clientId}:dataReg" listener="#{cc.actionCheckUdostDoc}" />
+							</p:selectBooleanCheckbox>
+						</div>	
+						
+						<!-- Подписал удост. документ -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-5" jsf:rendered="#{cc.reg.statusResultZaiavlenie ne null and cc.reg.statusVpisvane ne null and cc.reg.statusResultZaiavlenie eq DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_VPISAN and cc.viewCheckUdostDoc}">						
+							<h:outputText value="#{labels['compReg.signatureDoc']}" styleClass="form-label req" />
+								
+							<ibg:selectReferents id="signUd" filtered="false"
+								typeRef="#{DocuConstants.CODE_ZNACHENIE_DOC_REF_ROLE_SIGNED}"
+								maxResults="50" styleAutoComp="" 
+								codeClassif="#{DocuConstants.CODE_CLASSIF_ADMIN_STR}"
+								dateClassif="#{now}" readonly="#{cc.attrs.readonly}"
+								saveStateTree="false" showRadioBtn="false" isSelectNode="false" 
+								selectedReferents="#{cc.referentsSigned}" withBtnClear="true"
+								header="#{labels['compReg.signatureDoc']}" 
+								headerSelectedValues="#{labels['compReg.signatureDoc']}"  />																	
+						</div> 						
+						
+						<!-- Вид спорт -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-3" jsf:rendered="#{cc.reg.typeObject eq DocuConstants.CODE_ZNACHENIE_JOURNAL_COACHES}">
+							<h:outputText value="#{labels['compReg.forVidSport']}" styleClass="form-label req" />
+							<p:remoteCommand name="cmdChangeVidSport" actionListener="#{cc.actionChangeVidSport}"
+									update="#{cc.clientId}:dataReg" partialSubmit="true" process="#{cc.clientId}:dataReg @this" />
+							<ibg:selectOneModalA compType="2" codeClassif="#{DocuConstants.CODE_CLASSIF_VIDOVE_SPORT}"
+								dateClassif="#{now}" filtered="false" selectedCode="#{cc.reg.vidSport}" 
+								sortByName="true" id="vidSport" saveStateTree="false" withBtnClear="true" styleAutoComp="width:100%;" 
+								readonly="#{cc.attrs.readonly}" onComplete="cmdChangeVidSport()" />
+						</div>						
+
+						<!-- Длъжност -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2" jsf:rendered="#{cc.reg.typeObject eq DocuConstants.CODE_ZNACHENIE_JOURNAL_COACHES}">
+							<h:outputText value="#{labels['regGrSluj.position']}" styleClass="#{cc.reg.statusResultZaiavlenie ne null and cc.reg.statusResultZaiavlenie eq DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_VPISAN ? 'form-label req':'form-label'}" />
+							<p:selectOneMenu id="dlajnost" value="#{cc.reg.dlajnost}" autoWidth="false" disabled="#{cc.attrs.readonly}" >
+								<f:selectItem value="#{null}" itemValue="#{null}" />
+								<f:selectItems value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_DLAJNOST, now, cc.lang)}"
+									var="clD" itemLabel="#{clD.tekst}" itemValue="#{clD.code}" />
+								<p:ajax event="change" update="#{cc.clientId}:dataReg" partialSubmit="true" process="#{cc.clientId}:dataReg @this" listener="#{cc.actionChangeVidSport}"/>
+							</p:selectOneMenu>
+						</div>	
+						
+						<div class="p-grid p-col-12 ui-fluid p-align-end">	
+						
+							<!-- Дата на получаване на документа -->
+							<div class="p-col-12 p-sm-12 p-md-12 p-lg-2" jsf:rendered="#{cc.reg.statusResultZaiavlenie ne DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_V_RAZGLEJDANE}">
+								<h:outputText value="#{labels['docu.receiveDate']}" styleClass="form-label" />								
+		                        <p:datePicker id="dateDocReceive" pattern="dd.MM.yyyy HH:mm" mask="true" showIcon="false" locale="bg"  
+						         	value="#{cc.reg.dateDocReceive}" styleClass="form-control" showTime="true">
+						        </p:datePicker>								
+							</div>		
+						
+							<!-- Начин на получаване на резултата -->
+							<div class="p-col-12 p-sm-12 p-md-12 p-lg-2" jsf:rendered="#{cc.reg.statusResultZaiavlenie ne DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_V_RAZGLEJDANE}">
+								<h:outputText value="#{labels['doc.receiveMethod']}" styleClass="form-label" />
+								<p:selectOneMenu id="receiveMethod" value="#{cc.reg.nachinPoluchavane}" autoWidth="false" disabled="#{cc.attrs.readonly}" >
+									<f:selectItem value="#{null}" itemValue="#{null}" />
+									<f:selectItems value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_DVIJ_METHOD, now, cc.lang)}"
+										var="clRecM" itemLabel="#{clRecM.tekst}" itemValue="#{clRecM.code}" />
+									<p:ajax event="change" update="#{cc.clientId}:addrMail" listener="#{cc.actionChangeNachinPoluchavane}"/>
+								</p:selectOneMenu>
+							</div>
+							
+							<!-- Предаване по поща или имейл -->
+							<div class="p-col-12 p-sm-12 p-md-12 p-lg-8" jsf:id="addrMail" jsf:rendered="#{cc.reg.statusResultZaiavlenie ne DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_V_RAZGLEJDANE}">						
+								<h:outputText value="#{labels['dvijenie.adres']}" styleClass="form-label"
+									rendered="#{cc.reg.nachinPoluchavane eq DocuConstants.CODE_ZNACHENIE_PREDAVANE_POSHTA}" />
+								<h:outputText value="#{labels['dvijenie.email']}" styleClass="form-label"
+									rendered="#{cc.reg.nachinPoluchavane eq DocuConstants.CODE_ZNACHENIE_PREDAVANE_EMAIL}" />
+								<h:outputText value="#{labels['compReg.dopInfoReceiveMethod']}" styleClass="form-label"
+									rendered="#{cc.reg.nachinPoluchavane ne null and cc.reg.nachinPoluchavane ne DocuConstants.CODE_ZNACHENIE_PREDAVANE_POSHTA and cc.reg.nachinPoluchavane ne DocuConstants.CODE_ZNACHENIE_PREDAVANE_EMAIL}" />
+								<p:inputText value="#{cc.reg.addrMailPoluchavane}" readonly="#{cc.attrs.readonly}" rendered="#{cc.reg.nachinPoluchavane ne null}"/>
+							</div>
+						
+						</div>
+						
+					</div>
+						
+					<div class="p-col-12" jsf:rendered="#{cc.reg.statusResultZaiavlenie eq DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_VPISAN}">
+						<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '##{cc.clientId}:zalichOtnemanePrekr')">
+							<h:outputText value="#{labels['compReg.zalichOtnemanePrekr']}" />
+							<i class="fas fa-caret-right"></i>
+						</p:commandLink>
+					</div>
+
+					<div jsf:id="zalichOtnemanePrekr" class="p-grid p-col-12 ui-fluid p-align-end" jsf:rendered="#{cc.reg.statusResultZaiavlenie eq DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_VPISAN}">					
+						
+						<!-- Статус на вписване -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2" jsf:rendered="#{cc.reg.statusResultZaiavlenie ne DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_V_RAZGLEJDANE}">
+							<h:outputText value="#{labels['compReg.statusVpisvane']}" styleClass="form-label req" />
+							<p:selectOneMenu id="statusVpisvane" value="#{cc.reg.statusVpisvane}" autoWidth="false" disabled="#{cc.attrs.readonly or (cc.reg.statusVpisvane ne null and cc.reg.statusVpisvane ne DocuConstants.CODE_ZNACHENIE_STATUS_REG_VPISAN) and !cc.changeStatusVpis}" >
+								<f:selectItem value="#{null}" itemValue="#{null}" />
+								<f:selectItems value="#{cc.statusiList}" var="statusV" itemLabel="#{statusV.tekst}" itemValue="#{statusV.code}" />
+								<p:ajax event="change" update="#{cc.clientId}:dataReg" listener="#{cc.actionChangeStatusVpisvane(false)}" />
+							</p:selectOneMenu>
+								
+						</div>
+						
+						<!-- Дата на статус -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-1" jsf:rendered="#{cc.reg.statusResultZaiavlenie ne DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_V_RAZGLEJDANE}">
+							<h:outputText value="#{labels['compReg.dateStatus']}" styleClass="form-label" />
+							<p:calendar id="dateStatusVp" value="#{cc.reg.dateStatusVpisvane}" pattern="dd.MM.yyyy" mask="true" locale="bg" styleClass="form-control" readonly="true" >
+	                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{cc.timeZone}"/>
+	                        </p:calendar>							
+						</div>			
+						
+						<!-- Основание за статус на вписване -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2" jsf:rendered="#{cc.reg.statusVpisvane ne null and not empty cc.reasonVpisvaneList}" jsf:id="reasonVp">
+							<h:outputText value="#{labels['compReg.reasonStatus']}" styleClass="form-label" />
+							<p:selectOneMenu id="reasonVpisvane" value="#{cc.reg.reasonVpisvane}" autoWidth="false" disabled="#{cc.attrs.readonly}">
+								<f:selectItem value="#{null}" itemValue="#{null}" />
+								<f:selectItems value="#{cc.reasonVpisvaneList}" var="reasonV" itemLabel="#{reasonV.tekst}" itemValue="#{reasonV.code}" />
+							</p:selectOneMenu>
+						</div>
+						
+						<!-- Основание за статус на вписване - текст -->
+						<div  class="#{cc.reg.statusVpisvane ne null and not empty cc.reasonVpisvaneList ? 'p-col-12 p-sm-12 p-md-12 p-lg-3' : 'p-col-12 p-sm-12 p-md-12 p-lg-5'}" jsf:rendered="#{cc.reg.statusVpisvane ne null and cc.reg.statusResultZaiavlenie ne DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_V_RAZGLEJDANE}">						
+							<h:outputText value="#{labels['compReg.reasonText']}" styleClass="form-label" />
+							<p:inputText id="reasonVpisvaneText" value="#{cc.reg.reasonVpisvaneText}" readonly="#{cc.attrs.readonly}"/>
+						</div>
+						
+						<!-- Рег. номер на заповедта за заличаване/отнемане/прекратяване -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2" jsf:rendered="#{cc.reg.statusVpisvane ne null and cc.reg.statusResultZaiavlenie ne DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_V_RAZGLEJDANE}">
+							<h:outputText value="#{labels['compReg.rnDocVpisvane']}" styleClass="form-label" />	
+							<p:inputText id="rnDocVpisvane" value="#{cc.reg.rnDocVpisvane}" readonly="#{(cc.reg.rnDocVpisvane ne null and cc.reg.rnDocVpisvane ne '') or cc.attrs.readonly}" >
+								<p:ajax event="blur" listener="#{cc.actionCheckExistZapByRegNumAndData}" update="#{cc.clientId}:regNumD"/>
+							</p:inputText>
+						</div>
+
+						<!-- Дата рег. на заповедта за заличаване/отнемане/прекратяване -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-2" jsf:rendered="#{cc.reg.statusVpisvane ne null and cc.reg.statusResultZaiavlenie ne DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_V_RAZGLEJDANE}">
+							<h:outputText value="#{labels['compReg.dateDocVpisvane']}" styleClass="form-label" />	
+							<div class="ui-inputgroup">
+							<p:calendar id="dateDocVpisvane" value="#{cc.reg.dateDocVpisvane}" pattern="dd.MM.yyyy" mask="true" locale="bg" styleClass="form-control" readonly="#{(cc.reg.dateDocVpisvane ne null and cc.reg.dateDocVpisvane ne '') or cc.attrs.readonly}" >
+	                            <f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{cc.timeZone}"/>
+	                        </p:calendar>							
+							<p:commandButton title="Изтриване на статус" action="#{cc.actionDeleteStatusVpisvane(false)}"  styleClass="ui-button-danger" icon="fas fa-remove" update="#{cc.clientId}:dataReg" />
+							</div>
+						</div>
+					
+					</div>
+					
+					<div class="p-grid  p-col-12 ui-fluid p-align-end" >
+						
+						<!-- Доп. инфо -->
+						<div class="p-col-12 p-sm-12 p-md-12 p-lg-12" jsf:rendered="#{cc.reg.statusResultZaiavlenie ne DocuConstants.CODE_ZNACHENIE_STATUS_ZAIAVLENIE_V_RAZGLEJDANE}">
+							<h:outputText value="#{labels['docu.dopInfo']}" styleClass="form-label" />
+							<p:inputTextarea id="dopInfo" value="#{cc.reg.dopInfo}" rows="3" readonly="#{cc.attrs.readonly}"/>
+						</div>
+						
+					</div>
+
+					<div class="p-grid p-align-end" jsf:rendered="#{cc.reg.id ne null}" >
+
+						<div class="p-col-12 p-md-12 p-lg-12" jsf:rendered="#{cc.etapExeList.rowCount > 0}">
+
+							<div class="p-col-12">
+								<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '##{cc.clientId}:etapsList')">
+									<h:outputText value="#{labels['compReg.etapsProc']}" />
+									<i class="fas fa-caret-right"></i>
+								</p:commandLink>
+							</div>
+
+							<div class="card p-grid ui-fluid" jsf:id="etapsList">
+
+								<p:dataTable id="tblEtapsList" var="row" value="#{cc.etapExeList}" rowIndexVar="idx" lazy="true"
+								 emptyMessage="#{ui_labels['general.norows']}" rows="5" sortMode="single" reflow="true" styleClass="ui-datatable-gridlines"
+								 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+								 rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom" paginatorAlwaysVisible="false" paginator="true" >			
+
+									<p:column width="5" exportable="false" headerText="#{ui_labels['general.No-symbol']}">
+										<h:outputText value="#{idx + 1}" />
+									</p:column>
+
+									<p:column width="15" sortBy="#{row.a1}"  headerText="#{labels['procExeEdit.numEtap']}">
+										<h:outputText value="#{row[1]}" />
+									</p:column>
+									
+									<p:column width="100" sortBy="#{row.a2}" headerText="#{labels['procDefEtapEdit.nameEtap']}">
+										<h:outputText value="#{row[2]}" />								
+									</p:column>	
+									
+									<p:column width="50" sortBy="#{row.a12}" headerText="#{labels['procExeEdit.controlEtap']}">
+										<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_ADMIN_STR, row[12], cc.lang, now)}" />
+									</p:column>
+									
+									<p:column width="35" sortBy="#{row.a11}" headerText="#{labels['procDefList.status']}">
+										<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_ETAP_STAT, row[11], cc.lang, now)}" />								
+									</p:column>
+									
+									<p:column width="25" sortBy="#{row.a8}" headerText="#{labels['procList.begin']}">
+										<h:outputText value="#{row[8]}" >
+											<f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="#{cc.timeZone}" />
+										</h:outputText>
+									</p:column>
+									
+									<p:column width="25" sortBy="#{row.a10}" headerText="#{labels['procList.end']}">
+										<h:outputText value="#{row[10]}" >
+											<f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="#{cc.timeZone}" />
+										</h:outputText>
+									</p:column>
+									
+									<p:column width="100" sortBy="#{row.a13}" headerText="#{labels['docDestruction.note']}" >
+										<h:outputText value="#{row[13]}" />
+									</p:column>		
+
+								</p:dataTable>
+
+							</div>
+						</div>
+
+						<div class="p-col-12 p-md-12 p-lg-12">
+
+							<div class="title-group">
+								<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '##{cc.clientId}:docsList')">
+									<h:outputText value="#{labels['compReg.docsVpisvane']}" />
+									<i class="fas fa-caret-right"></i>
+								</p:commandLink>
+								
+								<p:commandButton icon="fas fa-edit" value="#{labels['docu.titleNewDoc']}" styleClass="ui-button-success" action="#{cc.actionNewDoc}"
+									update="#{cc.clientId}:docDataReg" rendered="#{!cc.attrs.readonly}" />
+							</div>
+
+							<div class="card p-grid ui-fluid" jsf:id="docsList">
+
+								<p:dataTable id="tblDocsList" var="row" value="#{cc.docsList}" rowIndexVar="idx" emptyMessage="#{ui_labels['general.norows']}"
+									sortMode="single" reflow="true" styleClass="ui-datatable-gridlines">
+
+									<p:column width="5" exportable="false" headerText="#{ui_labels['general.No-symbol']}">
+										<h:outputText value="#{idx + 1}" />
+									</p:column>
+									
+									<p:column width="5" exportable="false" rendered="#{!cc.attrs.readonly}" >							
+										<p:commandButton icon="fas fa-edit" onclick="editDoc([{name: 'idDoc', value: '#{row[1]}'}])" ajax="true" styleClass="btn-new" />
+									</p:column>
+
+									<p:column width="5" exportable="false">
+										<p:button icon="fas fa-eye" href="docView.xhtml?faces-redirect=true" target="_blank" >
+											<f:param name="idObj" value="#{row[1]}" />
+										</p:button>
+									</p:column>
+									
+									<p:column width="60" headerText="#{labels['mmsCL.nomDocum']}">
+										<h:outputText value="#{row[4]}" />
+									</p:column>
+
+									<p:column width="40" headerText="#{labels['docu.docDate']}">
+										<h:outputText value="#{row[5]}" >
+											<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{cc.timeZone}" />
+										</h:outputText>
+									</p:column>									
+									
+									<p:column width="150" headerText="#{labels['docu.vid']}">
+										<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, row[2], cc.lang, now)}" />
+									</p:column>
+									
+									<p:column width="40" headerText="#{labels['docu.type']}">
+										<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_TYPE, row[3], cc.lang, now)}" />
+									</p:column>
+									
+									<p:column width="250" headerText="#{labels['docu.otnosno']}">
+										<h:outputText value="#{row[6]}" />
+									</p:column>
+									
+								</p:dataTable>
+								
+								<p:remoteCommand name="editDoc" action="#{cc.actionEditDoc}" update="#{cc.clientId}:docDataReg" />
+
+							</div>
+
+						</div>
+						
+						</div>
+						
+						<div jsf:rendered="#{cc.reg.id ne null and !cc.attrs.readonly}" >
+						
+						<div jsf:id="docDataReg"> 
+							<div jsf:rendered="#{cc.showDataForDoc}">
+								<div class="title-group">
+									<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '#basicDataForDoc')">
+										<h:outputText value="#{labels['compReg.basiDataDoc']}" />
+										<i class="fas fa-caret-right"></i>
+									</p:commandLink>
+								</div>
+					
+								<div id="basicDataForDoc">
+	
+									<p:toolbar styleClass="margin-bottom">
+										
+										<f:facet name="left">
+											<p:commandButton icon="fas fa-save" action="#{cc.actionSaveDoc(false)}" value="#{labels['compReg.saveDoc']}" update="#{cc.clientId}:docDataReg #{cc.clientId}:docsList #{cc.clientId}:rnDocResult #{cc.clientId}:dateDocResult #{cc.clientId}:rnDocVpisvane #{cc.clientId}:dateDocVpisvane #{cc.clientId}:dateStatusZ" 
+												partialSubmit="true" process="#{cc.clientId}:docDataReg #{cc.clientId}:docsList #{cc.clientId}:rnDocResult #{cc.clientId}:dateDocResult #{cc.clientId}:rnDocVpisvane #{cc.clientId}:dateDocVpisvane #{cc.clientId}:dateStatusZ @this" rendered="#{!cc.attrs.readonly}"/>
+										
+											<span class="fas fa-ellipsis-v SoftGray p-mx-2" jsf:rendered="#{cc.statusVpisvane eq DocuConstants.CODE_ZNACHENIE_STATUS_REG_VPISAN and cc.doc.id ne null and (cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_SPORT_LICENZ or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_FORMIROV or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_OBEKT or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_TREN_KADAR)}" />
+											
+											<p:commandButton icon="fas fa-copy" ajax="false" styleClass="ui-button-success" value="Генериране УД със същия рег. номер" action="#{cc.actionCreateUDWithSameRegNum(cc.doc.id, cc.doc.docVid)}" update="#{cc.clientId}:docDataReg #{cc.clientId}:tblDocsList" partialSubmit="true" process="#{cc.clientId}:docDataReg #{cc.clientId}:tblDocsList @this" 
+												rendered="#{cc.statusVpisvane eq DocuConstants.CODE_ZNACHENIE_STATUS_REG_VPISAN and cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_SPORT_LICENZ or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_FORMIROV or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_OBEKT or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_TREN_KADAR}"/>
+											
+											<span class="fas fa-ellipsis-v SoftGray p-mx-2" jsf:rendered="#{cc.statusVpisvane eq DocuConstants.CODE_ZNACHENIE_STATUS_REG_VPISAN and cc.doc.id ne null and (cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_SPORT_LICENZ or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_FORMIROV or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_OBEKT or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_TREN_KADAR)}" />
+											
+											<p:commandButton icon="fas fa-file" ajax="false" styleClass="ui-button-success" value="Генериране УД с нов рег. номер" action="#{cc.actionCreateUDWithNewRegNum(cc.doc.id)}" update="#{cc.clientId}:dataReg" partialSubmit="true" process="#{cc.clientId}:dataReg @this"
+												rendered="#{cc.statusVpisvane eq DocuConstants.CODE_ZNACHENIE_STATUS_REG_VPISAN and cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_SPORT_LICENZ or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_FORMIROV or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_OBEKT or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_TREN_KADAR}"/>
+											
+											<span class="fas fa-ellipsis-v SoftGray p-mx-2" jsf:rendered="#{cc.statusVpisvane eq DocuConstants.CODE_ZNACHENIE_STATUS_REG_VPISAN and cc.doc.id ne null and (cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_SPORT_LICENZ or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_FORMIROV or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_OBEKT or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_TREN_KADAR)}" />
+											
+											<p:commandButton icon="fas fa-clone" ajax="false" styleClass="ui-button-success" value="Дубликат на УД" action="#{cc.actionCreateUDDuplicate(cc.doc.id, cc.doc.docVid)}" update="#{cc.clientId}:docDataReg #{cc.clientId}:tblDocsList" partialSubmit="true" process="#{cc.clientId}:docDataReg #{cc.clientId}:tblDocsList @this"  
+												rendered="#{cc.statusVpisvane eq DocuConstants.CODE_ZNACHENIE_STATUS_REG_VPISAN and cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_SPORT_LICENZ or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_FORMIROV or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_OBEKT or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_TREN_KADAR}"/>
+										</f:facet>
+										
+										<f:facet name="right">	
+										
+										<p:commandButton id="btnSSEV" action="#{cc.actionSendSSEV}" styleClass="btn-new" icon="fas fa-file-alt" value="#{labels['compReg.btnSSEV']}" ajax="false" 
+											rendered="#{!cc.attrs.readonly and cc.reg.nachinPoluchavane eq DocuConstants.CODE_ZNACHENIE_PREDAVANE_SSEV and 
+											(cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_SPORT_LICENZ or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_FORMIROV
+											or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_OBEKT or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_TREN_KADAR)}" 
+											update="#{cc.clientId}:docDataReg" process="#{cc.clientId}:docDataReg @this" partialSubmit="true"/>
+										
+										<p:commandButton id="btnMail" oncomplete="PF('wvSendMail#{cc.clientId}').show();" styleClass="btn-new" icon="fas fa-file-alt" value="#{labels['compReg.btnMail']}" style="#{(cc.reg.addrMailPoluchavane eq null or cc.reg.addrMailPoluchavane.trim() eq '') ? 'display:none' : ''}"
+											rendered="#{!cc.attrs.readonly and cc.reg.nachinPoluchavane eq DocuConstants.CODE_ZNACHENIE_PREDAVANE_EMAIL and 
+											(cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_SPORT_LICENZ or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_FORMIROV
+											or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_OBEKT or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_TREN_KADAR)}"
+											update="#{cc.clientId}:pgSendMail" process="#{cc.clientId}:pgSendMail @this" partialSubmit="true" />
+																					
+										<span class="fas fa-ellipsis-v SoftGray p-mx-2" jsf:rendered="#{(cc.reg.nachinPoluchavane eq DocuConstants.CODE_ZNACHENIE_PREDAVANE_SSEV or cc.reg.nachinPoluchavane eq DocuConstants.CODE_ZNACHENIE_PREDAVANE_EMAIL) and 
+											(!cc.attrs.readonly and cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_SPORT_LICENZ or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_FORMIROV
+											or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_SPORT_OBEKT or cc.doc.docVid eq DocuConstants.CODE_ZNACHENIE_VID_DOC_UDOST_REG_TREN_KADAR)}" 
+											style="#{(cc.reg.nachinPoluchavane eq DocuConstants.CODE_ZNACHENIE_PREDAVANE_EMAIL and (cc.reg.addrMailPoluchavane eq null or cc.reg.addrMailPoluchavane.trim() eq '')) ? 'display:none' : ''}" />										
+																				
+											<p:commandButton icon="fas fa-times" action="#{cc.actionDeleteDoc}" update="#{cc.clientId}:dataReg" rendered="#{cc.doc.id ne null and !cc.attrs.readonly}"
+												value="#{labels['docu.titleDeleteDoc']}" styleClass="ui-button-danger" partialSubmit="true" process="#{cc.clientId}:dataReg @this"
+												onclick="if(!confirm('#{beanMessages['general.confirmDeleteMsg']}'))return false;" />												
+										</f:facet>
+									</p:toolbar>
+									
+									<div class="p-grid ui-fluid p-align-center">
+									
+										<!-- Рег. номер на документа -->
+										<div class="p-col-12 p-sm-12 p-md-12 p-lg-4">
+											
+											<h:outputText value="#{labels['docu.regNom']}" styleClass="form-label req" />
+											<div class="ui-inputgroup"> 
+												<p:inputText id="regNumD" value="#{cc.doc.rnDoc}" rendered="#{cc.doc.id eq null}"
+													readonly="#{cc.avtomNo}"  style="display:inline-block;" 
+													onkeypress="if(event.keyCode == 13) {event.preventDefault(); $(':focus').blur()} ">	
+													<p:ajax event="change"  listener="#{cc.actionCheckRegNumForDoc(cc.doc.rnDoc)}" />
+												</p:inputText>
+												
+												<p:inputText id="regNumDr" value="#{cc.doc.rnDoc}" rendered="#{cc.doc.id ne null}" readonly="true"/>	
+												<p:selectBooleanButton id="avtNom" value="#{cc.avtomNo}"  
+													disabled="#{cc.avtomNoDisabled}"
+												    onLabel="#{ui_labels['general.yes']}" 
+													offLabel="#{ui_labels['general.no']}"
+													rendered="#{cc.doc.id eq null}" 
+													title="#{labels['docu.avtomRegNom']}" 
+												    onIcon="fas fa-toggle-on"   
+													offIcon="fas fa-toggle-off" 
+													styleClass="inputgroup-button">	
+													<p:ajax update="#{cc.clientId}:regNumD @this" partialSubmit="true"
+														process="#{cc.clientId}:regNumD @this"
+														listener="#{cc.actionChangeAvtomNo}"
+														oncomplete="$(function(){PrimeFaces.focus('#{cc.clientId}:regNumD');});"/>											
+												</p:selectBooleanButton>
+											</div> 
+										</div>
+					
+										<!-- Дата рег. на документа -->
+										<div class="p-col-12 p-sm-12 p-md-12 p-lg-1">
+											<h:outputText value="#{labels['docu.docDatReg']}" styleClass="form-label req" />
+											<p:datePicker id="datDocD" pattern="dd.MM.yyyy" mask="true" showIcon="false" locale="bg"  
+									         	value="#{cc.doc.docDate}" styleClass="form-control"  readonly="#{cc.attrs.readonly}" >
+									        </p:datePicker>
+										</div>					
+										
+										<!-- Вид на документа -->
+										<div class="p-col-12 p-sm-12 p-md-12 p-lg-7">
+											<h:outputText value="#{labels['docu.vid']}" styleClass="form-label req" />
+											<p:remoteCommand name="cmdChangeDocVid" actionListener="#{cc.actionChangeVidDoc}"
+												update="#{cc.clientId}:dataForDoc" partialSubmit="true" process="#{cc.clientId}:dataForDoc @this" />
+											<ibg:selectOneModalA id="dVid"  codeClassif="#{DocuConstants.CODE_CLASSIF_VID_DOC_VPISVANE}"
+												dateClassif="#{now}" filtered="false" minQueryLength="2" readonly="#{cc.doc.id ne null and cc.attrs.readonly}"
+												selectedCode="#{cc.doc.docVid}" styleAutoComp="" saveStateTree="true" 
+												header="#{labels['docu.vid']}" withBtnClear="true" compType="2" onComplete="cmdChangeDocVid()" onClear="cmdChangeDocVid()"/>
+										</div>									
+					
+										<div jsf:id="dataForDoc" class="p-grid p-col-12 ui-fluid p-align-center"> 
+										<!-- Относно - анотация -->
+										<div class="p-col-12 p-sm-12 p-md-12 p-lg-12">
+											<h:outputText value="#{labels['docu.otnosno']}" styleClass="form-label req" />
+											<p:inputTextarea id="otnosno" value="#{cc.doc.otnosno}" rows="3" readonly="#{cc.attrs.readonly}"/>
+										</div>
+										
+										<!-- Изготвил документа -->
+										<div class="p-col-12 p-sm-12 p-md-12 p-lg-6">						
+											<h:outputText value="#{labels['compReg.preparedDoc']}" styleClass="form-label" rendered="#{cc.doc.docType ne null and cc.doc.docType ne DocuConstants.CODE_ZNACHENIE_DOC_TYPE_IN}"/>
+											
+											<ibg:selectReferents id="preparedDoc" filtered="false"
+												typeRef="#{DocuConstants.CODE_ZNACHENIE_DOC_REF_ROLE_AUTHOR}"
+												maxResults="50" styleAutoComp="" rendered="#{cc.doc.docType ne null and cc.doc.docType ne DocuConstants.CODE_ZNACHENIE_DOC_TYPE_IN}"
+												codeClassif="#{DocuConstants.CODE_CLASSIF_ADMIN_STR}"
+												dateClassif="#{now}" idDoc="#{cc.doc.id}" saveStateTree="false"
+												showRadioBtn="fasle" isSelectNode="true" readonly="#{cc.attrs.readonly}"
+												selectedReferents="#{cc.doc.referentsAuthor}"
+												withBtnClear="true" header="#{labels['compReg.preparedDoc']}" 
+												headerSelectedValues="#{labels['compReg.preparedDoc']}" />																							
+										</div>
+										
+										<!-- Подписал документа -->
+										<div class="p-col-12 p-sm-12 p-md-12 p-lg-6">						
+											<h:outputText value="#{labels['compReg.signatureDoc']}" styleClass="form-label" rendered="#{cc.doc.docType ne null and cc.doc.docType ne DocuConstants.CODE_ZNACHENIE_DOC_TYPE_IN}"/>
+												
+											<ibg:selectReferents id="signatureDoc" filtered="false"
+												typeRef="#{DocuConstants.CODE_ZNACHENIE_DOC_REF_ROLE_SIGNED}"
+												maxResults="50" styleAutoComp="" rendered="#{cc.doc.docType ne null and cc.doc.docType ne DocuConstants.CODE_ZNACHENIE_DOC_TYPE_IN}"
+												codeClassif="#{DocuConstants.CODE_CLASSIF_ADMIN_STR}"
+												dateClassif="#{now}" readonly="#{cc.attrs.readonly}"
+												idDoc="#{cc.doc.id}" saveStateTree="false"
+												showRadioBtn="false" isSelectNode="false" 
+												selectedReferents="#{cc.doc.referentsSigned}" withBtnClear="true"
+												header="#{labels['compReg.signatureDoc']}"
+												headerSelectedValues="#{labels['compReg.signatureDoc']}"  />																	
+										</div> 	
+										</div>				
+											
+									</div>																										
+													
+								</div>
+								
+								<!-- Файлове -->
+								<div jsf:id="files" class="p-col-12 p-sm-12 p-md-12 p-lg-12">
+									<p:remoteCommand name="cmdChangeFiles" actionListener="#{cc.actionCheckExistFileForUD}"
+										update="#{cc.clientId}:docDataReg" partialSubmit="true" process="#{cc.clientId}:docDataReg @this" />											
+									<ibg:compMMSFileUpload listObj="#{cc.filesList}" idObj="#{cc.doc.id}" saveFirst="#{cc.doc.id eq null or cc.attrs.readonly }" 
+									codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_DOC}" autoSave="true" btnLabel="#{ui_labels['files.new']}"  
+									headerLabel="#{ui_labels['general.files']}" header="true" view="false" onComplete="cmdChangeFiles()" showBtnNew="#{cc.viewBtnViewFile}"/>
+								</div>	
+								
+							</div>						
+						
+						</div>
+						
+					</div>
+
+				</div> 					
+			
+			</div>
+
+		</div>
+
+		<h:panelGroup id="pgSendMail">
+
+			<p:dialog appendTo="@form" closeOnEscape="true" header="#{labels['compReg.btnMail']}" fitViewport="true" resizable="true"
+				responsive="true" style="margin-top:0px !important" position="top" widgetVar="wvSendMail#{cc.clientId}" id="idSendMail" modal="true">
+
+				<div class="container #{guestPreferences.containerPosition}">
+
+					<ibg:sendMail email="#{cc.reg.addrMailPoluchavane}" codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_REGISTRATION}" 
+								  onComplete="#{cc.closeSendMail}" readonly="#{cc.attrs.readonly}" codeSluj="#{userData.userId}"/>
+
+				</div>
+
+			</p:dialog>
+		
+		</h:panelGroup>
+
+	</cc:implementation>
+
+</ui:composition>

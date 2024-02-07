@@ -1,0 +1,124 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:jsf="http://xmlns.jcp.org/jsf"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:cc="http://java.sun.com/jsf/composite"
+	  xmlns:ibg="http://java.sun.com/jsf/composite/components" > 	  	  
+
+<cc:interface componentType="compRegixReports">
+   		 
+   <cc:attribute name="dateClassif"  type="java.util.Date"    shortDescription="Дата, към която да се заредят класификации и за разкодиране. По подразбиране - днешна дата." /> 
+   <cc:attribute name="modal"  type="java.lang.Boolean" shortDescription="Обработката е в модален диалог(true) или не(false)." default="true" />
+
+</cc:interface>
+
+<cc:implementation>
+
+ <f:event type="preRenderComponent" listener="#{cc.initCmp()}" /> <!--  За да се инициализира компонентата-->
+		
+		<div class="container #{guestPreferences.containerPosition}">
+		
+			<h:panelGroup id="msgPanel">					
+				<h:outputText value=" #{cc.errMsg}" styleClass="form-label" id="errMsg" style="color:red" escape="false" />					
+			</h:panelGroup>
+					
+			<h:panelGroup id="panelFilterRegix" >
+				<div class="card">
+					<div class="p-grid ui-fluid p-align-end">			
+		
+						<div class="p-col-12 p-md-12 p-lg-10 p-xl-10" > 
+							<h:outputText value="#{labels['compRegix.izborSpravka']}" styleClass="form-label" />
+							<p:selectOneMenu id="vidSpr" value="#{cc.vidSpr}" >	
+								 <f:selectItem value="#{null}" itemValue="#{null}" />	 	
+								 <f:selectItems value="#{cc.sprList}" var="spr" itemLabel="#{spr.label}" itemValue="#{spr.value}" />		
+								 <p:ajax event="change" update="egnEikGroup,btnSearch,panelRezult,ident,prag, msgPanel" listener="#{cc.changeSpr}"	/>		     
+							</p:selectOneMenu>	
+						</div> 
+						
+						<div class="p-col-12 p-md-6 p-lg-4 p-xl-4 p-align-end" jsf:id="ident" >	
+						    <h:outputText value="#{labels['audit.identificator']}" rendered="#{cc.vidSpr==4 or cc.vidSpr==5 or cc.vidSpr==6}" styleClass="form-label" />
+							<p:selectOneRadio id="identRadio" value="#{cc.ident}"   columns="2" rendered="#{cc.vidSpr==4 or cc.vidSpr==5 or cc.vidSpr==6}">
+								<f:selectItems value="#{cc.identList}" var="ident" itemLabel="#{ident.label}" itemValue="#{ident.value}" />								
+								<p:ajax event="change" update="egnEikGroup,btnSearch" listener="#{cc.changeIdent}"/>						
+							</p:selectOneRadio>	
+						</div>	
+				
+						<div class="p-col-12 p-md-6 p-lg-3 p-xl-3 p-align-end" jsf:id="prag" > 
+							<h:outputText value="#{labels['regixReport.prag']}" styleClass="form-label" rendered="#{cc.vidSpr==4}" />
+							<p:inputNumber id="pragInput" value="#{cc.prag}" rendered="#{cc.vidSpr==4}" minValue="0" />
+							
+							<!-- за справки 5 и 6 лейбълите са различни,ползва се едно и също поле docNum -->
+							<h:outputText value="#{labels['regixReport.nomerDoc']}" styleClass="form-label" rendered="#{cc.vidSpr==5}" />
+							<h:outputText value="#{labels['compRegix.regNomerDoc']}" styleClass="form-label" rendered="#{cc.vidSpr==6}" />
+							<p:inputText id="nomerDoc" value="#{cc.docNum}" rendered="#{cc.vidSpr==5 or cc.vidSpr==6}"/>											
+						</div>
+				
+						<div class="p-col-12 p-md-12 p-lg-5 p-xl-5" > 
+						</div>
+				
+						<div class="p-col-12 p-md-6 p-lg-3 p-xl-3 p-align-end" jsf:id="egnEikGroup"> 
+							<!-- За егн,еик,служебен номер,друг вид идентификатор, се ползва едно и също поле  с различни лейбъли-->
+							<h:outputText value="#{ui_labels['general.egn']}" rendered="#{cc.vidSpr==2 or cc.vidSpr==3 or ((cc.vidSpr==4 or cc.vidSpr==5 or cc.vidSpr==6) and cc.ident=='1')}"  styleClass="form-label" />
+							<h:outputText value="#{ui_labels['general.eik']}" rendered="#{cc.vidSpr==1 or cc.ident=='3'}"  styleClass="form-label" />
+							<h:outputText value="#{labels['mmsCoach.lnch']}" rendered="#{(cc.vidSpr==4 or cc.vidSpr==5 or cc.vidSpr==6) and cc.ident=='2'}" styleClass="form-label" />
+							<h:outputText value="#{labels['regixReport.slujNom']}" rendered="#{(cc.vidSpr==5) and cc.ident=='4'}" styleClass="form-label" />
+							<h:outputText value="#{labels['compRegix.drugIdent']}" rendered="#{(cc.vidSpr==6) and cc.ident=='4'}" styleClass="form-label" />
+							<p:inputText id="egn" value="#{cc.egnEik}" rendered="#{cc.vidSpr==2 or cc.vidSpr==3 or ((cc.vidSpr==4 or cc.vidSpr==5 or cc.vidSpr==6) and cc.ident=='1')}" maxlength="10" onkeyup="onlyNumbersNoRestr('egn')">
+									
+							</p:inputText>
+							<p:inputText id="eik" value="#{cc.egnEik}" rendered="#{cc.vidSpr==1 or cc.ident=='3'}" maxlength="13">		
+								
+							</p:inputText>
+							<p:inputText id="lnch" value="#{cc.egnEik}" rendered="#{(cc.vidSpr==4 or cc.vidSpr==5 or cc.vidSpr==6) and cc.ident=='2'}" maxlength="10">		
+								
+							</p:inputText>		
+							<p:inputText id="slujNom" value="#{cc.egnEik}" rendered="#{(cc.vidSpr==5 or cc.vidSpr==6) and cc.ident=='4'}" >	
+								
+							</p:inputText>	
+							<ui:remove>	
+									<p:ajax event="change" update="btnSearch, msgPanel" 	listener="#{cc.changeEgn}"/>
+									<p:ajax event="change" update="btnSearch, msgPanel" listener="#{cc.changeEik}"/>		
+									<p:ajax event="change" update="btnSearch, msgPanel" listener="#{cc.changeLnch}"/>		
+									<p:ajax event="change" update="btnSearch,msgPanel" listener="#{cc.changeSlujNom}"/>		
+							</ui:remove>			
+						</div>							
+					</div>
+									
+					<div class="filter-buttons" jsf:id="btnSearch">
+					    <!-- rendered="#{cc.vidSpr ne null and cc.egnEik ne null and cc.egnEik ne ''}" -->
+						<p:commandButton id="searchBtn" icon="fas fa-search" action="#{cc.actionSearch}" 
+						 update="panelRezult msgPanel" value="#{labels['general.search']}"  />	
+					</div>
+					
+				</div>
+			</h:panelGroup>
+		</div>
+		
+		<div styleClass="margin-top">
+		   	<div class="p-col-12 p-sm-12 p-md-12 p-lg-12">	
+		   		<h:outputText value=""/>	
+		   	</div>
+	   	</div>
+	    
+		<h:panelGroup id="panelRezult" styleClass="margin-top"  >
+		
+			<h:panelGroup layout="block" styleClass="card" rendered="#{cc.result ne null and cc.result ne ''}">		
+				<div styleClass="margin-top">		        																														
+					<div class="table-toolbar">
+						<h:outputText value="#{labels['compReg.result']}" styleClass="form-label" />
+					</div>
+			
+					<div class="p-col-12 p-sm-12 p-md-12 p-lg-12">					
+						<h:outputText id="rez" value="#{cc.result}" escape="false"/>
+					</div>
+				</div>		   		
+			</h:panelGroup>
+			
+		</h:panelGroup>
+
+</cc:implementation>
+
+</ui:composition>

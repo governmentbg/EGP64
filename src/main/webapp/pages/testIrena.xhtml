@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:jsf="http://xmlns.jcp.org/jsf"	  
+	  xmlns:ibg="http://java.sun.com/jsf/composite/components"
+	  template="/template/template.xhtml"> 
+         
+      <ui:define name="metadata">
+			<f:metadata>
+				<f:importConstants type="com.ib.docu.system.DocuConstants" />
+						
+			</f:metadata>		
+	  </ui:define>       
+	
+    <ui:define name="content">
+        <h:form id="testForm">
+         
+                <div class="card">
+                
+  
+	                 <!-- Файлове -->
+	               
+					<div jsf:id="files" class="p-col-12 p-sm-12 p-md-6 p-lg-12 p-xl-12">		
+			
+						<ibg:compMMSFileUpload listObj="#{testIrena.filesList}" headerLabel="#{ui_labels['general.files']}" showBtnNew="#{testIrena.filesList==null or testIrena.filesList.size()==0}"
+									codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_DOC}" header="true" view="false"
+									idObj="#{testIrena.doc.id}"	btnLabel="#{ui_labels['files.new']}" saveFirst="#{testIrena.doc.id==null}"
+									autoSave="true" id="filesDoc" />	
+					   
+	               </div>
+	                             
+	               <div jsf:id="cmpRegix" class="p-col-12 p-sm-12 p-md-6 p-lg-12 p-xl-12">	
+	               		            		
+	                <!-- Справки RegiX в модален прозорец -->		
+	               		<p:commandButton value="#{labels['regixReport.title']}"
+												partialSubmit="true" process="@this"
+												oncomplete="PF('dialog-compRegix').show();" update="testForm:dialogCompRegix"
+												title="#{labels['regixReport.title']}" />
+	    
+	               </div>
+	               
+	              
+	              
+	               <div jsf:id="cmpAddField" class="p-col-12 p-sm-12 p-md-6 p-lg-12 p-xl-12">	
+	               
+	                <!-- Добавяне на полета към обект -->	
+	                 <ibg:compMMSAddFields idObj="10" codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORTS_FORMATIONS}" readonly="false"/>
+	                 
+	                 
+	               </div>
+	              
+                </div>
+              
+				<p:dialog appendTo="@form" widgetVar="dialog-compRegix" closeOnEscape="true" header="#{labels['regixReport.title']}" 
+					    fitViewport="true" responsive="true" resizable="true" positionType="fixed" position="center"
+					    modal="true" dynamic="true">
+				    	<div jsf:id="dialogCompRegix" class="container #{guestPreferences.containerPosition}">
+				    		<ibg:compRegixReports modal="true" />
+				    	</div>
+				</p:dialog>
+				
+				 <ui:remove>
+					
+	               		<p:commandButton value="Допълнителни полета"
+												partialSubmit="true" process="@this" 
+												oncomplete="PF('dialog-addFields').show();" update="testForm:dialogAddFields"
+												title="#{labels['regixReport.title']}" />
+	     			
+					<p:dialog appendTo="@form" widgetVar="dialog-addFields" closeOnEscape="true" header="Добавяне на полета" 
+						    fitViewport="true" responsive="true" resizable="true" positionType="fixed" position="center"
+						    modal="true" dynamic="true">
+					    	<div jsf:id="dialogAddFields" class="container #{guestPreferences.containerPosition}">
+					    		<ibg:compMMSAddFields idObj="10" readonly="true" codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_SPORTS_FORMATIONS}"/>
+					    	</div>
+					</p:dialog>
+				</ui:remove>
+         
+        </h:form>
+    </ui:define>
+
+</ui:composition>

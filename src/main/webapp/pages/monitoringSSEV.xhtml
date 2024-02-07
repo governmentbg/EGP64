@@ -1,0 +1,378 @@
+<ui:composition 
+ 		xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core" 
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui" 
+		xmlns:jsf="http://xmlns.jcp.org/jsf"
+		xmlns:ibg="http://java.sun.com/jsf/composite/components"
+		template="/template/template.xhtml">
+		
+		<ui:define name="metadata">
+			<f:metadata>
+				<f:importConstants type="com.ib.docu.system.DocuConstants" />
+						
+			</f:metadata>		
+		</ui:define>
+		
+		<ui:define name="title">#{navTexts['/pages/monitoringSSEV.xhtml']}</ui:define>
+		
+		<ui:define name="viewname">   
+			     
+	        <li>#{navTexts['/pages/monitoringSSEV.xhtml']}</li>
+	    </ui:define> 
+    
+		<ui:define name="content">	
+			<h:form id="msgForm">	
+ 				<div class="container #{guestPreferences.containerPosition}">
+					<!-- FILTER -->	
+					<h:panelGroup id="panelFilterMsg" >
+						<div class="card">
+							<div class="p-grid ui-fluid p-align-end">	
+							
+								<!--Период-->	
+								<div  class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-4  ui-fluid">
+									<h:outputText value="#{labels['journal.period']}" styleClass="form-label"/>
+									<p:selectOneMenu id="idPeriod" value="#{monitoringSSEV.period}">
+									     <f:selectItem value="#{null}" itemValue="#{null}"/>
+									     <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_PERIOD_NOFUTURE, now, monitoringSSEV.currentLang)}" 
+									         var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />
+									     <p:ajax event="change" update="idPeriod dateOtReg dateDoReg" listener="#{monitoringSSEV.changePeriod}"/>   
+								    </p:selectOneMenu>
+							   </div>
+							   
+							   <div  class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-2  ui-fluid">																	
+									<h:outputText value="#{ui_labels['general.dataOt']}" styleClass="form-label"/>
+									<p:datePicker id="dateOtReg" pattern="dd.MM.yyyy" mask="true"  showIcon="true"  locale="bg"  
+										value="#{monitoringSSEV.dateOt}"  >
+										<p:ajax event="change" update="idPeriod" listener="#{monitoringSSEV.changeDate}"/>
+										<p:ajax event="dateSelect" update="idPeriod" listener="#{monitoringSSEV.changeDate}"/>      
+									 </p:datePicker>
+							   </div>
+														
+							   <div  class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-2  ui-fluid">
+									<h:outputText value="#{ui_labels['general.dataDo']}" styleClass="form-label"/>
+									<p:datePicker id="dateDoReg" pattern="dd.MM.yyyy" mask="true" showIcon="true" locale="bg" 
+										value="#{monitoringSSEV.dateDo}"  >
+										<p:ajax event="change" update="idPeriod" listener="#{monitoringSSEV.changeDate}"/>   
+										<p:ajax event="dateSelect" update="idPeriod" listener="#{monitoringSSEV.changeDate}"/>   
+									</p:datePicker>												    
+							   </div>	
+						   		
+						   		<!--Статус на заявлението-->	
+						
+								<div  class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-4  ui-fluid">
+									
+									<h:outputText value="#{labels['compReg.statusZaiavlenie']}" styleClass="form-label"/>
+										<p:selectOneMenu id="statusMsg" value="#{monitoringSSEV.status}">
+										    <f:selectItem value="#{null}" itemValue="#{null}"/>
+										    <f:selectItems value="#{monitoringSSEV.msgStatusList}"/>
+									</p:selectOneMenu>
+								  
+							  	</div>	
+							  	
+							  	<!--Вид документ-->	
+						
+								<div  class="p-col-12 p-sm-12 p-md-12 p-lg-6 p-xl-6  ui-fluid">
+									
+									<h:outputText value="#{labels['docVidSetting.typeDoc']}" styleClass="form-label"/>
+										<p:selectOneMenu id="vidDoc" value="#{monitoringSSEV.selectedVidDoc}">
+										    <f:selectItem value="#{null}" itemValue="#{null}"/>
+										    <f:selectItems value="#{monitoringSSEV.docVidSelectItem}"/>
+									</p:selectOneMenu>
+								  
+							  	</div>	
+							  	
+							  	<!--Входящ номер-->	
+						
+								<div  class="p-col-12 p-sm-12 p-md-12 p-lg-2 p-xl-2  ui-fluid">
+									
+									<h:outputText value="#{labels['monitoringSSEV.vhNom']}" styleClass="form-label"/>
+									<p:inputText id="рrnDoc" value="#{monitoringSSEV.rnDoc}"/>	
+								  
+							  	</div>													   				   
+							  						 								 															
+						</div>
+							
+						<div class="filter-buttons" >
+									<p:commandButton id="btnSearch" icon="fas fa-search" action="#{monitoringSSEV.actionSearch}" update="msgForm:panelRezult" value="#{labels['general.search']}" styleClass="p-mr-2"/>																													
+									<p:defaultCommand target="btnSearch" scope="panelFilterMsg" />
+									
+									<p:commandButton icon="fas fa-eraser"  value="#{ui_labels['general.clear']}"
+											id="btnClear" update="panelFilterMsg panelRezult" partialSubmit="true"
+											process="@this panelRezult" actionListener="#{monitoringSSEV.actionClearFilter}"
+							 				styleClass="ui-button-warning" /> 									
+						</div>
+					</div>	
+				</h:panelGroup>		
+				</div>
+					<h:panelGroup id="panelRezult"  layout="block" styleClass="margin-top" >
+						<h:panelGroup layout="block" styleClass="card" rendered="#{monitoringSSEV.msgList!=null}">
+								        																														
+							<div class="table-toolbar">
+								<h:outputText value="#{ui_labels['general.reportResult']} #{monitoringSSEV.msgList.rowCount}" styleClass="form-label" />
+							</div>
+								
+							<p:dataTable id="tableMsg" var="row" value="#{monitoringSSEV.msgList}" lazy="true" rowIndexVar="idx" sortMode="single"
+									emptyMessage="#{ui_labels['general.norows']}" reflow="true" styleClass="ui-datatable-gridlines"
+									paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+									rows="20" rowsPerPageTemplate="5,15,20,25" paginatorPosition="bottom" paginatorAlwaysVisible="#{monitoringSSEV.msgList.rowCount>20}" paginator="true">
+									
+						    <f:facet name="{Exporters}">
+						
+					            <div style="float:left">
+						            <p:commandLink id="excel" update="tableMsg" process="tableMsg" partialSubmit="true" rendered="#{monitoringSSEV.msgList.rowCount le DocuConstants.ROW_LIMITS_REPORTS}">
+						        			<h:graphicImage library="images" name="excel2.png" />
+						        			<p:dataExporter type="xls" target="tableMsg" fileName="msgList"	
+						        			postProcessor="#{monitoringSSEV.postProcessXLS}" />
+						    		</p:commandLink>
+						
+						    		<p:commandLink id="pdf" update="tableMsg" process="tableMsg" partialSubmit="true" rendered="#{monitoringSSEV.msgList.rowCount le DocuConstants.ROW_LIMITS_REPORTS}">
+						        	 	  <h:graphicImage library="images" name="pdf.png" />
+						        	 	   <p:dataExporter type="pdf"   target="tableMsg" fileName="msgList" 	 encoding="windows-1251"
+					        				  preProcessor="#{monitoringSSEV.preProcessPDF}" options="#{monitoringSSEV.pdfOptions()}"/>	
+						        	</p:commandLink> 
+						  
+					            </div>
+					       	</f:facet>	
+				       	
+	
+								<p:column width="10"  headerText="#{ui_labels['general.No-symbol']}">
+									<h:outputText value="#{idx + 1}" />
+								</p:column>	
+								
+								<p:column  width="30" exportable="false" >	
+									<p:commandButton rendered="#{row[1] ne null and row[8]==null and row[7]=='DS_WAIT_REGISTRATION'}" 
+										icon="fas fa-edit" action="#{monitoringSSEV.actionGoto(row)}" ajax="false" title="Регистрация">																		
+									</p:commandButton>
+									
+									<p:commandButton type="button"   icon="fas fa-lock"  id="lockButton" ajax="false" alt="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_ADMIN_STR, row[8], monitoringSSEV.currentLang, now)}"
+									   title="#{beanMessages['monitoringSSEV.locked']}#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_ADMIN_STR, row[8], monitoringSSEV.currentLang, now)}"   
+					 				   rendered="#{row[8]!=null}" styleClass="ui-button-secondary"/>
+							 		<p:tooltip for="lockButton">
+							 			#{beanMessages['monitoringSSEV.locked']} #{systemData.decodeItem(DocuConstants.CODE_CLASSIF_ADMIN_STR, row[8], monitoringSSEV.currentLang, now)} на 
+							 			<h:outputText value="#{row[11]}" >
+							 				<f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="#{monitoringSSEV.timeZone}"/>
+							 			</h:outputText>
+							 		</p:tooltip>
+					 		
+									<ui:remove>
+										<p:commandButton rendered="#{row[1] ne null and row[7] ne 'DS_WAIT_REGISTRATION'}" oncomplete="PF('dialogChangeStatus').show();" update="msgForm:panelChangeStatus"
+											icon="fas fa-pen-nib" action="#{monitoringSSEV.actionSelectZaiavlenie(row)}" ajax="true" title="#{labels['monitoringSSEV.changeStatus']}">	
+																										
+										</p:commandButton>	
+										
+									</ui:remove>										
+								</p:column>
+								
+								<p:column  width="30" exportable="false" >	
+										
+									<p:commandButton rendered="#{row[1] ne null}" oncomplete="PF('dialogViewMessage').show();" update="msgForm:panelViewMessage"
+										icon="fas fa-eye" action="#{monitoringSSEV.actionSelectZaiavlenie(row)}" ajax="true" title="#{labels['monitoringSSEV.view']}">	
+																									
+									</p:commandButton>	
+																			
+								</p:column>
+											
+								<p:column width="*" sortBy="#{row.a1}" headerText="#{labels['monitoringSSEV.vidZaiavlenie']}">
+									<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, row[1], monitoringSSEV.currentLang, now)}" />								
+															
+								</p:column>
+								
+								<p:column width="140" sortBy="#{row.a3}" headerText="#{labels['monitoringSSEV.vhNom']}">
+									<h:outputText value="#{row[3]}" />							
+								</p:column>
+									
+								<p:column width="150" sortBy="#{row.a4}" headerText="#{labels['docDestrucList.dateInclProt']}">								
+									<h:outputText value="#{row[4]}" >
+										<f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="#{monitoringSSEV.timeZone}"/>
+									</h:outputText>								
+								</p:column>
+								
+								<p:column width="*" sortBy="#{row.a6}" headerText="#{labels['docDoc.otnosno']}">
+									<h:outputText value="#{row[6]}" />
+													
+								</p:column> 
+								
+								<p:column width="150" sortBy="#{row.a5}" headerText="#{labels['index.status']}">
+									<h:outputText value="#{row[5]}" />
+													
+								</p:column> 
+							
+								<ui:remove>		
+								<p:column width="350" sortBy="#{row.a3}" headerText="#{labels['monitoringSSEV.imena']}">
+									<h:outputText value="#{row[3]}" />
+													
+								</p:column>
+								
+								<p:column width="180"  sortBy="#{row.a4}" headerText="#{labels['monitoringSSEV.egnEik']}">
+									<h:outputText value="#{row[4]}" />
+								</p:column>
+								
+								<p:column width="150" sortBy="#{row.a2}" headerText="#{labels['monitoringSSEV.dataPodavane']}">								
+									<h:outputText value="#{row[2]}" >
+										<f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="#{monitoringSSEV.timeZone}"/>
+									</h:outputText>								
+								</p:column>
+				
+								</ui:remove>
+								
+								
+																																											
+							</p:dataTable>								
+						
+					</h:panelGroup>
+					</h:panelGroup>	
+																										
+				<!-- Смяна на статус -->	
+				<p:dialog appendTo="@form" widgetVar="dialogChangeStatus" closeOnEscape="true" header="#{labels['monitoringSSEV.changeStatus']}" 
+						    fitViewport="true" responsive="true" resizable="true" positionType="fixed" position="center" modal="true" dynamic="true">
+					    	<div jsf:id="panelChangeStatus" class="container #{guestPreferences.containerPosition}">
+				    							
+								<p:toolbar styleClass="margin-bottom" id="msgAndSave">
+									<f:facet name="left">
+										<p:commandButton value="#{ui_labels['general.save']}" icon="fas fa-save" id="btnSave" 
+												partialSubmit="true" actionListener="#{monitoringSSEV.actionSaveStatus}" process="@this msgForm:panelChangeStatus" update="msgForm:panelRezult">
+										</p:commandButton>
+			                     		
+									</f:facet>
+								</p:toolbar>
+								
+								<div class="p-grid ui-fluid ">	
+								
+									<div  class="p-col-12 p-sm-12 p-md-6 p-lg-12 p-xl-12 ">
+										<h:outputText value="#{labels['monitoringSSEV.vhNom']}: " styleClass="form-label"/>
+										<h:outputText value="#{monitoringSSEV.egovMess.docRn}" />
+									</div>
+									<!--Статус на съобщението-->	
+							
+									<div  class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-4 ">
+										
+										<h:outputText value="#{labels['docWSStatus.statusMsg']}" styleClass="form-label"/>
+											<p:selectOneMenu id="statusMsgChange" value="#{monitoringSSEV.egovMess.msgStatus}">										   
+											    <f:selectItems value="#{monitoringSSEV.msgStatusList}"/>
+											    
+										</p:selectOneMenu>
+									  
+								  	</div>	
+					    		</div>
+
+							</div>					
+				</p:dialog>	
+				
+				<!-- Разглеждане на заявление -->	
+				<p:dialog appendTo="@form" widgetVar="dialogViewMessage" closeOnEscape="true" header="#{labels['monitoringSSEV.zaiavlenie']}" 
+						    fitViewport="true" responsive="true" resizable="true" positionType="fixed" position="center" modal="true" dynamic="true">
+					    	<div jsf:id="panelViewMessage" class="container #{guestPreferences.containerPosition}">
+				    							
+								<p:toolbar styleClass="margin-bottom" id="saveToolbar" >
+									<f:facet name="left">
+										<p:commandButton value="#{ui_labels['general.save']}" icon="fas fa-save" id="btnSaveView" rendered="#{monitoringSSEV.lockOk}"
+												partialSubmit="true" actionListener="#{monitoringSSEV.actionSaveStatus}" process="@this msgForm:panelRezult" update="msgForm:panelRezult">
+										</p:commandButton>
+										
+										<p:commandButton type="button"   icon="fas fa-lock"  id="lockButtonModal" ajax="false" alt="#{monitoringSSEV.lockFrom}"
+										   title="#{beanMessages['monitoringSSEV.locked']}#{monitoringSSEV.lockFrom}"   
+						 				   rendered="#{!monitoringSSEV.lockOk}" styleClass="ui-button-secondary"/>
+								 		<p:tooltip for="lockButtonModal">
+								 			#{beanMessages['monitoringSSEV.locked']} #{monitoringSSEV.lockFrom}  								 			
+								 		</p:tooltip>
+							 		
+			                     		
+									</f:facet>
+								</p:toolbar>
+								
+								<div class="p-grid ui-fluid ">	
+								
+									<!--Входящ номер-->
+									<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+										<h:outputText value="#{labels['monitoringSSEV.vhNom']} " styleClass="form-label"/>
+										<p:inputText value="#{monitoringSSEV.egovMess.docRn}" readonly="true"/>
+									</div>
+									
+									<!--Статус на заявлението-->								
+									<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">										
+										<h:outputText value="#{labels['compReg.statusZaiavlenie']}" styleClass="form-label"/>
+											<p:selectOneMenu id="statusMsgView" value="#{monitoringSSEV.egovMess.msgStatus}">										   
+											    <f:selectItems value="#{monitoringSSEV.msgStatusList}"/>
+											    <p:ajax event="change" update="prichina" />	
+											</p:selectOneMenu>							  
+								  	</div>	
+								  	<!--Дата статус-->
+									<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+										<h:outputText value="#{labels['delo.dateStatus']} " styleClass="form-label"/>
+										<p:inputText id="dataStatus" value="#{monitoringSSEV.egovMess.msgStatusDate}" readonly="true">
+											<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{monitoringSSEV.timeZone}"/>
+										</p:inputText>
+									</div>
+								  	
+								  	<!--Причина за отказ-->
+									<div  class="p-col-12 ui-fluid" jsf:id="prichina">
+										<h:outputText value="#{labels['dashboard.prichinaOtkaz']} " styleClass="form-label" rendered="#{monitoringSSEV.egovMess.msgStatus=='DS_REJECTED'}"/>
+										<p:inputTextarea rows="2" value="#{ monitoringSSEV.egovMess.commError}" rendered="#{monitoringSSEV.egovMess.msgStatus=='DS_REJECTED'}"/>	
+									</div>
+									 									  								
+									<!--Вид на заявлението-->
+									<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+										<h:outputText value="#{labels['monitoringSSEV.vidZaiavlenie']} " styleClass="form-label"/>
+										<p:inputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, monitoringSSEV.egovMess.docVid, monitoringSSEV.currentLang, now)}" readonly="true"/>	
+									</div>
+									
+									
+									
+									<!--Изпратен от-->
+									<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+										<h:outputText value="#{labels['docList.sendFromReg']} " styleClass="form-label"/>
+										<p:inputText value="#{ monitoringSSEV.egovMess.senderName}" readonly="true"/>	
+									</div>
+									
+									<!--Получател-->
+									<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+										<h:outputText value="#{labels['opis.poluch']} " styleClass="form-label"/>
+										<p:inputText value="#{ monitoringSSEV.egovMess.recepientName}" readonly="true"/>	
+									</div>																		
+									
+									<!--Срок-->
+									<div  class="p-col-12 p-sm-12 p-md-6 p-lg-4 p-xl-4 ui-fluid">
+										<h:outputText value="#{labels['tasks.srok']} " styleClass="form-label"/>
+										<p:inputText id="docSrok" value="#{monitoringSSEV.egovMess.docSrok}" readonly="true">
+											<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{monitoringSSEV.timeZone}"/>
+										</p:inputText>
+									</div>	
+									
+									<!--Относно-->
+									<div  class="p-col-12 ui-fluid">
+										<h:outputText value="#{labels['docDoc.otnosno']} " styleClass="form-label"/>
+										<p:inputTextarea rows="2" value="#{monitoringSSEV.egovMess.docSubject}" readonly="true"/>	
+									</div>															
+									
+					    		</div>
+					    		
+					    		<div class="table-toolbar">
+										<h:outputText value="#{labels['monitoringSSEV.atachedFiles']}" styleClass="form-label"/>
+			                	</div>
+								<p:dataTable id="fileList" var="row" value="#{monitoringSSEV.egovFilesList}" 
+									rowIndexVar="riv" emptyMessage="#{ui_labels['general.norows']}" 
+									rows="5" style="margin-bottom:20px" paginator="true" reflow="true"	paginatorPosition="bottom" 
+									paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+							       	<p:column headerText="№" width="4%" >
+										<h:outputText value="#{riv + 1}" />
+									</p:column>
+									<p:column headerText="" width="40" style="text-align: center;">									           	
+							           <p:commandButton  id="download" ajax="false" actionListener="#{monitoringSSEV.download(row)}" icon="fa fa-fw fa-download" title="Изтегляне" />
+							       	</p:column>
+							       	<p:column headerText="Наименование на файл"  style="text-align: center;">
+							             <h:outputText value="#{row.filename}" escape="false" style="width:96%; text-align: left;"/>									             
+							        </p:column>
+							   </p:dataTable>
+				   
+
+							</div>
+					
+							
+				</p:dialog>	
+										
+							
+		</h:form>
+	</ui:define>
+</ui:composition>

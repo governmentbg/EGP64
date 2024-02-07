@@ -1,0 +1,550 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:c="http://java.sun.com/jstl/core"
+	  xmlns:jsf="http://xmlns.jcp.org/jsf"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:cc="http://java.sun.com/jsf/composite"
+	  xmlns:ibg="http://java.sun.com/jsf/composite/components" > 	  
+	  
+
+<cc:interface componentType="mmsRefCorrespData">
+   		 
+   <cc:attribute name="codeRef"	         	 type="java.lang.Integer" shortDescription="code на лице" deafult="null" />
+   <cc:attribute name="searchTxt"	         type="java.lang.String"  shortDescription="Предварително подаден текст за търсене по име на лице" deafult="null"/>
+   <cc:attribute name="dateClassif"   		 type="java.util.Date"    shortDescription="Дата, към която да се заредят класификации и за разкодиране. По подразбиране - днешна дата." />
+   <cc:attribute name="update" 		  		 type="java.lang.String"  shortDescription="Полета, които трябва да се обновят" />
+   <cc:attribute name="readonly"       		 type="java.lang.Boolean" shortDescription="Само за разглеждане" default="false" />
+   <cc:attribute name="onComplete"     		 type="java.lang.String"  shortDescription="Изпълнява функция при връщане на резултата - подава се името на функцията" />
+   
+   <cc:attribute name="modal"       		 type="java.lang.Boolean" shortDescription="Обработката е в модален диалог(true) или не(false)." default="true" />
+   <cc:attribute name="admin"       		 type="java.lang.Boolean" shortDescription="Администриране на всички данни - да(true); не(false)."  default="false" />
+   <cc:attribute name="refType"       		 type="java.lang.Integer" shortDescription="Физ. или Юрид. лице. Default: Юридическо. Ако не е подадено ще може и едното и другото да се избират. (Подава се код от константите.)"   />
+   
+   <cc:attribute name="showDocs"       	 	 type="java.lang.Boolean" shortDescription="Да се покаже ли панела с документи, в които участва лице - да(true); не(false)."  default="false" />
+   <cc:attribute name="correspForget"        type="java.lang.Boolean" shortDescription="За опцията за заличаване на лице - да(true); не(false)." default="false" />
+   <cc:attribute name="selectedDocList"	 	 type="java.util.List"	  shortDescription="Списък от избраните значения като обект DocSearch - само, ако correspForget=true" />
+   
+   
+</cc:interface>
+
+<cc:implementation>
+
+ <f:event type="preRenderComponent" listener="#{cc.initRefCorresp()}" /> <!--  За да се инициализира компонентата-->
+		<h:outputText value="#{cc.errMsg}" rendered="#{!cc.showMe}"/>
+		<div class="card" jsf:id="dpDataC" jsf:rendered="#{cc.showMe}">		
+
+			<p:toolbar rendered="#{!cc.attrs.readonly}" >
+				
+				<f:facet name="left">
+					
+					<p:commandButton icon="fas fa-save"
+						value="#{ui_labels['general.save']}"
+						rendered="#{!cc.attrs.readonly}" id="btnSaveCorr"
+						update="#{cc.attrs.update} #{cc.clientId}:dpDataC"
+						partialSubmit="true" process="#{cc.attrs.update} #{cc.clientId}:dpDataC @this"
+						actionListener="#{cc.actionSave}" title="#{labels['refCorr.saveReturnTitle']}">
+					</p:commandButton>
+					
+					<p:spacer width="20"></p:spacer>
+					<p:selectBooleanCheckbox value="#{cc.clearRegixDiff}" rendered="#{cc.ref.regixDiff ne null}" itemLabel="Нулирай разликите от REGIX"/>
+					
+					<p:commandButton id="btnNewCorr" value="#{labels['docu.refCorrNew']}" 
+								action="#{cc.clearRefCorresp(null)}" partialSubmit="true" styleClass="ui-button-success  p-mx-2"
+								process="#{cc.attrs.update} #{cc.clientId}:dpDataC @this" update="#{cc.attrs.update} #{cc.clientId}:dpDataC"
+								icon="fas fa-file" rendered="#{!cc.attrs.modal and !cc.attrs.correspForget and false}"/>
+								
+					<p:messages id="messagesGl2" showDetail="true" closable="false" style="width:100%">
+						<p:autoUpdate />
+					</p:messages>
+				</f:facet>
+				<f:facet name="right">
+					<h:panelGroup id="pRegInfoCor" rendered="#{!cc.attrs.modal and cc.ref.code ne null}">
+				 		<ibg:compObjAudit id="refHistory" idObj="#{cc.ref.code}" 
+							 	codeObj="#{DocuConstants.CODE_ZNACHENIE_JOURNAL_REFERENT}"
+							 	identInfo="#{cc.ref.refName}" />		
+					</h:panelGroup>		
+					<p:commandButton icon="fas fa-times" value="#{ui_labels['general.delete']}"
+						rendered="#{!cc.attrs.readonly and cc.ref.id ne null and !cc.attrs.correspForget}"
+						id="btnDelCorr" update="#{cc.attrs.update} #{cc.clientId}:dpDataC"
+						partialSubmit="true" process="#{cc.attrs.update} #{cc.clientId}:dpDataC @this"
+						styleClass="ui-button-danger"
+						actionListener="#{cc.actionDelete}" title="#{labels['reffCorr.deleteCorr']}">
+						<p:confirm header="#{ui_labels['general.comfirmation']}" message="#{beanMessages['refCorr.msgDelete']}" icon="fas fa-exclamation-triangle" />
+					</p:commandButton>
+				</f:facet>
+			
+			</p:toolbar>
+			
+			<h:outputText value="#{labels['correspForget.txtForDeleteData']}"
+						  style="color: #ff7f00; font-size: 0.9rem; font-style: italic; margin-right: 10px;" rendered="#{cc.attrs.correspForget}" />
+			
+			<div class="p-col-12">
+				<p:commandLink class="extended-search-toggle expanded" onclick="toggleSection(this, '#cd1-mainData')">
+					<h:outputText value="#{labels['refCorr.mainData']}"/>
+					<i class="fas fa-caret-right"></i>
+				</p:commandLink>
+			</div>
+			
+			 <div class="p-grid ui-fluid" id="cd1-mainData" >
+				
+				<div class="p-col-12 p-md-8 p-lg-4" > 
+					<p:selectOneRadio id="vLice" value="#{cc.ref.refType}" layout="responsive" immediate="true" columns="2" rendered="#{cc.attrs.refType==null}"
+						 disabled="#{cc.attrs.readonly or cc.attrs.correspForget or !cc.seePersonalData}">
+					 	 <f:selectItem itemLabel="#{labels['coresp.uLice']}" 	itemValue="#{DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL}" />
+		           		 <f:selectItem itemLabel="#{labels['coresp.fizLice']}"  itemValue="#{DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL}" />
+					     <p:ajax event="change"  update="#{cc.clientId}:pglice #{cc.clientId}:adrNM #{cc.clientId}:contactRef #{cc.clientId}:dopInfo" 
+					 	         process="@this #{cc.clientId}:pglice #{cc.clientId}:adrNM #{cc.clientId}:contactRef #{cc.clientId}:pgName  #{cc.clientId}:dopInfo" 
+					 	         listener="#{cc.actionChTypRef}"/>
+					</p:selectOneRadio>	
+				</div> 
+		 
+				<h:panelGroup layout="block" styleClass="p-grid p-col-12"  id="pglice">
+					<div class="p-col-8 p-md-8 p-lg-8" jsf:id="pgName" jsf:rendered="#{cc.ref.refType==DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL and cc.sd.model.getAttrSpec('ref_name', 'person', cc.lang, null).active}">
+						<div class="form-label">
+							<h:outputText value="#{labels['refCorr.nameUL']}" styleClass="form-label #{cc.sd.model.getAttrSpec('ref_name', 'person', cc.lang, null).required?'req':''}" id="lablUL" rendered="#{cc.ref.refType==DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL}"/>
+						</div>
+						<p:inputText id="nameCorr"	value="#{cc.ref.refName}"  readonly="#{cc.attrs.readonly}"/>						
+					</div>
+					
+					<div class="p-col-4 p-md-4 p-lg-2" jsf:rendered="#{cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL and cc.sd.model.getAttrSpec('nfl_eik', 'person', cc.lang, null).active}" jsf:id="pgEik" >
+						<div class="form-label">
+							<h:outputText value="#{ui_labels['general.eik']}" styleClass="form-label #{cc.sd.model.getAttrSpec('nfl_eik', 'person', cc.lang, null).required?'req':''}" id="lablULEik" rendered="#{cc.ref.refType==DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL}" />
+						</div> 
+						<p:inputText id="eik" value="#{cc.ref.nflEik}" style="width:99%" onkeyup="onlyNumbersNoRestr('#{cc.clientId}:eik')" 
+						 	readonly="#{cc.attrs.readonly || cc.ref.id!=null || loadedFromRegix}" maxlength="13">
+							<p:ajax event="change" update="#{cc.clientId}:dpDataC" partialSubmit="true"  process="@this #{cc.clientId}:dpDataC" listener="#{cc.actionLoadByEIK}"	/>
+						</p:inputText> 
+					
+					</div>
+					
+					<div class="p-col-3 p-md-3 p-lg-3" jsf:id="pgIme" jsf:rendered="#{cc.ref.refType==DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL and cc.sd.model.getAttrSpec('ime', 'person', cc.lang, null).active}">
+						<div class="form-label">
+							<h:outputText value="Име" styleClass="form-label #{cc.sd.model.getAttrSpec('ime', 'person', cc.lang, null).required?'req':''}" id="lablImeFL" rendered="#{cc.ref.refType==DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL}"/>
+						</div>
+						<p:inputText id="imeCorr"	value="#{cc.ref.ime}"  readonly="#{cc.attrs.readonly || loadedFromRegix}" />
+						
+					</div>
+					
+					<div class="p-col-3 p-md-3 p-lg-3" jsf:id="pgPrezime" jsf:rendered="#{cc.ref.refType==DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL and cc.sd.model.getAttrSpec('prezime', 'person', cc.lang, null).active}">
+						<div class="form-label">
+							<h:outputText value="Презиме" styleClass="form-label #{cc.sd.model.getAttrSpec('prezime', 'person', cc.lang, null).required?'req':''}" id="lablPrezimeFL" rendered="#{cc.ref.refType==DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL}"/>
+						</div>
+						<p:inputText id="prezimeCorr"	value="#{cc.ref.prezime}"  readonly="#{cc.attrs.readonly || loadedFromRegix}" />
+						
+					</div>
+					
+					<div class="p-col-3 p-md-3 p-lg-3" jsf:id="pgFamilia" jsf:rendered="#{cc.ref.refType==DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL and cc.sd.model.getAttrSpec('familia', 'person', cc.lang, null).active}">
+						<div class="form-label">
+							<h:outputText value="Фамилия" styleClass="form-label #{cc.sd.model.getAttrSpec('familia', 'person', cc.lang, null).required?'req':''}" id="lablFamiliaFL" rendered="#{cc.ref.refType==DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL}"/>
+						</div>
+						<p:inputText id="familiaCorr"	value="#{cc.ref.familia}"  readonly="#{cc.attrs.readonly || loadedFromRegix}" />
+						
+					</div>
+			      		
+					<div class="p-col-3 p-md-3 p-lg-3" jsf:rendered="#{cc.ref.refType==DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL}">
+					</div>
+					
+					<div class="p-col-2" jsf:rendered="#{cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL and cc.seePersonalData and cc.sd.model.getAttrSpec('fzl_egn', 'person', cc.lang, null).active}" jsf:id="pgEgn">
+						<div class="form-label">
+							<h:outputText value="#{ui_labels['general.egn']}" styleClass="form-label #{cc.sd.model.getAttrSpec('fzl_egn', 'person', cc.lang, null).required?'req':''}" />
+						</div>
+						<p:inputText id="egn" value="#{cc.ref.fzlEgn}"  style="width:99%" onkeyup="onlyNumbersNoRestr('#{cc.clientId}:egn')"
+							readonly="#{cc.attrs.readonly || cc.ref.id!=null || loadedFromRegix}" maxlength="10">
+							<p:ajax event="change" update="#{cc.clientId}:dpDataC" partialSubmit="true" process="@this #{cc.clientId}:dpDataC" listener="#{cc.actionLoadByEGN}"	/>
+						</p:inputText>
+					
+					</div>		
+				
+					<div class="p-col-2" jsf:rendered="#{cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL and cc.seePersonalData and cc.sd.model.getAttrSpec('fzl_lnc', 'person', cc.lang, null).active}" jsf:id="pgLnch">
+						<div class="form-label">
+							<h:outputText value="#{ui_labels['general.lnch']}" styleClass="form-label #{cc.sd.model.getAttrSpec('fzl_lnc', 'person', cc.lang, null).required?'req':''}"/>
+						</div>
+						<p:inputText id="lnch" value="#{cc.ref.fzlLnc}"  style="width:99%" readonly="#{cc.attrs.readonly}"  maxlength="10"> 
+							<p:ajax event="change" update="#{cc.clientId}:dpDataC" partialSubmit="true" process="@this #{cc.clientId}:dpDataC" listener="#{cc.actionLoadByLNCH}"	/>
+						</p:inputText>
+						
+					</div>
+				
+					<div class="p-col-3" jsf:rendered="#{cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL and cc.seePersonalData and cc.sd.model.getAttrSpec('nom_doc', 'person', cc.lang, null).active}" jsf:id="pgNomDoc">
+						<div class="form-label">
+							<h:outputText value="Номер на документ за самоличност" styleClass="form-label #{cc.sd.model.getAttrSpec('nom_doc', 'person', cc.lang, null).required?'req':''}"/>
+						</div>
+						<p:inputText id="nomDoc" value="#{cc.ref.nomDoc}"  style="width:99%" readonly="#{cc.attrs.readonly}"  >
+						</p:inputText>
+						
+					</div>
+					<div class="p-col-8" jsf:rendered="#{cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL and cc.sd.model.getAttrSpec('predstavitelstvo', 'person', cc.lang, null).active}">
+							<h:outputText value="Представителство" styleClass="form-label #{cc.sd.model.getAttrSpec('predstavitelstvo', 'person', cc.lang, null).required?'req':''}" />
+						 	<p:inputText id="predstavitelstvo"	value="#{cc.ref.predstavitelstvo}" readonly="#{cc.attrs.readonly}" />
+						 </div>
+				
+				</h:panelGroup>	
+				
+			</div>
+			
+			<div class="p-col-12">
+				<p:commandLink class="extended-search-toggle expanded"  onclick="toggleSection(this, '#cd2-contacts')">
+					<h:outputText value="Постоянен адрес" />
+					<i class="fas fa-caret-right"></i>
+				</p:commandLink>
+			</div>
+			
+			<div class="p-grid ui-fluid" id="cd2-contacts" >
+			
+				<h:panelGroup layout="block" class="p-grid p-col-12" id="adrNM" >
+					
+					<div class="p-col-4">
+						<h:outputText value="#{ui_labels['general.country']}" styleClass="form-label" />
+						<ibg:selectOneModalA  id="cntryC" readonly="#{cc.attrs.readonly}"
+							codeClassif="#{DocuConstants.CODE_CLASSIF_COUNTRIES}"								
+							selectedCode="#{cc.ref.address.addrCountry}" 
+							emptyMessage="#{labels['docu.countryEmptyMsg']}"
+							saveStateTree="false" withBtnClear="true" compType="3" minQueryLength="2"
+							styleAutoComp=""  update="#{cc.clientId}:adrNM"
+							onComplete="cmdChCountry()"/>	
+							<p:remoteCommand name="cmdChCountry" update="#{cc.clientId}:adrNM"
+							  	partialSubmit="true" process="#{cc.clientId}:adrNM  @this" 
+							 	actionListener="#{cc.actionChangeCountry}"/>
+							   
+					</div>	
+			
+					<div class="p-col-4" jsf:id="pmestoC" jsf:rendered="#{cc.ref.address.addrCountry eq cc.countryBG}">
+						
+						<h:outputText value="#{ui_labels['general.ekatte']}" styleClass="#{cc.ref.address.addrCountry ne null ? 'form-label' :'form-label'}" />
+						<ibg:selectOneModalA  id="mestoC"
+						    readonly="#{cc.attrs.readonly}"
+							update="#{cc.clientId}:cOblObsh"
+							codeClassif="#{DocuConstants.CODE_CLASSIF_EKATTE}"			
+							specifics="#{cc.specificsEKATTE}"					
+							selectedCode="#{cc.ref.address.ekatte}"
+							emptyMessage="#{labels['docu.mestoEmptyMsg']}"
+							saveStateTree="false" withBtnClear="true" compType="3" minQueryLength="3"
+							styleAutoComp=""
+							dopInfoAutoComp="true" dopInfoTitleAutoComp="#{ui_labels['general.ekatteObshObl']}"/>	
+						
+					</div>
+
+					<div class="p-col-4" jsf:id="cOblObsh" jsf:rendered="#{cc.ref.address.addrCountry eq cc.countryBG}">
+						<h:outputText value="#{ui_labels['general.ekatteObshObl']}" styleClass="form-label" />
+						<p:inputText readonly="true" value="#{systemData.decodeItemDopInfo(DocuConstants.CODE_CLASSIF_EKATTE, cc.ref.address.ekatte, cc.lang, now)}" />
+					</div>
+					
+					<div class="p-col-8" jsf:id="cAdrTxt" jsf:rendered="#{cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL or (cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL and cc.seePersonalData)}">
+						<h:outputText value="#{ui_labels['general.adres']}" 
+									  styleClass="form-label" />
+						<p:inputText readonly="#{cc.attrs.readonly}" value="#{cc.ref.address.addrText}" id="adrTxt"/>
+					
+					</div>
+					
+					<div class="p-col-2" jsf:id="cpB" jsf:rendered="#{cc.ref.address.addrCountry eq cc.countryBG}">
+						<h:outputText value="#{ui_labels['general.adrPostBox']}" styleClass="form-label" />
+						<p:inputText readonly="#{cc.attrs.readonly}" value="#{cc.ref.address.postBox}"  />
+					</div>
+					
+					<div class="p-col-2" jsf:id="cpC" jsf:rendered="#{cc.ref.address.addrCountry eq cc.countryBG}">
+						<h:outputText value="#{ui_labels['general.adrPostCode']}" styleClass="form-label" />
+						<p:inputText readonly="#{cc.attrs.readonly}" value="#{cc.ref.address.postCode}" />
+					</div>
+					
+					
+				</h:panelGroup>
+				
+				
+			</div>
+			<div class="p-col-12">
+				<p:commandLink class="extended-search-toggle expanded"  onclick="toggleSection(this, '#cd3-contacts')">
+					<h:outputText value="Адрес за кореспонденция"/>
+					<i class="fas fa-caret-right"></i>
+				</p:commandLink>
+			</div>
+			<div class="p-grid ui-fluid" id="cd3-contacts" >
+			
+				<h:panelGroup layout="block" class="p-grid p-col-12" id="adrNMKoresp" >
+					
+					<div class="p-col-4">
+						<h:outputText value="#{ui_labels['general.country']}" styleClass="form-label" />
+						<ibg:selectOneModalA  id="cntryC2" readonly="#{cc.attrs.readonly}"
+							codeClassif="#{DocuConstants.CODE_CLASSIF_COUNTRIES}"								
+							selectedCode="#{cc.ref.addressKoresp.addrCountry}" 
+							emptyMessage="#{labels['docu.countryEmptyMsg']}"
+							saveStateTree="false" withBtnClear="true" compType="3" minQueryLength="2"
+							styleAutoComp=""  update="#{cc.clientId}:adrNMKoresp"
+							onComplete="cmdChCountry2()"/>	
+							<p:remoteCommand name="cmdChCountry2" update="#{cc.clientId}:adrNMKoresp"
+							  	partialSubmit="true" process="#{cc.clientId}:adrNMKoresp  @this" 
+							 	actionListener="#{cc.actionChangeCountryKoresp}"/>
+							   
+					</div>	
+			
+					<div class="p-col-4" jsf:id="pmestoC2" jsf:rendered="#{cc.ref.addressKoresp.addrCountry eq cc.countryBG}">
+						
+						<h:outputText value="#{ui_labels['general.ekatte']}" styleClass="#{cc.ref.addressKoresp.addrCountry ne null ? 'form-label' :'form-label'}" />
+						<ibg:selectOneModalA  id="mestoC2"
+						    readonly="#{cc.attrs.readonly}"
+							update="#{cc.clientId}:cOblObsh2"
+							codeClassif="#{DocuConstants.CODE_CLASSIF_EKATTE}"			
+							specifics="#{cc.specificsEKATTE}"					
+							selectedCode="#{cc.ref.addressKoresp.ekatte}"
+							emptyMessage="#{labels['docu.mestoEmptyMsg']}"
+							saveStateTree="false" withBtnClear="true" compType="3" minQueryLength="3"
+							styleAutoComp=""
+							dopInfoAutoComp="true" dopInfoTitleAutoComp="#{ui_labels['general.ekatteObshObl']}"/>	
+						
+					</div>
+												
+					<div class="p-col-4" jsf:id="cOblObsh2" jsf:rendered="#{cc.ref.addressKoresp.addrCountry eq cc.countryBG}">
+						<h:outputText value="#{ui_labels['general.ekatteObshObl']}" styleClass="form-label" />
+						<p:inputText readonly="true" value="#{systemData.decodeItemDopInfo(DocuConstants.CODE_CLASSIF_EKATTE, cc.ref.addressKoresp.ekatte, cc.lang, now)}" />
+					</div>
+					
+					<div class="p-col-8" jsf:id="cAdrTxt2" jsf:rendered="#{cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL or (cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL and cc.seePersonalData)}">
+						<h:outputText value="#{ui_labels['general.adres']}" 
+									  styleClass="form-label" />
+						<p:inputText readonly="#{cc.attrs.readonly}" value="#{cc.ref.addressKoresp.addrText}" id="adrTxt2"/>
+					
+					</div>
+					
+					<div class="p-col-2" jsf:id="cpB2" jsf:rendered="#{cc.ref.addressKoresp.addrCountry eq cc.countryBG}">
+						<h:outputText value="#{ui_labels['general.adrPostBox']}" styleClass="form-label" />
+						<p:inputText readonly="#{cc.attrs.readonly}" value="#{cc.ref.addressKoresp.postBox}"  />
+					</div>
+					
+					<div class="p-col-2" jsf:id="cpC2" jsf:rendered="#{cc.ref.addressKoresp.addrCountry eq cc.countryBG}">
+						<h:outputText value="#{ui_labels['general.adrPostCode']}" styleClass="form-label" />
+						<p:inputText readonly="#{cc.attrs.readonly}" value="#{cc.ref.addressKoresp.postCode}" />
+					</div>
+					
+				</h:panelGroup>
+				
+				
+				 
+			</div>
+			<div class="p-grid ui-fluid" jsf:rendered="#{cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL or (cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL and cc.seePersonalData and cc.sd.model.getAttrSpec('contact_email', 'person', cc.lang, null).active)}" jsf:id="contactRef">
+					<div class="p-col-4" > 
+						<h:outputText value="#{ui_labels['general.email']}" styleClass="form-label #{cc.sd.model.getAttrSpec('contact_email', 'person', cc.lang, null).required?'req':''}" />
+						<p:inputText readonly="#{cc.attrs.readonly}" value="#{cc.ref.contactEmail}"  id="contactEmail"/>
+					</div>
+					<div class="p-col-4" jsf:rendered="#{cc.sd.model.getAttrSpec('contact_phone', 'person', cc.lang, null).active}"> 
+						<h:outputText value="#{ui_labels['general.phone']}" styleClass="form-label #{cc.sd.model.getAttrSpec('contact_phone', 'person', cc.lang, null).required?'req':''}" />
+						<p:inputText readonly="#{cc.attrs.readonly}" value="#{cc.ref.contactPhone}"  id="contactPhone"/>
+					</div>
+					<div class="p-col-4" jsf:rendered="#{cc.sd.model.getAttrSpec('web_page', 'person', cc.lang, null).active}">
+						<h:outputText value="Уеб сайт" styleClass="form-label #{cc.sd.model.getAttrSpec('web_page', 'person', cc.lang, null).required?'req':''}" />
+						<p:inputText readonly="#{cc.attrs.readonly}" value="#{cc.ref.webPage}"  id="contactWebPage"/>
+					</div>
+					<div class="p-col-4" jsf:rendered="false"> 
+						<h:outputText value="#{labels['reffCorr.maxSizeMB']}" styleClass="form-label" />
+						<p:inputText id="maxUploadSize" value="#{cc.ref.maxUploadSize}" onkeyup="onlyNumbersNoRestr('#{cc.clientId}:maxUploadSize')"/>
+					</div>
+				
+				</div>
+			
+			<div class="p-col-12">
+				<p:commandLink class="extended-search-toggle" onclick="toggleSection(this, '#cd3-dopInfo')">
+					<h:outputText value="#{labels['docu.dopInfo']}"/>
+					<i class="fas fa-caret-right"></i>
+				</p:commandLink>
+			</div>
+			
+			<div class="p-grid ui-fluid" id="cd3-dopInfo" style="display: none;">
+				
+				<h:panelGroup layout="block" styleClass="p-grid p-col-12" id="dopInfo">				
+					
+					<div class="p-grid p-col-12">
+						<div class="p-col-4" jsf:rendered="#{cc.sd.model.getAttrSpec('ref_grj', 'person', cc.lang, null).active}">
+							<h:outputText value="#{labels['refCorr.regCountry']}" styleClass="form-label #{cc.sd.model.getAttrSpec('ref_grj', 'person', cc.lang, null).required?'req':''}" id="countryUL" rendered="#{cc.ref.refType==DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL}"/>
+							<h:outputText value="#{labels['refCorr.citizenship']}" styleClass="form-label #{cc.sd.model.getAttrSpec('ref_grj', 'person', cc.lang, null).required?'req':''}" id="grjFL" rendered="#{cc.ref.refType==DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL}"/>
+							
+							<ibg:selectOneModalA id="refGrj" readonly="#{cc.attrs.readonly}"
+								codeClassif="#{DocuConstants.CODE_CLASSIF_COUNTRIES}"								
+								selectedCode="#{cc.ref.refGrj}" 
+								emptyMessage="#{labels['docu.countryEmptyMsg']}"
+								saveStateTree="false" withBtnClear="true" compType="3" minQueryLength="2"
+								styleAutoComp=""  />						
+						</div>
+						
+						<div class="p-col-2" jsf:rendered="#{cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL and cc.sd.model.getAttrSpec('polza', 'person', cc.lang, null).active}">
+							<h:outputText value="Полза" styleClass="form-label #{cc.sd.model.getAttrSpec('polza', 'person', cc.lang, null).required?'req':''}" />
+						 	<p:selectOneMenu value="#{cc.ref.polza}" id="polza" >
+				 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+	                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_MMS_POLZA, now, 1)}" 
+	                               var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />	                               
+							</p:selectOneMenu>
+						 </div>
+						
+						 
+						<div class="p-col-2" jsf:rendered="#{cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL and cc.seePersonalData and cc.sd.model.getAttrSpec('fzl_birth_date', 'person', cc.lang, null).active}">
+							<h:outputText value="Дата на раждане" styleClass="form-label #{cc.sd.model.getAttrSpec('fzl_birth_date', 'person', cc.lang, null).required?'req':''}" />
+						 	<p:datePicker id="birthDay" mask="true" showIcon="true" pattern="dd.MM.yyyy"  locale="bg" value="#{cc.ref.fzlBirthDate}"/>
+						 </div>
+						<div class="p-col-2" jsf:rendered="#{cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL and cc.seePersonalData and cc.sd.model.getAttrSpec('date_smart', 'person', cc.lang, null).active}">
+							<h:outputText value="Дата на смърт" styleClass="form-label #{cc.sd.model.getAttrSpec('date_smart', 'person', cc.lang, null).required?'req':''}" />
+						 	<p:datePicker id="dateSmart" mask="true" showIcon="true" pattern="dd.MM.yyyy"  locale="bg" value="#{cc.ref.dateSmart}"/>
+						 </div>
+						 <div class="p-col-2" jsf:rendered="#{cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL and cc.seePersonalData and cc.sd.model.getAttrSpec('pol', 'person', cc.lang, null).active}">
+							<h:outputText value="Пол" styleClass="form-label" />
+							<p:selectOneMenu value="#{cc.ref.pol}" id="pol" readonly="#{isView eq 1}">
+				 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+	                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_REFERENT_POL, now, cc.lang)}" 
+	                               var="clPer" itemLabel="#{clPer.tekst}" itemValue="#{clPer.code}" />	                               
+							</p:selectOneMenu>
+						 </div>
+					</div>
+					
+					<div class="p-col-8" jsf:rendered="#{cc.sd.model.getAttrSpec('ref_latin', 'person', cc.lang, null).active}">
+						<div class="form-label">
+							<h:outputText value="#{labels['refCorr.nameLatinUL']}" styleClass="form-label #{cc.sd.model.getAttrSpec('ref_latin', 'person', cc.lang, null).required?'req':''}" id="latinUL" rendered="#{cc.ref.refType==DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL}"/>
+							<h:outputText value="#{labels['refCorr.nameLatinFL']}" styleClass="form-label #{cc.sd.model.getAttrSpec('ref_latin', 'person', cc.lang, null).required?'req':''}" id="latinFL" rendered="#{cc.ref.refType==DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL}"/>
+						</div>
+						<p:inputText id="nameLatinCorr"	value="#{cc.ref.refLatin}" readonly="#{cc.attrs.readonly}" onkeyup="onlyLatWithNumbers('#{cc.clientId}:nameLatinCorr','#{beanMessages['general.onlyLat']}')"/>						
+					</div>
+					
+					<div class="p-col-3" jsf:rendered="#{cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_NFL and cc.sd.model.getAttrSpec('tax_office_no', 'person', cc.lang, null).active}" jsf:id="taxOfficeN">
+						<div class="form-label">
+							<h:outputText value="#{labels['refCorr.taxOfficeNum']}"  styleClass="form-label #{cc.sd.model.getAttrSpec('tax_office_no', 'person', cc.lang, null).required?'req':''}"/>
+						</div> 
+						<p:inputText id="taxOffice" value="#{cc.ref.taxOfficeNo}" style="width:99%" readonly="#{cc.attrs.readonly}"/>						
+					</div>
+					
+					<div class="p-col-3" jsf:rendered="false and #{cc.ref.refType eq DocuConstants.CODE_ZNACHENIE_REF_TYPE_FZL and cc.seePersonalData and cc.sd.model.getAttrSpec('fzl_ln_es', 'person', cc.lang, null).active}" jsf:id="fzlLnEs">
+						<div class="form-label">
+							<h:outputText value="#{labels['refCorr.fzlLnEs']}"  styleClass="form-label #{cc.sd.model.getAttrSpec('fzl_ln_es', 'person', cc.lang, null).required?'req':''}"/>
+						</div> 
+						<p:inputText id="fzlLn" value="#{cc.ref.fzlLnEs}" style="width:99%" readonly="#{cc.attrs.readonly}"/>						
+					</div>
+					
+					<div class="p-col-12" jsf:rendered="#{cc.sd.model.getAttrSpec('ref_info', 'person', cc.lang, null).active}"> 
+						<div class="form-label">
+							<h:outputText value="#{labels['docu.note']}"  styleClass="form-label #{cc.sd.model.getAttrSpec('ref_info', 'person', cc.lang, null).required?'req':''}"/>
+						</div> 
+						<p:inputText id="refInfo" value="#{cc.ref.refInfo}" style="width:99%" readonly="#{cc.attrs.readonly}"/>						
+					</div>
+					
+				</h:panelGroup>			
+			</div>
+			<div class="p-col-12" jsf:rendered="#{cc.ref.regixDiff ne null}">
+				<p:commandLink class="extended-search-toggle" onclick="toggleSection(this, '#cd3-regixDiff')">
+					<h:outputText value="Промени от REGIX"/>
+					<i class="fas fa-caret-right"></i>
+				</p:commandLink>
+			</div>
+			
+			<div  id="cd3-regixDiff" style="display: none;">
+				<div>
+					<h:outputText value="#{cc.ref.regixDiff}"  escape="false"/>
+				</div>
+			</div>
+						
+			
+			<div class="p-col-12" jsf:rendered="#{cc.attrs.showDocs}">
+				<p:commandLink class="extended-search-toggle" onclick="toggleSection(this, '#cd4-docsList')" 
+							actionListener="#{cc.actionLoadDocsList}" update="#{cc.clientId}:resultTable" partialSubmit="true" process="#{cc.clientId}:resultTable @this">
+					<h:outputText value="#{labels['refCorr.titlePanelDocs']}"/>
+					<i class="fas fa-caret-right"></i>
+				</p:commandLink>
+			</div>
+			
+			<div class="p-grid ui-fluid" id="cd4-docsList" style="display: none;" >
+			
+				<div class="card" jsf:id="resultTable">
+				
+				<h:outputText value="#{labels['correspForget.txtForDocs']}"
+						  style="color: #ff7f00; font-size: 0.9rem; font-style: italic; margin-right: 10px;" rendered="#{cc.attrs.correspForget}" />
+				
+				<h:panelGroup id="panelTblDoc" layout="block" styleClass="margin-top">
+						
+					<div class="table-toolbar" jsf:id="tbTbl" jsf:rendered="#{cc.attrs.correspForget and userData.hasAccess(DocuConstants.CODE_CLASSIF_MENU, DocuConstants.CODE_ZNACHENIE_MENU_CORESP)}">
+					
+					<div class="ui-inputgroup"> 	
+						<ui:remove>
+						<p:commandButton value="#{labels['coresspForget.btnDeleteDocs']}" id="btnRemoveDocs" update="panelTblDoc" partialSubmit="true" onclick="if(!confirm('#{beanMessages['coresspForget.msgDeleteDocs']}'))return false;"
+							rendered="#{cc.docSelectedAllM.size()>0}" process="@this panelTblDoc" actionListener="#{cc.actionDeleteDocs}" styleClass="p-mr-2"/>
+						
+						</ui:remove>						
+						<p:commandButton value="#{labels['coresspForget.btnDeleteFiles']}" id="btnRemoveFiles" update="panelTblDoc" partialSubmit="true" onclick="if(!confirm('#{beanMessages['coresspForget.msgDeleteFiles']}'))return false;"
+							rendered="#{cc.docSelectedAllM.size()>0}" process="@this panelTblDoc" actionListener="#{cc.actionDeleteFiles}" styleClass="p-mr-2"/>							
+						
+						<span style="#{cc.docSelectedAllM.size()>0?'padding-right: 5px;':'display:none'}">
+							<span class="fas fa-ellipsis-v" />
+						</span>
+						
+						<h:outputText value="#{ui_labels['general.reportResult']} #{cc.docsList.rowCount}" styleClass="form-label p-mr-2"/>
+																		
+						<span style="#{cc.docSelectedAllM.size()>0?'padding-right: 5px;':'display:none'}" >
+							<span class="fas fa-ellipsis-v" />
+						</span>
+						
+						<h:outputText value="#{labels['opis.brIzbr']}: #{cc.docSelectedAllM.size()}" rendered="#{cc.docSelectedAllM.size()>0}" styleClass="form-label" id="brSel"/>
+					</div>	
+					</div>
+					
+					<p:dataTable id="tblDocs" var="row" value="#{cc.docsList}" lazy="true" rowKey="#{row[0]}"	 
+						rowIndexVar="idx" sortMode="single" reflow="true" emptyMessage="#{labels['refCorr.docsEmptyMsg']}" 
+						paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+						rows="5" rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom"
+						paginatorAlwaysVisible="true" paginator="true" rowSelectMode="checkbox" selection="#{cc.docSelectedTmp}">
+						
+						<p:ajax event="toggleSelect"	 	 listener="#{cc.onRowSelectAll}" process="@this"  update=" #{cc.clientId}:brSel #{cc.clientId}:tbTbl"/>
+						<p:ajax event="rowSelectCheckbox"	 listener="#{cc.onRowSelect}"    process="@this"  update=" #{cc.clientId}:brSel #{cc.clientId}:tbTbl"/>
+						<p:ajax event="rowUnselectCheckbox"  listener="#{cc.onRowUnselect}"  process="@this"  update=" #{cc.clientId}:brSel #{cc.clientId}:tbTbl"/>
+						<p:ajax event="page"                 listener="#{cc.onPageUpdateSelected}" />
+						
+						<p:column selectionMode="multiple" style="width:30px;text-align:center;" rendered="#{cc.attrs.correspForget}"/>	
+											
+					  	<p:column width="10" exportable="false" headerText="#{ui_labels['general.No-symbol']}" >
+							<h:outputText value="#{idx + 1}" />
+						</p:column>	
+						
+						<p:column  width="40" exportable="false">
+							<p:commandButton icon="fas fa-edit" action="#{cc.actionGotoEditDoc(row[0])}" ajax="false" title="#{ui_labels['general.edit']}" rendered="#{cc.attrs.correspForget}" />
+							<p:button icon="fas fa-eye" href="#{cc.actionGotoViewDoc(row[0])}" target="_blank"  style="width:30px" rendered="#{!cc.attrs.correspForget}" />					  		
+						</p:column>
+						
+						<p:column width="20" sortBy="#{row.a8}"  exportable="false" >
+							<h:panelGroup rendered="#{row[8]>0}">
+								<i class="fas fa-paperclip" aria-hidden="true" title="#{labels['docList.files']}: #{row[8]}"></i>
+							</h:panelGroup>
+						</p:column>
+						
+						<p:column width="110" sortBy="#{row.a1}" headerText="#{labels['repDoc.regnom']}">
+							<h:outputText value="#{row[1]}"  />								    
+						</p:column>
+						
+						<p:column width="80" sortBy="#{row.a4}" headerText="#{labels['docu.docDate']}" >									  
+							<h:outputText value="#{row[4]}">	
+								<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{cc.timeZone}"/>
+							</h:outputText>							    
+						</p:column>
+						
+						<p:column  sortBy="#{row.a7}" headerText="#{labels['docu.otnosno']}">
+							<h:outputText value="#{row[7]}"  />								    
+						</p:column>
+						
+						<p:column width="80" sortBy="#{row.a2}" headerText="#{labels['docu.type']}">
+							<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_TYPE, row[2], cc.lang, now)}"/>					    
+						</p:column>
+						
+						<p:column width="150" sortBy="#{row.a3}" headerText="#{labels['docu.vid']}">
+							<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_DOC_VID, row[3], cc.lang, now)}"/>					    
+						</p:column>
+						
+						<p:column width="200" sortBy="#{row.a6}" headerText="#{labels['regData.registratura']}">
+							<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_REGISTRATURI, row[6], cc.lang, now)}"/>					    
+						</p:column>
+					
+					</p:dataTable>
+					
+					</h:panelGroup>
+				
+				</div>
+			
+			</div>
+		
+		</div>
+
+
+</cc:implementation>
+
+</ui:composition>

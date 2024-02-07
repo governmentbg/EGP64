@@ -1,0 +1,382 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ibg="http://java.sun.com/jsf/composite/components">
+  	
+     <f:metadata>
+		<f:viewAction action="#{userData.checkPageAccess(null)}" onPostback="false" />
+	</f:metadata> 	
+			
+	<h:form id="formSOList" >
+			
+		<div class="container #{guestPreferences.containerPosition}">
+			
+				<!-- FILTER -->	
+				<h:panelGroup id="panelFilter" >
+
+					<div class="card">
+	
+						<div class="p-grid ui-fluid p-align-end">
+						
+							<!-- Вид на обекта -->
+							<p:focus for="vidObekt" />
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-3 p-xl-3">							
+								<h:outputText value="#{labels['docu.vid']}" styleClass="form-label" />	
+								<ibg:selectOneModalA id="vidObekt" selectedCode="#{mmsSpObektiList.vid}" 
+									codeClassif="#{DocuConstants.CODE_CLASSIF_VID_SPORTEN_OBEKT}"
+									sortByName="true" saveStateTree="false" withBtnClear="true" compType="4"
+									minQueryLength="3" styleAutoComp=""	/>	
+							</div>
+							
+							<!-- Рег. номер на обекта -->
+							<div class="p-col-12 p-sm-12 p-md-2 p-lg-2 p-xl-2">							
+								<h:outputText value="#{labels['mmcSpObektiList.regNumObekt']}" styleClass="form-label"/>
+								<p:inputText value="#{mmsSpObektiList.regNomer}" id="regNomer"/>						
+							</div>
+							
+							<!-- Функционално предназначение -->
+							<ui:remove> <div class="p-col-12 p-sm-12 p-md-7 p-lg-7 p-xl-7">							
+								<h:outputText value="#{labels['mmcSpObektiList.funkCategory']}" styleClass="form-label" />								 
+								<p:selectOneMenu value="#{mmsSpObektiList.funkCategory}" id="funkCategory" autoWidth="false">
+					 				<f:selectItem value="#{null}" itemValue="#{null}"/>
+		                            <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_FUNC_CATEGORIA_SPORTEN_OBEKT, now, mmsSpObektiList.currentLang)}" 
+		                               var="fC" itemLabel="#{fC.tekst}" itemValue="#{fC.code}" />
+								</p:selectOneMenu>	
+							</div> </ui:remove>
+							
+							<!-- Вид спорт -->
+							<div class="p-col-12 p-sm-12 p-md-7 p-lg-7 p-xl-7">							
+								<h:outputText value="#{labels['sf.vidSport']}" styleClass="form-label"/>
+	                    	    <div class="ui-inputgroup" >
+	                   				<p:inputText value="#{mmsSpObektiList.vidSportTxt}" readonly="true" id="vidSpTxt" style="width:100%"/>
+						            <ibg:selectManyModalA showRadioBtn="true" saveStateTree="false"
+										codeClassif="#{DocuConstants.CODE_CLASSIF_VIDOVE_SPORT}" 
+										dateClassif="#{now}" styleAutoComp="width:100%;" 
+										selectedCodes="#{mmsSpObektiList.vidSportList}"
+										selectedText="#{mmsSpObektiList.vidSportTxt}" sortByName="true"
+										update="formSOList:vidSpTxt" isSelectNode="false" withBtnClear="true" 
+										dopInfoAutoComp="true" itemtipAtPosition="center bottom" compType="1" maxResults="50" />
+					            </div>
+							</div>	
+							
+							<!-- Наименование -->
+							<div class="p-col-12 p-sm-12 p-md-12 p-lg-4 p-xl-4">							
+								<h:outputText value="#{labels['refCorr.nameUL']}" styleClass="form-label"/>
+								<p:inputText value="#{mmsSpObektiList.name}" id="name"/>						
+							</div>								
+
+							<!-- Област, община, населено място -->
+							<div class="p-col-12 p-sm-12 p-md-12 p-lg-4 p-xl-4">
+								<h:outputText value="#{ui_labels['general.ekatte']}" styleClass="form-label" />	
+								<ibg:selectOneModalA id="mestoC"
+									update="formSOList:oblObsh"
+									codeClassif="#{DocuConstants.CODE_CLASSIF_EKATTE}"
+									styleAutoComp=""
+									selectedCode="#{mmsSpObektiList.ekatte}"
+									emptyMessage="#{labels['docu.mestoEmptyMsg']}"
+									saveStateTree="false" withBtnClear="true" compType="3"
+									minQueryLength="3" dopInfoAutoComp="true"
+									dopInfoTitleAutoComp="#{ui_labels['general.ekatteObshObl']}" />	
+							</div>
+	
+							<div class="p-col-12 p-sm-12 p-md-12 p-lg-4 p-xl-4">
+								<h:outputText value="#{ui_labels['general.ekatteObshObl']}" styleClass="form-label" />
+								<h:panelGroup id="oblObsh">
+									<p:inputText readonly="true" value="#{systemData.decodeItemDopInfo(DocuConstants.CODE_CLASSIF_EKATTE, mmsSpObektiList.ekatte, mmsSpObektiList.currentLang, now)}" />
+								</h:panelGroup>
+							</div>
+							
+							<!-- Рег. номер на заявлението -->
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">							
+								<h:outputText value="#{labels['mmsCL.regNumZ']}" styleClass="form-label"/>
+								<p:inputText value="#{mmsSpObektiList.rnZaiav}" />						
+							</div>
+							
+							<!-- Период на подаване на заявлението -->
+								<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">		
+						        <h:outputText  value="#{labels['mmsCL.periodZaiav']}"  styleClass="form-label" style="white-space: nowrap;"/>
+				            	<p:selectOneMenu id="periodZaiav" value="#{mmsSpObektiList.periodZaiav}">
+					                <f:selectItem value="#{null}" itemValue="#{null}"/>
+					                <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_PERIOD_NOFUTURE, now, mmsSpObektiList.currentLang)}" 
+					                   var="pz" itemLabel="#{pz.tekst}" itemValue="#{pz.code}" />
+					                <p:ajax event="change" update="formSOList:periodZaiav formSOList:zaiavFrom formSOList:zaiavTo" listener="#{mmsSpObektiList.changePeriodZaiav}"/>   
+				         		 </p:selectOneMenu>
+							</div>
+			
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">	
+					            <h:outputText value="#{ui_labels['general.dataOt']}" styleClass="form-label"/>
+								<p:datePicker id="zaiavFrom" pattern="dd.MM.yyyy" mask="true" showIcon="true" locale="bg"  
+						         	value="#{mmsSpObektiList.zaiavFrom}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSOList:periodZaiav" listener="#{mmsSpObektiList.changeDateZaiav}"/>
+						         	<p:ajax event="dateSelect" update="formSOList:periodZaiav" listener="#{mmsSpObektiList.changeDateZaiav}"/>      
+						        </p:datePicker>	
+							</div>
+							
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">	
+					             <h:outputText value="#{ui_labels['general.dataDo']}" styleClass="form-label"/>
+								 <p:datePicker id="zaiavTo" pattern="dd.MM.yyyy" mask="true"  showIcon="true" locale="bg"  
+						         	value="#{mmsSpObektiList.zaiavTo}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSOList:periodZaiav" listener="#{mmsSpObektiList.changeDateZaiav}"/>
+						         	<p:ajax event="dateSelect" update="formSOList:periodZaiav" listener="#{mmsSpObektiList.changeDateZaiav}"/>      
+						         </p:datePicker>
+							</div>
+							
+							<!-- Статус на спортен обект -->
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">	
+						        <h:outputText value="#{labels['mmsSpObektiList.status']}" styleClass="form-label" />
+						        <p:selectOneMenu value="#{mmsSpObektiList.status}" id="status">
+									<f:selectItem value="#{null}" itemValue="#{null}"/>
+					                <f:selectItems value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_STATUS_OBEKT, now, mmsSpObektiList.currentLang)}"                           
+						                   			var="itemSc" itemLabel="#{itemSc.tekst}" itemValue="#{itemSc.code}"/>
+								</p:selectOneMenu>																        
+							</div>
+							
+							<!-- Период на статус -->
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">		
+						        <h:outputText  value="#{labels['mmsCL.periodStatus']}"  styleClass="form-label" style="white-space: nowrap;"/>
+				            	<p:selectOneMenu id="periodStatus" value="#{mmsSpObektiList.periodStatus}">
+					                <f:selectItem value="#{null}" itemValue="#{null}"/>
+					                <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_PERIOD_NOFUTURE, now, mmsSpObektiList.currentLang)}" 
+					                   var="ps" itemLabel="#{ps.tekst}" itemValue="#{ps.code}" />
+					                <p:ajax event="change" update="formSOList:periodStatus formSOList:statusFrom formSOList:statusTo" listener="#{mmsSpObektiList.changePeriodStatus}"/>   
+				         		 </p:selectOneMenu>
+							</div>
+			
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">
+					            <h:outputText value="#{ui_labels['general.dataOt']}" styleClass="form-label"/>
+								<p:datePicker id="statusFrom" pattern="dd.MM.yyyy" mask="true"  showIcon="true" locale="bg"  
+						         	value="#{mmsSpObektiList.statusFrom}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSOList:periodStatus" listener="#{mmsSpObektiList.changeDateStatus}"/>
+						         	<p:ajax event="dateSelect" update="formSOList:periodStatus" listener="#{mmsSpObektiList.changeDateStatus}"/>      
+						        </p:datePicker>	
+							</div>
+							
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">
+					             <h:outputText value="#{ui_labels['general.dataDo']}" styleClass="form-label"/>
+								 <p:datePicker id="statusTo" pattern="dd.MM.yyyy" mask="true"  showIcon="true" locale="bg"  
+						         	value="#{mmsSpObektiList.statusTo}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSOList:periodStatus" listener="#{mmsSpObektiList.changeDateStatus}"/>
+						         	<p:ajax event="dateSelect" update="formSOList:periodStatus" listener="#{mmsSpObektiList.changeDateStatus}"/>      
+						         </p:datePicker>
+							</div>
+							
+							<!-- Статус на заявление -->
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">	
+						        <h:outputText value="#{labels['mmsSportniObekti.decision']}" styleClass="form-label" />
+						        <p:selectOneMenu value="#{mmsSpObektiList.statusZaiav}" id="statusZaiav">
+									<f:selectItem value="#{null}" itemValue="#{null}"/>
+					                <f:selectItems value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_STATUS_ZAIAVLENIE, now, mmsSpObektiList.currentLang)}"                           
+						                   			var="itemSc" itemLabel="#{itemSc.tekst}" itemValue="#{itemSc.code}"/>
+								</p:selectOneMenu>																        
+							</div>
+							
+							<!-- Период на статус на заявление -->
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">		
+						        <h:outputText  value="#{labels['mmsCL.periodStatusZaiav']}"  styleClass="form-label" style="white-space: nowrap;"/>
+				            	<p:selectOneMenu id="periodStZaiavlenie" value="#{mmsSpObektiList.periodStZaiavlenie}">
+					                <f:selectItem value="#{null}" itemValue="#{null}"/>
+					                <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_PERIOD_NOFUTURE, now, mmsSpObektiList.currentLang)}" 
+					                   var="ps" itemLabel="#{ps.tekst}" itemValue="#{ps.code}" />
+					                <p:ajax event="change" update="formSOList:periodStZaiavlenie formSOList:fromStatusZaiav formSOList:toStatusZaiav" listener="#{mmsSpObektiList.changePeriodStZaiavlenie}"/>   
+				         		 </p:selectOneMenu>
+							</div>
+			
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">
+					            <h:outputText value="#{ui_labels['general.dataOt']}" styleClass="form-label"/>
+								<p:datePicker id="fromStatusZaiav" pattern="dd.MM.yyyy" mask="true"  showIcon="true" locale="bg"  
+						         	value="#{mmsSpObektiList.fromStatusZaiav}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSOList:periodStZaiavlenie" listener="#{mmsSpObektiList.changeDateStZaiavlenie}"/>
+						         	<p:ajax event="dateSelect" update="formSOList:periodStZaiavlenie" listener="#{mmsSpObektiList.changeDateStZaiavlenie}"/>      
+						        </p:datePicker>	
+							</div>
+							
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">
+					             <h:outputText value="#{ui_labels['general.dataDo']}" styleClass="form-label"/>
+								 <p:datePicker id="toStatusZaiav" pattern="dd.MM.yyyy" mask="true"  showIcon="true" locale="bg"  
+						         	value="#{mmsSpObektiList.toStatusZaiav}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSOList:periodStZaiavlenie" listener="#{mmsSpObektiList.changeDateStZaiavlenie}"/>
+						         	<p:ajax event="dateSelect" update="formSOList:periodStZaiavlenie" listener="#{mmsSpObektiList.changeDateStZaiavlenie}"/>      
+						         </p:datePicker>
+							</div>
+							
+							<!-- Статус на вписване -->
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">	
+						        <h:outputText value="#{labels['compReg.statusVpisvane']}" styleClass="form-label" />
+						        <p:selectOneMenu value="#{mmsSpObektiList.statusVpis}" id="statusVpis">
+									<f:selectItem value="#{null}" itemValue="#{null}"/>
+					                <f:selectItems value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_STATUS_REGISTRATION, now, mmsSpObektiList.currentLang)}"                           
+						                   			var="itemSc" itemLabel="#{itemSc.tekst}" itemValue="#{itemSc.code}"/>
+								</p:selectOneMenu>																        
+							</div>
+							
+							<!-- Период на статус на вписване -->
+							<div class="p-col-12 p-sm-12 p-md-6 p-lg-3 p-xl-3">		
+						        <h:outputText  value="#{labels['mmsCL.periodStatusVpis']}"  styleClass="form-label" style="white-space: nowrap;"/>
+				            	<p:selectOneMenu id="periodStVpisvane" value="#{mmsSpObektiList.periodStVpisvane}">
+					                <f:selectItem value="#{null}" itemValue="#{null}"/>
+					                <f:selectItems  value="#{systemData.getSysClassification(DocuConstants.CODE_CLASSIF_PERIOD_NOFUTURE, now, mmsSpObektiList.currentLang)}" 
+					                   var="ps" itemLabel="#{ps.tekst}" itemValue="#{ps.code}" />
+					                <p:ajax event="change" update="formSOList:periodStVpisvane formSOList:fromStatusVpis formSOList:toStatusVpis" listener="#{mmsSpObektiList.changePeriodStVpisvane}"/>   
+				         		 </p:selectOneMenu>
+							</div>
+			
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">
+					            <h:outputText value="#{ui_labels['general.dataOt']}" styleClass="form-label"/>
+								<p:datePicker id="fromStatusVpis" pattern="dd.MM.yyyy" mask="true"  showIcon="true" locale="bg"  
+						         	value="#{mmsSpObektiList.fromStatusVpis}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSOList:periodStVpisvane" listener="#{mmsSpObektiList.changeDateStVpisvane}"/>
+						         	<p:ajax event="dateSelect" update="formSOList:periodStVpisvane" listener="#{mmsSpObektiList.changeDateStVpisvane}"/>      
+						        </p:datePicker>	
+							</div>
+							
+							<div class="p-col-12 p-sm-12 p-md-3 p-lg-2 p-xl-2">
+					             <h:outputText value="#{ui_labels['general.dataDo']}" styleClass="form-label"/>
+								 <p:datePicker id="toStatusVpis" pattern="dd.MM.yyyy" mask="true"  showIcon="true" locale="bg"  
+						         	value="#{mmsSpObektiList.toStatusVpis}" styleClass="form-control" >
+						         	<p:ajax event="change" update="formSOList:periodStVpisvane" listener="#{mmsSpObektiList.changeDateStVpisvane}"/>
+						         	<p:ajax event="dateSelect" update="formSOList:periodStVpisvane" listener="#{mmsSpObektiList.changeDateStVpisvane}"/>      
+						         </p:datePicker>
+							</div>
+							
+						</div>
+	
+						<div class="filter-buttons">
+							
+							<p:commandButton icon="fas fa-search" value="#{ui_labels['general.search']}" 
+											id="btnSearchSO" update="resultTable panelFilter" partialSubmit="true"
+											process="@this panelFilter resultTable" actionListener="#{mmsSpObektiList.actionSearch}" styleClass="p-mr-3"/>
+							<p:defaultCommand target="btnSearchSO" scope="panelFilter"/>
+	
+							<p:commandButton icon="fas fa-eraser" value="#{ui_labels['general.clear']}" 
+											 id="btnClear" update="resultTable panelFilter" partialSubmit="true"
+											 process="@this panelFilter resultTable" actionListener="#{mmsSpObektiList.actionClear}"
+											 styleClass="ui-button-warning" />	
+						</div>
+	
+					</div>
+				
+				</h:panelGroup>
+			
+			</div>
+			
+			<h:panelGroup id="resultTable" layout="block" styleClass="margin-top">
+
+			<h:panelGroup layout="block" styleClass="card">
+
+				<div class="table-toolbar">
+
+					<h:outputText value="#{ui_labels['general.reportResult']}: #{mmsSpObektiList.spObektiList.rowCount}" styleClass="form-label" rendered="#{mmsSpObektiList.spObektiList.rowCount > 0}"/>
+
+				</div>
+
+				<p:dataTable id="tblSOList" var="row" value="#{mmsSpObektiList.spObektiList}" lazy="true" rendered="#{mmsSpObektiList.spObektiList != null}"
+					rowIndexVar="idx" emptyMessage="#{ui_labels['general.norows']}" rows="15" sortMode="single" reflow="true" styleClass="ui-datatable-gridlines"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+					rowsPerPageTemplate="5,10,15,20,25" paginatorPosition="bottom" paginatorAlwaysVisible="true" paginator="true">
+
+					<f:facet name="{Exporters}">
+
+						<div style="float: left">
+
+							<p:commandLink id="excel" update="tblSOList" process="tblSOList" partialSubmit="true">
+								<h:graphicImage library="images" name="excel2.png" />
+								<p:dataExporter type="xls" target="tblSOList" fileName="sportObektiListXls" postProcessor="#{mmsSpObektiList.postProcessXLS}"/>
+							</p:commandLink>
+
+							<p:commandLink id="pdf" update="tblSOList" process="tblSOList" partialSubmit="true">
+								<h:graphicImage library="images" name="pdf.png" />
+								 <p:dataExporter type="pdf"  target="tblSOList" fileName="sportObektiListPdf" encoding="windows-1251"
+								 	preProcessor="#{mmsSpObektiList.preProcessPDF}" options="#{mmsSpObektiList.pdfOptions()}"/>						
+							</p:commandLink>
+
+							<p:commandLink id="csv" update="tblSOList" process="tblSOList" partialSubmit="true">
+								<h:graphicImage library="images" name="csv.png" />
+								<p:dataExporter type="csv" target="tblSOList" fileName="sportObektiListCsv" encoding="CP1251" />
+							</p:commandLink>
+
+						</div>
+
+					</f:facet>
+
+					<p:column width="5" exportable="false" headerText="#{ui_labels['general.No-symbol']}">
+						<h:outputText value="#{idx + 1}" />
+					</p:column>
+
+					<p:column width="7" exportable="false">
+						<p:commandButton icon="fas fa-edit" action="#{mmsSpObektiList.actionGoto(row[0], 1)}" ajax="false" styleClass="btn-new" rendered="#{isView eq null and row[19] eq null}" >
+							<f:param name="viewOnly" value="2" />
+						</p:commandButton>									
+						
+						<p:button  icon="fas fa-eye" href="#{mmsSpObektiList.actionGoto(row[0], 2)}" target="_blank" rendered="#{isView eq 1}" >
+							<f:param name="viewOnly" value="1" />							
+						</p:button>	
+						
+						<p:commandButton type="button" icon="fas fa-lock" id="lockButton" ajax="false" alt="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_ADMIN_STR, row[19], mmsSpObektiList.currentLang, now)}"
+							   title="#{beanMessages['mmsSpObektList.locked']}#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_ADMIN_STR, row[19], mmsSpObektiList.currentLang, now)}"   
+			 				   rendered="#{isView eq null and row[19] ne null}" styleClass="ui-button-secondary"/>
+					 		<p:tooltip for="lockButton">
+					 			#{beanMessages['mmsSpObektList.locked']} #{systemData.decodeItem(DocuConstants.CODE_CLASSIF_ADMIN_STR, row[19], mmsSpObektiList.currentLang, now)} на 
+					 			<h:outputText value="#{row[20]}" >
+					 				<f:convertDateTime pattern="dd.MM.yyyy HH:mm" timeZone="#{mmsSpObektiList.timeZone}"/>
+					 			</h:outputText>
+					 		</p:tooltip>					
+					</p:column>
+					
+					<p:column width="130" sortBy="#{row.a6}" headerText="#{labels['refCorr.nameUL']}">
+						<h:outputText value="#{row[6]}"/>								
+					</p:column>
+					
+					<p:column width="45" sortBy="#{row.a16}" headerText="#{ui_labels['general.ekatte']}">
+						<h:outputText value="#{row[16]}"/>													
+					</p:column>
+					
+					<p:column width="45" sortBy="#{row.a17}" headerText="#{ui_labels['general.ekatteObsh']}">
+						<h:outputText value="#{row[17]}"/>													
+					</p:column>
+					
+					<p:column width="45" sortBy="#{row.a18}" headerText="#{ui_labels['general.ekatteObl']}">
+						<h:outputText value="#{row[18]}"/>													
+					</p:column>
+					
+					<p:column width="80" sortBy="#{row.a4}" headerText="#{labels['docu.vid']}">
+						<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_VID_SPORTEN_OBEKT, row[4], mmsSpObektiList.currentLang, now)}"/>								
+					</p:column>
+					
+					<p:column width="50" sortBy="#{row.a1}" headerText="#{labels['mmcSpObektiList.regNumObekt']}">
+						<h:outputText value="#{row[1]}" />							
+					</p:column>
+					
+					<p:column width="80" sortBy="#{row.a2}" headerText="#{labels['mmsCL.statusC']}">
+						<h:outputText value="#{systemData.decodeItem(DocuConstants.CODE_CLASSIF_STATUS_OBEKT, row[2], mmsSpObektiList.currentLang, now)}" />											
+					</p:column>
+
+					<p:column width="35" sortBy="#{row.a3}" headerText="#{labels['docu.statusDate']}" >
+						<h:outputText value="#{row[3]}">	
+							<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSpObektiList.timeZone}"/>
+						</h:outputText>	
+					</p:column>
+					
+					<ui:remove>
+						<p:column width="50" sortBy="#{row.a10}" headerText="#{labels['mmsCL.regNumZ']}">
+							<h:outputText value="#{row[10]}"/>								
+						</p:column>
+						
+						<p:column width="35" sortBy="#{row.a11}" headerText="#{labels['mmsCL.dateZaiav']}">
+							<h:outputText value="#{row[11]}">	
+								<f:convertDateTime pattern="dd.MM.yyyy" timeZone="#{mmsSpObektiList.timeZone}"/>
+							</h:outputText>	
+						</p:column>
+					</ui:remove>
+
+				</p:dataTable>
+
+			</h:panelGroup>
+
+		</h:panelGroup>	
+		
+	</h:form>	
+	
+</ui:composition>
